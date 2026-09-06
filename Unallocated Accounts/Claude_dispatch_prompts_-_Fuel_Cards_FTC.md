@@ -3,7 +3,7 @@
 What I paste into Claude (browser dispatch) with Envizi (`au001.envizi.com`) open in the active tab, to
 work Section `2 - Fuel Cards FTC` of `Unallocated_Accounts_FY27_Sep26.xlsx`. Three prompts. Prompts 1 and 2 are the two-pass form: a **read-only survey** first, then the **action
 pass** built on what the survey brings back. Prompt 3 is the **combined pass** - the same reading, rules
-and actions folded into one loop per account, reporting as it goes, run in batches of 40. Prompt 3 is
+and actions folded into one loop per account, reporting as it goes, all 91 in one run. Prompt 3 is
 what I run now; 1 and 2 are kept for a re-survey or a cycle where I want to see the readings first. Keep Envizi
 in front while it works - it only sees the active tab.
 
@@ -324,7 +324,7 @@ treat a fresh `<job>_<fuel>` at Unallocated as the same account.
 
 ---
 
-## 3 · Combined pass - read, decide, act, report, one account at a time
+## 3 · Combined pass - read, decide, act, report, one account at a time, all 91
 
 Written after the survey run died part-way through a long session without returning any of its
 readings. This form folds the survey and the action pass into one loop per account and makes dispatch
@@ -333,15 +333,16 @@ even if the session dies. It applies my three closing rules itself; anything tha
 looks odd, is moved-and-left-open or held, never closed. Same mechanics and the same nevers as prompts
 1 and 2.
 
-Run in batches of 40. This is batch 1 (rows 1-40 of the main list). For batches 2 and 3 swap the
-account block for rows 41-80 and 81-89; the two special rows (16017960_Diesel, 170944_Petrol) stay out
-of every batch. Paste each batch's result lines into the tracker's Status / Date Actioned / Notes
-columns before starting the next batch.
+One run, all 91, no pauses - dispatch records a HELD row and keeps going rather than stopping to ask.
+The two special rows (16017960_Diesel, 170944_Petrol) are at the end as read-only so their readings
+land in the same table. The result lines go into the tracker's Status / Date Actioned / Notes columns
+afterwards.
 
 ```
 You're helping me allocate and tidy fuel card accounts in IBM Envizi
-(au001.envizi.com). I'm logged in on the Envizi tab. Work through the 40
-accounts listed at the bottom ONE AT A TIME, in order. For each account you
+(au001.envizi.com). I'm logged in on the Envizi tab. Work through the 91
+accounts listed at the bottom ONE AT A TIME, in order, and do not stop until
+all 91 are done. For each account you
 READ, DECIDE, ACT, then REPORT - and you report that account's result line
 BEFORE starting the next one. Never hold results back to batch them. If you
 have to stop for any reason, output the lines you have first.
@@ -429,10 +430,12 @@ is done:
   | <MOVED / MOVED+CLOSED as <new number>, Replaced On <date> / HELD: <why>>
   | now at <location name> (<ref>)
 
-After every 10 accounts, repeat all lines so far as one block.
+After every 10 accounts, repeat all lines so far as one block. When all 91
+are done, output the full block one last time with a count of MOVED,
+MOVED+CLOSED and HELD.
 
-Do account 1 completely, then stop and show me. Once I've confirmed it, run
-2 to 40 without stopping.
+Do NOT pause for confirmation at any point. A HELD row is recorded and you
+move on to the next account; nothing waits on me until the list is finished.
 
 RULES
 - Never delete anything. Never use Close Account(s), Move on a multi-select,
@@ -444,9 +447,10 @@ RULES
 - Match account numbers character for character. "16017764_Petrol" and
   "16017764_E10 Petrol" are different accounts.
 - If a screen doesn't match what I've described, record HELD, say what you
-  see, and move on to the next account rather than guessing.
+  see, and move on to the next account rather than guessing. Never stop
+  the run to ask me something - record it and continue.
 
-================== THE ACCOUNTS · batch 1 of 3, rows 1-40 ==================
+======================== THE ACCOUNTS · all 91 ========================
 Format: account -> location name (Location Ref). Notes under a row are what
 my extract says - verify them on screen, don't assume them.
 
@@ -495,10 +499,80 @@ my extract says - verify them on screen, don't assume them.
  38. 16017816_E10 Petrol      -> PAS BSC - Towns N Overhead  (Location Ref 16017816)
  39. 16017816_Petrol          -> PAS BSC - Towns N Overhead  (Location Ref 16017816)
  40. 16017827_E10 Petrol      -> PAS BSC - TWS Sth EU- Prevent  (Location Ref 16017827)
+ 41. 16017827_Petrol          -> PAS BSC - TWS Sth EU- Prevent  (Location Ref 16017827)
+ 42. 16017842_Petrol          -> PAS QLD Management Ov  (Location Ref 16017842)
+ 43. 16017863_Petrol          -> PAS Canberra Trng Bases Overhead  (Location Ref 16017863)
+ 44. 16017882_Petrol          -> PAS Kapooka MA EU- Prevent  (Location Ref 16017882)
+ 45. 16017886_Petrol          -> PAS Kapooka MA Overhead  (Location Ref 16017886)
+ 46. 16017902_E10 Petrol      -> PAS Williamtown EU-Correc  (Location Ref 16017902)
+                             - Diesel sibling 16017902_Diesel closed 19 Aug 26 - verify
+ 47. 16017902_Oil & Lubes     -> PAS Williamtown EU-Correc  (Location Ref 16017902)
+                             - Diesel sibling 16017902_Diesel closed 19 Aug 26 - verify
+ 48. 16017902_Petrol          -> PAS Williamtown EU-Correc  (Location Ref 16017902)
+                             - Diesel sibling 16017902_Diesel closed 19 Aug 26 - verify
+ 49. 16017903_E10 Petrol      -> PAS Williamtown EU-Prevent  (Location Ref 16017903)
+ 50. 16017903_Petrol          -> PAS Williamtown EU-Prevent  (Location Ref 16017903)
+ 51. 16017906_E10 Petrol      -> PAS Williamtown Overhead  (Location Ref 16017906)
+ 52. 16017908_E10 Petrol      -> PAS Singleton EU- Prevent  (Location Ref 16017908)
+ 53. 16017909_Petrol          -> PAS Singleton Land  (Location Ref 16017909)
+                             - Diesel sibling 16017909_Diesel closed 19 Aug 26 - verify
+ 54. 16017922_E10 Petrol      -> PAS Sydney & Metro Army EU-Prevent  (Location Ref 16017922)
+ 55. 16017922_Petrol          -> PAS Sydney & Metro Army EU-Prevent  (Location Ref 16017922)
+ 56. 16017932_E10 Petrol      -> PAS Fleet Base Estab Overhead  (Location Ref 16017932)
+                             - Diesel sibling 16017932_Diesel closed 19 Aug 26 - verify
+ 57. 16017932_Petrol          -> PAS Fleet Base Estab Overhead  (Location Ref 16017932)
+                             - Diesel sibling 16017932_Diesel closed 19 Aug 26 - verify
+ 58. 16017943_E10 Petrol      -> PAS Liverpool Mil Area EU- Prevent  (Location Ref 16017943)
+ 59. 16017943_Petrol          -> PAS Liverpool Mil Area EU- Prevent  (Location Ref 16017943)
+ 60. 16017947_E10 Petrol      -> PAS Liverpool Mil Area Overhead  (Location Ref 16017947)
+                             - Diesel sibling 16017947_Diesel closed 19 Aug 26 - verify
+ 61. 16017947_Petrol          -> PAS Liverpool Mil Area Overhead  (Location Ref 16017947)
+                             - Diesel sibling 16017947_Diesel closed 19 Aug 26 - verify
+ 62. 16017951_Diesel          -> PAS RAAF Richmond EU- Correc  (Location Ref 16017951)
+ 63. 16017952_Petrol          -> PAS RAAF Richmond EU- Prevent  (Location Ref 16017952)
+ 64. 16017953_Diesel          -> PAS RAAF Richmond Land  (Location Ref 16017953)
+ 65. 16017962_Diesel          -> PAS Shoalhaven Land  (Location Ref 16017962)
+ 66. 16017962_Petrol          -> PAS Shoalhaven Land  (Location Ref 16017962)
+ 67. 16017964_Diesel          -> PAS Shoalhaven Aero  (Location Ref 16017964)
+ 68. 16017965_Petrol          -> PAS Shoalhaven Overhead  (Location Ref 16017965)
+ 69. 16017976_E10 Petrol      -> PAS NSW Management  (Location Ref 16017976)
+ 70. 16017976_Petrol          -> PAS NSW Management  (Location Ref 16017976)
+ 71. 16017981_Diesel          -> PAS BSC - RCK TARM  (Location Ref 16017981)
+ 72. 16018034_Diesel          -> Special Frces Training Fac-Holswrthy  (Location Ref 16018034)
+ 73. 170353_Oil & Lubes       -> Vic Civil Works  (Location Ref 170353)
+ 74. 170770_Diesel            -> Townsville Spray Services  (Location Ref 170770)
+ 75. 170772_Diesel            -> Mackay Asp Laying  (Location Ref 170772)
+ 76. 170772_Oil & Lubes       -> Mackay Asp Laying  (Location Ref 170772)
+ 77. 170777_Diesel            -> Metro Spray Services  (Location Ref 170777)
+ 78. 170778_Diesel            -> Dalby Spray Services  (Location Ref 170778)
+ 79. 170779_Diesel            -> Sunshine Coast Spray  (Location Ref 170779)
+ 80. 170782_Diesel            -> Grafton Spray Services  (Location Ref 170782)
+ 81. 170803_Oil & Lubes       -> SPO-SI&CS  (Location Ref 170803)
+ 82. 170967_Diesel            -> Thin Surfacing BU Mgt  (Location Ref 170967)
+ 83. 241104_Petrol            -> Utilities Facility Nth Syd  (Location Ref 241104)
+                             - NO Petrol supplier feed here (VIVA/WEX only) - rule 2 fails, MOVE only
+ 84. 241301_Petrol            -> RPS - Finance  (Location Ref 241301)
+ 85. 241745_Oil & Lubes       -> GSC Derrimut Support  (Location Ref 241745)
+ 86. 372003_Petrol            -> Plant West - DEP  (Location Ref 372003)
+                             - NO Petrol supplier feed here (AMPOL only) - rule 2 fails, MOVE only
+ 87. 37740142_Petrol          -> TLER Replacement  (Location Ref 37740142)
+ 88. 38225143_Diesel          -> Vales Pt Elec Contract 2026  (Location Ref 38225143)
+ 89. 8000050_Petrol           -> SSV General  (Location Ref 8000050)
+                             - NO Petrol supplier feed here (VIVA only) - rule 2 fails, MOVE only
+
+--- 90 and 91: READ ONLY. Do Part 1, record HELD with the readings, no move ---
+
+ 90. 16017960_Diesel          -> TWO locations share Location Ref 16017960:
+                                 "PAS Shoalhaven EU- Correc" and "PAS Shoalhaven
+                                 EU- Prevent". Do Part 1B on both and record
+                                 which, if either, carries a Diesel supplier
+                                 account. HELD.
+ 91. 170944_Petrol            -> _CLOSED_REV_Binders and Circular Technology
+                                 (Location Ref BCT). Part 1A only. HELD.
 =============================================================================
 ```
 
-Expected per batch: most rows MOVED, the rows whose Diesel sibling is already closed and whose FTC
+Expected: most rows MOVED, the rows whose Diesel sibling is already closed and whose FTC
 records stop at Feb 2026 MOVED+CLOSED, and HELD only for clashes, unmatched locations, or a live
 double count (FTC and supplier both carrying Mar-26+ values) - those come to me.
 
