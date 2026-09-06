@@ -82,10 +82,27 @@ Back on the Account Summary page, the left panel should now read
 should no longer show on this account. If the months are still there straight
 after saving, note it - Envizi can take a refresh to drop them - and move on.
 
-Report, per account: the account number, the location, what Replaced On read
-before, what it reads now, and that Opened On is still blank.
-
 Do the first one, stop and show me. Once I confirm, do the second.
+
+=== WHEN BOTH ARE DONE · the report I paste back into my other session ===
+End with a plain-text block headed "PROMPT 1 REPORT" laid out exactly like this,
+one line per field, no commentary outside it:
+
+  PROMPT 1 REPORT - connector close-offs - <today's date>
+  1. 5000021_3120129028 @ Gympie
+     Replaced On before: <-/date>   after: <date>   Opened On: <blank/date>
+     Monthly Data after save: <Apr 2026 onwards gone / still showing / not checked>
+  2. 5000021_QB05383854 @ Asphalt Prod - Archerfield (406)
+     Replaced On before: <-/date>   after: <date>   Opened On: <blank/date>
+     Monthly Data after save: <Apr 2026 onwards gone / still showing / not checked>
+  Screens that did not match the prompt: <none / describe>
+  Anything I touched other than Replaced On: <nothing / describe>
+  Accounts I could not find or did not finish: <none / list>
+  Ready for prompt 2 (build the 9 temporary accounts): <YES / NO - reason>
+
+"Ready for prompt 2" is YES only if both accounts read Replaced On 3/31/2026 and
+nothing else changed. If you stopped early for any reason, still produce the
+report with what you have.
 
 ======================== THE TWO ========================
 
