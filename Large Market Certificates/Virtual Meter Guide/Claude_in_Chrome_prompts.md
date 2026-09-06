@@ -525,52 +525,107 @@ Two of the 60 carry the account number in Account Ref where the other 58 carry t
 the field is what the register matches on, so they get corrected.
 
 ```
-You're helping me correct one field on two accounts in IBM Envizi
-(au001.envizi.com). I'm logged in on the Envizi tab. Two accounts, ONE AT A
-TIME.
+TASK: correct ONE field ("Account Ref") on two accounts in IBM Envizi. You are
+starting with no context, so read all of this before touching anything.
 
-WHAT CHANGES
-Account Ref only. It currently holds a copy of the account number; it should
-hold the NMI. Do NOT touch Opened On, Replaced On, Supplier, Account Style, the
-virtual account relationship, or anything else on the form. Do NOT add any
-records.
+=== SETUP · get to Envizi ===
+1. Open a NEW Chrome tab and go to https://au001.envizi.com
+2. If it shows a login page, STOP and tell me - I will log in, then say
+   "continue". Do not type credentials yourself.
+3. You're in when you see a horizontal top bar reading Manage / Monitor /
+   Optimize / Report / Admin, with a search box top-right. Keep this tab in
+   front the whole time - you only see the active tab.
+
+=== BACKGROUND ===
+Envizi holds LOCATIONS (sites); each holds ACCOUNTS. An account has an
+"Account Number" (its name) and a separate "Account Ref" field. On our
+renewable-certificate accounts the Account Ref should hold the NMI - the
+meter's national ID, which is the text after the last underscore in the
+account number, before "_CERTS". Two accounts were keyed with the whole
+account number in Account Ref by mistake. You are replacing that with the NMI.
+Nothing else on either account changes.
+
+=== THE TWO ACCOUNTS ===
+Do them ONE AT A TIME, in this order.
+
+ 1. 50002617964_NAAA00AC25_CERTS
+    Location: Asphalt Prod - Bathurst (156)  (Location Ref 170156)
+    Account Ref now reads:  50002617964_NAAA00AC25_CERTS
+    Change it to:           NAAA00AC25
+
+ 2. 50002617992_4204072845_CERTS
+    Location: Asphalt Prod - Mogo (154)  (Location Ref 154)
+    Account Ref now reads:  50002617992_4204072845_CERTS
+    Change it to:           4204072845
+    (Mogo has a SECOND certificate account, 50002769514_4001127731_CERTS,
+    whose Account Ref is already right. Do not open it.)
+
+Match the account number character for character.
 
 === STEP 1 · Find the account ===
-Top-right search, dropdown "Accounts". Paste the full account number, open it.
-On the Account Summary page confirm the account number in the header is exactly
-mine, "Relates to" is the location I give you, and Opened On reads 7/1/2026.
-If any of those disagree, stop and show me.
+Top-right search box: set its dropdown to "Accounts", paste the full account
+number, open it. You land on the Account Summary page: account number in the
+header, a left-hand panel of details, a blue "Actions" button top right.
+Confirm and screenshot: the account number in the header is EXACTLY mine,
+"Relates to" is the location I gave, and Opened On reads 7/1/2026. If any of
+those disagree, STOP and show me.
 
-=== STEP 2 · Open the form ===
-Blue "Actions" button (top right) -> "Edit Account". Not Capture Data.
+=== STEP 2 · Open the edit form ===
+Click the blue "Actions" button (top right, next to "Page Settings"). The menu
+has Capture Data, Edit Account, Account Settings. Click "Edit Account". Do NOT
+click Capture Data - that adds data, and this account must never hold data of
+its own.
 
 === STEP 3 · Set Account Ref ===
-Find "Account Ref" on the form. It reads the account number. Replace the whole
-value with the NMI I give you - nothing else in the field. Change nothing else.
-Save.
+On the form find "Account Ref". It currently holds the account number. Select
+the whole value and replace it with the NMI I gave - nothing else in the field,
+no spaces. Change NOTHING else: not Account Number, Account Style, Supplier,
+Reader, Opened On, Replaced On, Sub Type, or anything else. Screenshot the
+form, then Save.
 
 === STEP 4 · Check it ===
 Back on the Summary page confirm Account Ref reads the NMI and Opened On still
-reads 7/1/2026. Then tick the account in the location's account list, Actions
--> Virtual Account Setup, and confirm the grid still reads 1 Row with the same
-source. Do not click Create New, Delete, Close or Move there.
+reads 7/1/2026. Screenshot.
+Then confirm the virtual-account link survived: find the location (search
+dropdown "Locations"), Quick links -> Accounts, Show All Accounts, tick the
+checkbox on this account's row, blue "Actions" -> "Virtual Account Setup".
+The "Virtual Account Relationships" grid should read 1 Row with Effective From
+7/1/2026. Screenshot it. Do NOT click Create New, Delete, Close or Move on that
+screen or in that Actions menu - you are only looking. Then on the account's
+tab row go Review -> Monthly Data and confirm Jul and Aug 2026 still hold kWh
+and there is no Jun 2026 row.
 
-=========================== THE TWO ===========================
+=== PACING ===
+Do account 1 fully (steps 1-4), then STOP and show me the screenshots. Wait for
+me to say "continue" before starting account 2.
 
- 1. 50002617964_NAAA00AC25_CERTS   Asphalt Prod - Bathurst (156), Location Ref 170156
-    Account Ref now: 50002617964_NAAA00AC25_CERTS   ->   set to: NAAA00AC25
+=== WHEN BOTH ARE DONE · the report I paste back into my other session ===
+End with a plain-text block headed "PROMPT 4 REPORT" laid out exactly like this,
+one line per field, no commentary outside it:
 
- 2. 50002617992_4204072845_CERTS   Asphalt Prod - Mogo (154), Location Ref 154
-    Account Ref now: 50002617992_4204072845_CERTS   ->   set to: 4204072845
-    (Mogo has a second certificate account, 50002769514_4001127731_CERTS, whose
-    Account Ref is already right. Leave it.)
+  PROMPT 4 REPORT - Account Ref fixes - <today's date>
+  1. 50002617964_NAAA00AC25_CERTS @ Asphalt Prod - Bathurst (156)
+     Account Ref before: <value>   after: <value>   Opened On: <date>
+     Relationship grid: <n> Row, Effective From <date>
+     Monthly Data: Jun <none/value>  Jul <value>  Aug <value>
+  2. 50002617992_4204072845_CERTS @ Asphalt Prod - Mogo (154)
+     Account Ref before: <value>   after: <value>   Opened On: <date>
+     Relationship grid: <n> Row, Effective From <date>
+     Monthly Data: Jun <none/value>  Jul <value>  Aug <value>
+  Screens that did not match the prompt: <none / describe>
+  Anything I touched other than Account Ref: <nothing / describe>
+  Accounts I could not find or did not finish: <none / list>
+  All Envizi work in this series complete: <YES / NO - reason>
 
-Report, per account: what Account Ref read before, what it reads now, that
-Opened On is unchanged, and that the relationship grid still reads 1 Row.
+"All complete" is YES only if both Account Refs read the NMI, both grids still
+read 1 Row, and nothing else changed.
 
-RULES
-- Account Ref only. If the form looks different from what I've described, stop.
-- Never delete, close or move anything.
+=== RULES ===
+- Account Ref only. Never edit any other field. Never add data.
+- Never delete, close or move any account. Never use Delete / Close / Move from
+  any Actions menu.
+- If the form looks different from what I've described, STOP and show me.
+- Never type credentials. If you get logged out, stop and tell me.
 ```
 
 ---
