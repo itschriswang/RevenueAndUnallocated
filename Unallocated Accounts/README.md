@@ -10,6 +10,7 @@ work them back onto real locations.
 | `Unallocated_Accounts_FY27_Sep26.xlsx` | **The working file.** Current cycle, refreshed on the 03 Sep 2026 accounts extract in `../FY27/`. |
 | `Unallocated_Accounts_FY27_Aug26.xlsx` | The Aug-26 cycle, built on the 25 Aug 2026 extracts. Superseded — its 32 electricity accounts are all allocated. |
 | `Unallocated_Accounts_FY26_May26.xlsx` | The May 2026 cycle. This is the template the later files follow. |
+| `Claude_dispatch_prompts_-_Fuel_Cards_FTC.md` | The two Claude dispatch prompts for working Section 2 in Envizi - a read-only survey of each FTC account's records against the supplier feed at its job, then the move / move-and-close pass. Carries the closing rules and the `_closed` rename convention. |
 | `Unallocated Accounts - Proposed Location Links.csv` / `.xlsx` | The flat review that fed the Aug-26 tracker — 136 accounts with match basis and confidence each. Superseded as a working document; kept as the evidence trail behind the tracker's Notes columns. |
 
 ## Tracker layout
@@ -69,7 +70,20 @@ Refreshed on `../FY27/Extract_for_Accounts 03 Sep 26.csv` (59,205 rows). Account
   built from, so it fell outside that cycle's 136. It shares NMI `8000326927` with Aug-26 row 1,
   which was allocated to Asphalt Prod - Mowbray (360) on 03 Sep.
 - **Sections 2 and 3 are unchanged.** All 91 FTC and all 13 BOC / Viva accounts are still
-  unallocated.
+  unallocated. Checked again on the 05 Sep extract: still 91, no new FTC accounts, no Replaced On on any.
+
+### Section 2 - what the FTC accounts turned out to be
+
+- Every FTC account in Envizi (2,713) is `Event Data`, so none of these can accrue. There is no accrual
+  leak from leaving them unallocated or dormant; closing them is hygiene.
+- The FTC feed was cut over to direct Viva / WEX / Ampol fuel card accounts at the end of Feb 2026: 902
+  FTC accounts were closed on 02 Apr 2026 with Replaced On 28 Feb 2026, the same day these 91 were
+  created, and 40 more `<job>_Diesel` accounts were closed on 19 Aug 2026. 90 of the 91 proposed locations
+  already hold a supplier feed account, 86 for the same fuel. The risk in allocating is double counting
+  from Mar 2026 on, not a missing allocation - so each account's records are read in Envizi before it
+  moves. The prompts and the closing rules are in `Claude_dispatch_prompts_-_Fuel_Cards_FTC.md`.
+- Two rows cannot be actioned from the extract: `16017960_Diesel` (two locations share Location Ref
+  16017960) and `170944_Petrol` (resolves only to a `_CLOSED_REV_` location). Both go to Nathan.
 
 ### Template defects fixed this cycle
 
