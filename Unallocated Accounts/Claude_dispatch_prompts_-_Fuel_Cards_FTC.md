@@ -410,7 +410,9 @@ CLOSE (MOVE + CLOSE rows only, after the move): open the account, blue
 "Actions" (top right) -> "Edit Account" (not Capture Data). Set "Replaced
 On" to the last day of the FTC account's last month with a value, or
 28 Feb 2026 if it has no records. Change nothing else. Save. If a Replaced
-On is already there, stop and show me. Then Actions -> "Edit Account" again
+On is already there, back out without saving, record HELD (already has
+Replaced On) and leave the account moved but not renamed. Otherwise
+Actions -> "Edit Account" again
 and in "Account Number" append "_closed" to the existing value
 ("16012399_Petrol" becomes "16012399_Petrol_closed"). Nothing else changes.
 Save.
