@@ -42,9 +42,9 @@ You are starting with no context, so read all of this before touching anything.
 1. Open a NEW Chrome tab and go to https://au001.envizi.com
 2. If it shows a login page, STOP and tell me - I will log in, then say
    "continue". Do not type credentials yourself.
-3. Once you see the Envizi home page (a dark left-hand nav bar with items like
-   Home, Manage, Review, Admin, and a search box top-right), you're in. Keep
-   this tab in front the whole time - you only see the active tab.
+3. Once you see the Envizi home page (a horizontal top bar reading Manage /
+   Monitor / Optimize / Report / Admin, and a search box top-right), you're in.
+   Keep this tab in front the whole time - you only see the active tab.
 
 === BACKGROUND · what you're looking at ===
 Envizi is an emissions-reporting system. It holds LOCATIONS (sites), and each
@@ -100,8 +100,8 @@ Find "Replaced On:" - a date field with a small calendar icon. It sits right
 above "Opened On:". Click the calendar icon. The calendar opens on the current
 month; use its back arrow to page to March 2026, then click 31.
 The field must now read  3/31/2026  (US order, month/day/year).
-If clicking is fiddly, type 3/31/2026 into the field and press Tab, then read
-it back - it must say 3/31/2026, not 31/3/2026 and not 3/1/2026.
+Use the calendar picker ONLY. Do not type the date - typing 3/31/2026 into the
+field mis-parses to 12/31/2026. Read the field back before saving.
 
 Leave "Opened On:" exactly as it is - it is blank on both accounts and stays
 blank. Change NOTHING else on the form. Screenshot the form, then click Save.
@@ -109,7 +109,7 @@ blank. Change NOTHING else on the form. Screenshot the form, then click Save.
 === STEP 4 · Check it ===
 You're back on the Account Summary page. The left panel should now read
 "Replaced On : 3/31/2026". Screenshot it.
-Then in the left nav for this account go Review -> Monthly Data. April 2026
+Then on the account page's tab row go Review -> Monthly Data. April 2026
 onwards should no longer be listed for this account (Sep 2025 to Mar 2026 stay).
 If April onwards is still showing straight after saving, note it - Envizi
 sometimes needs a refresh to drop them - and move on.
@@ -149,9 +149,11 @@ report with what you have.
 - Never type credentials. If you get logged out, stop and tell me.
 ```
 
-Expected: both `5000021_` accounts read Replaced On 3/31/2026 on their Summary page and the next
-accounts extract carries 31 Mar 2026. Only then run prompt 2 — Gympie and Archerfield are in that batch
-and their source is the `1003xxx` account.
+**Run 06 Sep 26 — done.** Both read Replaced On 3/31/2026, Opened On still blank, nothing else touched.
+Monthly Data still listed April onwards straight after saving (the usual refresh lag; the next export
+confirms). Two things the session found that every later prompt now carries: the Envizi nav is a
+**horizontal top bar** (Manage / Monitor / Optimize / Report / Admin), and **typing a date mis-parses**
+(3/31/2026 became 12/31/2026), so dates are set with the calendar picker only.
 
 ---
 
@@ -165,168 +167,211 @@ account arrives the account is deleted and remade against it — the delete regi
 tracks that.
 
 ```
-You're helping me set up renewable-certificate virtual accounts in IBM Envizi
-(au001.envizi.com). I'm logged in on the Envizi tab. Work through the accounts
-listed at the bottom ONE AT A TIME, in order.
+TASK: create 9 empty "certificate" accounts in IBM Envizi and set each one up as
+a virtual account that mirrors an existing electricity account. You are starting
+with no context, so read all of this before touching anything.
 
-THE ONE RULE THAT MATTERS
-An account can only be set up as a virtual account while it holds NO records. So
-the account is created first and saved empty, and only then linked. Never add
-data to it.
+=== SETUP · get to Envizi ===
+1. Open a NEW Chrome tab and go to https://au001.envizi.com
+2. If it shows a login page, STOP and tell me - I will log in, then say
+   "continue". Do not type credentials yourself.
+3. You're in when you see a horizontal top bar reading Manage / Monitor /
+   Optimize / Report / Admin, with a search box top-right. Keep this tab in
+   front the whole time - you only see the active tab.
 
-THIS BATCH HAS DECOYS
-At Gympie and Archerfield a second CS Energy account (5000021_...) sits at the
-same location under the same NMI. I closed it earlier, but a closed account is
-still listed and still holds data, so it still shows up in the account list and
-in the Source data tree. It is NOT the source. The source is always the account
-I name - the 1003xxx one - never the 5000021_ one. Match the full account number
-character for character.
+=== BACKGROUND · what you're doing and why ===
+Envizi holds LOCATIONS (sites); each location holds ACCOUNTS. An electricity
+account number ends in the NMI (the meter's national ID) after the last
+underscore. These 9 sites buy 100% renewable electricity under a contract that
+started 1 July 2026, so each needs a renewable-certificate account that copies
+the site's electricity kWh month by month from July 2026 on. Envizi does that
+with a VIRTUAL ACCOUNT: an empty account with a rule that says "equal 100% of
+account X". Nothing is typed into it - it fills itself.
 
-While you're in the account list (step 2) at those two sites, glance at the
-decoy's Replaced On column. It should read a date. If it's blank, the close-off
-didn't take - finish the account you're on, but tell me.
+THE ONE RULE THAT MATTERS: an account can only be set up as a virtual account
+while it holds NO records. So each account is created and saved EMPTY, and only
+then linked. Never add data to it. Never use "Capture Data".
 
-MULTIPLE ACCOUNTS AT ONE LOCATION
-RPQ Spray Seal needs two. Find the location once, then repeat steps 3-6 for each.
+Two of the sites (Gympie, Archerfield) also carry a second, closed electricity
+account on the same NMI (starts 5000021_). It still appears in lists and in
+the source-picker tree. It is a DECOY. The source is always the account I name
+- the one starting 1003. Match the full account number character for character.
 
-=== STEP 1 · Find the location ===
-Top-right search, dropdown set to "Locations". Search the location name, open it.
-Confirm the Location Ref on the Summary page matches the ref I give you - several
-locations share a name, the ref is what disambiguates. If the ref doesn't match, stop.
+DATES: set every date with the calendar picker. Never type a date - typing
+mis-parses (3/31/2026 becomes 12/31/2026). Read the field back before saving.
 
-=== STEP 2 · Open the account list ===
-From the location Summary page: Quick links -> Accounts. Click "Show All Accounts".
-Before creating anything, filter the Account Number column on "CERTS" and confirm
-MY EXACT TARGET NUMBER isn't there, then clear the filter. The filter sometimes
-renders as a search textbox and sometimes as a multi-select checkbox list. LGCS_
-rows at the location are expected - leave them. If my exact target exists, stop
-and tell me - do not edit or reuse it.
+=== FOR EACH ACCOUNT · STEP 1 · Find the location ===
+Top-right search box: set its dropdown to "Locations", search the location
+name, open it. On the location Summary page confirm the Location Ref matches
+the ref I give - several locations share a name; the ref disambiguates. If the
+ref doesn't match, STOP and show me.
 
-=== STEP 3 · Create the account, empty ===
-Click the blue "Create New..." button and set:
+=== STEP 2 · Open the location's account list ===
+On the location Summary page find "Quick links" and choose "Accounts". Click
+"Show All Accounts". Before creating anything, filter the Account Number column
+on "CERTS" and confirm MY EXACT TARGET NUMBER is not already there, then clear
+the filter. (The filter renders as a search textbox or as a checkbox list.)
+Rows starting LGCS_ are old certificate accounts - expected, leave them.
+If my exact target already exists, STOP and tell me - do not edit or reuse it.
+
+=== STEP 3 · Create the account, EMPTY ===
+Click the blue "Create New..." button. Fill in:
 
   Account style      Certificates - Location - kWh
-  Account number     as listed below
-  Account Ref        the NMI as listed below - the NMI, NOT the account number
+  Account number     as listed below  (ends _CERTS)
+  Account Ref        the NMI as listed below - the NMI only, NOT the account number
   Supplier           LGC Virtual Account
   Reader             leave blank
-  Opened On          2026-07-01   (field displays as 7/1/2026)
+  Opened On          1 July 2026  (displays 7/1/2026) - calendar picker, page
+                     back to July 2026, click 1
+  Linked Meter, Replaced On, Sub Type    leave blank
 
-Leave Reader, Linked Meter, Replaced On and Sub Type blank. Account Style is a jqx
-DIV, not a native select - form_input will fail on it. Click it open and type into
-its internal Search box, then click the filtered result. The Opened On calendar
-opens on the current month, so page back to July 2026 and click 1.
-Save. Do NOT add any records, monthly data or capture data.
+Account Style is a custom dropdown, not a native select - click it open, type
+into its internal search box, click the filtered result. Screenshot the form,
+then Save. Do NOT add any records, monthly data or capture data.
 
 === STEP 4 · Open Virtual Account Setup ===
-Back in the account list, tick the checkbox on the row for the account you just
-created, then click the blue "Actions" button and choose "Virtual Account Setup".
+Back in the location's account list, tick the checkbox on the row of the
+account you just created, then click the blue "Actions" button and choose
+"Virtual Account Setup".
 
-That same Actions menu also holds "Delete Account(s)", "Close Account(s)" and
-"Move Account". Do not click any of those, ever. Screenshot the menu and confirm
-before clicking. If you're not certain, stop and show me.
+WARNING: that same Actions menu also holds "Delete Account(s)", "Close
+Account(s)" and "Move Account". Never click those. Screenshot the menu before
+you click. If unsure, STOP and show me.
 
-The grid sometimes shows a second row as pre-ticked - a display artifact. Confirm
-the breadcrumb on the Virtual Account Relationships page names my new _CERTS
-account and the grid reads 0 Row. If it names anything else, stop.
+The grid sometimes shows a second row pre-ticked - a display artifact. Confirm
+the breadcrumb on the "Virtual Account Relationships" page names my new _CERTS
+account and the grid reads 0 Row. If it names anything else, STOP.
 
 === STEP 5 · Create the relationship ===
 On "Virtual Account Relationships" click the blue "Create New...". A "Virtual
-relationship" dialog opens with three tabs. Fill all three BEFORE saving:
+relationship" dialog opens with three tabs. Fill ALL THREE before saving:
 
-- Select rule - Measure: Total Certificates. Data Rule: 100% Renewable Energy
-  Certificates (subtitle "Kilowatt hours*Value Variable"). The Measure dropdown
-  occasionally renders empty on first click; click it again.
+- Select rule:  Measure = "Total Certificates".
+                Data Rule = "100% Renewable Energy Certificates"
+                (subtitle "Kilowatt hours*Value Variable").
+                The Measure dropdown sometimes renders empty on first click -
+                click it again.
 
-- Source data - Left pane "Available", right pane "Selected". Expand "Kilowatt
-  hours", then the location, then click the plus next to the SOURCE ACCOUNT I
-  name. Zoom in and match the FULL account number character for character. Add
-  that one account and nothing else. The Selected pane should show Kilowatt
-  hours -> the location -> the one account, then "*" and "Value Variable" -
-  leave those exactly as the rule sets them.
+- Source data:  Left pane "Available", right pane "Selected". Expand "Kilowatt
+                hours", then the location, then click the plus next to the
+                SOURCE ACCOUNT I name. Zoom in; match the FULL account number.
+                Add that ONE account and nothing else. The Selected pane should
+                read: Kilowatt hours -> the location -> the one account, then
+                "*" and "Value Variable" - leave those as the rule set them.
+                At Gympie and Archerfield the 5000021_ decoy is in this tree
+                too. Do not pick it.
 
-- Condition (optional) - Effective From: July 2026 (the picker shows "2026 July").
-  Effective To: leave blank. This is what stops the virtual account reaching back
-  before the renewal. It is not optional for us.
+- Condition:    Effective From = July 2026 (picker shows "2026 July").
+                Effective To = leave blank.
+                This is what stops the account reaching back before the
+                contract. It is NOT optional.
 
-Then SAVE. Confirm the grid reads 1 Row with Formula "Kilowatt hours*Value Va...",
-Effective From 7/1/2026, Effective To blank.
+Save. Confirm the grid now reads 1 Row, Formula "Kilowatt hours*Value Va...",
+Effective From 7/1/2026, Effective To blank. Screenshot it.
 
 === STEP 6 · Check it ===
-Open the new account and confirm Opened On reads 7/1/2026, Account Ref reads the
-NMI, and there is exactly one relationship. Read the figures via Review ->
-Monthly Data in the account nav - the Summary chart tooltips don't render.
-Confirm Jul and Aug 2026 kWh match the "Expect" line and there is NO June 2026
-row. If June has a value, Effective From didn't take - stop and tell me. The
-"Expect" figures are the 1003xxx account's own kWh, all of them accrued; at
-Gympie and Archerfield the closed 5000021_ account's July and August (a
-different, larger number) should not appear anywhere in the new account.
+Open the new account. Confirm Opened On reads 7/1/2026, Account Ref reads the
+NMI, and there is exactly one relationship. On the account page's tab row go
+Review -> Monthly Data (the Summary chart tooltips don't render). Confirm:
+  - NO June 2026 row (if June has a value, Effective From didn't take - STOP)
+  - Jul 2026 and Aug 2026 kWh match the "Expect" line below, to the nearest
+    few kWh. A small drift is the source having moved since I read it; the
+    test is that the new account EQUALS the source account's own figure,
+    whatever that is. A large gap or a zero is a wrong source - STOP.
 
-================= THE ACCOUNTS · 9 across 8 locations, all QLD =================
+=== PACING ===
+Do account 1 fully (steps 1-6), then STOP and show me the screenshots. Wait for
+me to say "continue" before doing the rest. After that, run 2-9 without
+stopping unless a rule says stop.
 
-### RPQ Spray Seal - ref 171230   (2 accounts)
+======================= THE ACCOUNTS · 9 across 8 locations, all QLD =======================
+
+### RPQ Spray Seal - Location Ref 171230   (TWO accounts - find the location once)
     Leave alone here: LGCS_3051770385, LGCS_3120014382, LGCS_3120136120
- 1. 1003072_3051770385_CERTS · ref 3051770385 · src 1003072_3051770385
+ 1. Create 1003072_3051770385_CERTS · Account Ref 3051770385
+    Source 1003072_3051770385
     Expect Jun none · Jul 15,721 · Aug 17,432
- 2. 1003070_3120014382_CERTS · ref 3120014382 · src 1003070_3120014382
+ 2. Create 1003070_3120014382_CERTS · Account Ref 3120014382
+    Source 1003070_3120014382
     Expect Jun none · Jul 29,259 · Aug 30,991
 
-### RPQ Swanbank - ref 171505
+### RPQ Swanbank - Location Ref 171505
     Leave alone here: LGCS_3120070486
- 3. 1003071_3120070486_CERTS · ref 3120070486 · src 1003071_3120070486
+ 3. Create 1003071_3120070486_CERTS · Account Ref 3120070486
+    Source 1003071_3120070486
     Expect Jun none · Jul 22,030 · Aug 31,514
 
-### Asphalt Prod - Bli Bli (408) - ref 408
+### Asphalt Prod - Bli Bli (408) - Location Ref 408
     Leave alone here: LGCS_3120103988
- 4. 1003079_3120103988_CERTS · ref 3120103988 · src 1003079_3120103988
+ 4. Create 1003079_3120103988_CERTS · Account Ref 3120103988
+    Source 1003079_3120103988
     Expect Jun none · Jul 63,426 · Aug 63,426
 
-### Gympie - ref 142
+### Gympie - Location Ref 142
     Leave alone here: LGCS_3120129028
- 5. 1003085_3120129028_CERTS · ref 3120129028 · src 1003085_3120129028
+    DECOY in the list and the source tree - do NOT pick: 5000021_3120129028
+ 5. Create 1003085_3120129028_CERTS · Account Ref 3120129028
+    Source 1003085_3120129028
     Expect Jun none · Jul 14,156 · Aug 14,156
-    DECOY, do NOT pick (closed, still listed): 5000021_3120129028
 
-### Asphalt Prod - Archerfield (406) - ref 406
+### Asphalt Prod - Archerfield (406) - Location Ref 406
     Leave alone here: LGCS_QB05383854
- 6. 1003081_QB05383854_CERTS · ref QB05383854 · src 1003081_QB05383854
+    DECOY in the list and the source tree - do NOT pick: 5000021_QB05383854
+ 6. Create 1003081_QB05383854_CERTS · Account Ref QB05383854
+    Source 1003081_QB05383854
     Expect Jun none · Jul 75,559 · Aug 75,559
-    DECOY, do NOT pick (closed, still listed): 5000021_QB05383854
 
-### Teneriffe - Brisbane (QLD) - ref 1020
+### Teneriffe - Brisbane (QLD) - Location Ref 1020
     Leave alone here: LGCS_3117134943
- 7. 1003084_3117134943_CERTS · ref 3117134943 · src 1003084_3117134943
+ 7. Create 1003084_3117134943_CERTS · Account Ref 3117134943
+    Source 1003084_3117134943
     Expect Jun none · Jul 8,731 · Aug 8,731
 
-### PPP - Southbank TAFE (QLD) - ref 9108
+### PPP - Southbank TAFE (QLD) - Location Ref 9108
     No LGCS_ account here.
- 8. 1003074_3116382269_CERTS · ref 3116382269 · src 1003074_3116382269
-    Expect Jun none · Jul 628,450 · Aug 649,281
-    (By far the largest of the nine - check the figures twice.)
+ 8. Create 1003074_3116382269_CERTS · Account Ref 3116382269
+    Source 1003074_3116382269
+    Expect Jun none · Jul 628,450 · Aug 649,281   (by far the largest - check twice)
 
-### PPP - Sunshine Coast University Hospital - ref 9078
+### PPP - Sunshine Coast University Hospital - Location Ref 9078
     No LGCS_ account here.
- 9. 1003075_3120143385_CERTS · ref 3120143385 · src 1003075_3120143385
+ 9. Create 1003075_3120143385_CERTS · Account Ref 3120143385
+    Source 1003075_3120143385
     Expect Jun none · Jul 18,686 · Aug 19,189
 
-================================================================================
+=============================================================================================
 
-After each account, report: the account number created, Account Ref, Opened On,
-the exact source account you selected, Effective From, and the Jun/Jul/Aug
-figures against what I expected. Do number 1, then stop and show me before
-starting number 2 - once I've confirmed it I'll tell you to run the rest
-without stopping.
+=== WHEN DONE · the report I paste back into my other session ===
+End with a plain-text block headed "PROMPT 2 REPORT" laid out exactly like this,
+one line per field, no commentary outside it. One entry per account, all 9,
+including any you did not finish:
 
-RULES
-- Never delete, close, move or edit the SOURCE account, a decoy, or any LGCS_ account.
-- If my exact target account number already exists, stop and tell me.
-- If a screen doesn't match what I've described, stop and describe what you see.
-- Never click Save or Delete on a form you're unsure about.
+  PROMPT 2 REPORT - temporary certificate accounts - <today's date>
+  1. 1003072_3051770385_CERTS @ RPQ Spray Seal
+     Created: <yes/no/already existed>  Opened On: <date>  Account Ref: <value>
+     Source linked: <full account number>  Effective From: <date>  Rows: <n>
+     Monthly Data: Jun <none/value>  Jul <value>  Aug <value>
+     Matches expect: <yes/no - detail>
+  2. ... (same five lines, for each of 2 to 9)
+  Screens that did not match the prompt: <none / describe>
+  Anything I touched other than the 9 new accounts: <nothing / describe>
+  Accounts I could not finish and where I stopped: <none / list>
+  Decoy picked anywhere: <no / which>
+  Ready for prompt 3 (emission factors): <YES / NO - reason>
 
-WORKED EXAMPLE
-900018199_3120725958_CERTS at Asphalt Prod - Brendale (423) is done and correct -
-source 900018199_3120725958, measure Total Certificates, rule 100% Renewable
-Energy Certificates, Effective From July 2026.
+"Ready for prompt 3" is YES only if all 9 exist, each has exactly one
+relationship to the named source with Effective From 7/1/2026, and none has a
+June row. If you stopped early, still produce the report with what you have.
+
+=== RULES ===
+- Never delete, close, move or edit a SOURCE account, a decoy, or any LGCS_
+  account. Never use Delete / Close / Move from any Actions menu.
+- Never add data to a new account. Never click Capture Data.
+- If my exact target account number already exists, STOP and tell me.
+- If any screen doesn't match what I've described, STOP and describe what you
+  see with a screenshot. Never click Save on a form you're unsure about.
+- Never type credentials. If you get logged out, stop and tell me.
 ```
 
 The "Expect" figures are the July and August accruals on the CS Energy accounts as at the 06 Sep 26
