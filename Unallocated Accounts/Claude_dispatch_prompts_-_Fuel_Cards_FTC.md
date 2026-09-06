@@ -91,13 +91,19 @@ Quick links -> Accounts -> "Show All Accounts". Record:
     has values from Mar 2026 on
   - whether a "<job>_Diesel" FTC row is present with a Replaced On date, and
     the date
+  - NAME CLASH CHECK: whether any account at the location - open or closed -
+    already carries EXACTLY my account number, or my account number with
+    "_closed" on the end. A location cannot hold two accounts with the same
+    number, so a clash here blocks the move until the existing one is renamed.
+    Record the clashing number and its Replaced On, or "no clash".
 
 === OUTPUT ===
 Give me one row per account in a table with these columns, in this order:
   Account | Location found (Y/N, name, ref) | FTC first month | FTC last month |
   FTC months | FTC litres | FTC has Mar-26+ (Y/N) | Same-fuel supplier acct
   (number) | Supplier first month | Supplier has Mar-26+ (Y/N) | Closed
-  _Diesel sibling (number + date, or none) | Anything odd
+  _Diesel sibling (number + date, or none) | Name clash (number + Replaced
+  On, or none) | Anything odd
 
 Do the first 3 accounts, then stop and show me the table so I can check the
 readings before you run the rest. Then continue to the end without stopping.
@@ -240,6 +246,11 @@ Unallocated Accounts. If it already relates to some other location, stop and
 tell me - someone has moved it since.
 
 === STEP 2 · Move it ===
+Before moving, the survey confirmed no account at the target location already
+carries this account number. If the move dialog or a save error says the
+number already exists at the location, do NOT rename anything - stop and
+tell me which account it collided with.
+
 Go to the Unallocated Accounts location (it is the "Relates to" link), Quick
 links -> Accounts -> "Show All Accounts". Tick the checkbox on the row for MY
 account only. Blue "Actions" button -> "Move Account".
@@ -346,6 +357,20 @@ MOVE + CLOSE rows, subject to the survey.
   16017947_E10 Petrol      at PAS Liverpool Mil Area Overhead  (closed sibling: 16017947_Diesel)
   16017947_Petrol          at PAS Liverpool Mil Area Overhead  (closed sibling: 16017947_Diesel)
 ```
+
+## Name clashes at the target location
+
+A location cannot hold two accounts with the same account number, closed or not, so an existing account
+with the same number has to be renamed before the unallocated one can move in. Against the 05 Sep extract
+**none of the 91 collides** - the closed FTC accounts already at these locations are all `<job>_Diesel`,
+and the unallocated Diesel accounts sit at jobs with no FTC account at all. The survey's Reading B checks
+this live anyway, and the action pass stops rather than renaming if Envizi reports a collision.
+
+This is also the second reason for the `_closed` rename. Without it, a future FTC file recreating
+`16012399_Petrol` at `Unallocated Accounts` could never be moved onto Kelso HS while the closed
+`16012399_Petrol` sits there. The 40 `<job>_Diesel` accounts closed on 19 Aug 26 were not renamed, so if
+the FTC feed ever carries Diesel for those jobs again, the new account will collide - worth a follow-up
+rename pass on those 40 if that happens.
 
 ## What is deliberately not in these prompts
 
