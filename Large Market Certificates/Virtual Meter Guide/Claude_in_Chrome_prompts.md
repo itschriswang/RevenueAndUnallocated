@@ -10,7 +10,7 @@ source exactly in July and August with no June row. The 12 old Origin accounts r
 
 | # | Prompt | What it does |
 | --- | --- | --- |
-| 1 | Close the two connector accounts | Gympie and Archerfield still double count — 5000021_ accounts accruing beside the live 1003xxx ones |
+| 1 | Close the two connector accounts | Gympie and Archerfield still double count — 5000021_ accounts recording beside the live 1003xxx ones. Both close at 31 Mar 2026 |
 | 2 | Build the 9 temporary accounts | Section 3 — the Queensland sites still on CS Energy with no Engie account. Run **after** prompt 1 |
 | 3 | The 25-26 LGC factors | Everything outside Victoria is still offsetting on 24-25 |
 | 4 | Fix two Account Refs | Bathurst and Mogo 4204072845 carry the account number where the NMI should be |
@@ -25,36 +25,32 @@ are done and have been taken out; they are in the git history if I ever need the
 ## 1 · Close the two connector accounts at Gympie and Archerfield
 
 Two Utilities Connector accounts are still accruing beside the live CS Energy account on the same NMI.
-The other nine `5000021_` accounts were closed the day before their `1003xxx` replacement opened
-(31 Mar, 31 May or 30 Jun 2026), so the date is read off the live account rather than assumed.
+The other nine `5000021_` accounts were closed the day before their `1003xxx` replacement's first month
+(31 Mar, 31 May or 30 Jun 2026). The Sep 25 – Aug 26 export shows both live accounts here hold actual
+data from **April 2026**, so both close at **31 Mar 2026** — the same as the five siblings whose live
+account also started in April. The export also shows the connector accounts carry the same May 2026
+bill as the live account, so the double count runs from April, not just July; closing at 31 Mar clears
+all of it.
 
 ```
 You're helping me close off two accounts in IBM Envizi (au001.envizi.com). I'm
-logged in on the Envizi tab. Two accounts, ONE AT A TIME, in order. There is a
-read step first, and you STOP after it.
+logged in on the Envizi tab. Two accounts, ONE AT A TIME, in order.
 
 WHAT "CLOSE" MEANS HERE
-Set the account's Replaced On date. Nothing else. Do NOT delete, move or merge
-any account, and do NOT touch Opened On - it sits directly under Replaced On on
-the same form and must stay as it is.
+Set the account's Replaced On date to 31 March 2026. Nothing else. Do NOT
+delete, move or merge any account, and do NOT touch Opened On - it sits
+directly under Replaced On on the same form and must stay as it is.
 
 WHY
 On each NMI a second CS Energy account created by the Utilities Connector is
-still accruing every month with no Opened On and no actual bills, while the
-live 1003xxx account bills the actuals. Closing the connector account stops the
-site being counted twice.
+still recording every month with no Opened On, while the live 1003xxx account
+has billed the actuals since April 2026. Closing the connector account at
+31 March 2026 stops the site being counted twice from April on.
 
 THIS BATCH HAS DECOYS
 The LIVE account sits at the same location under the same NMI - it is the
 1003xxx one. Never open Edit Account on it. The account to close is always the
 5000021_ one I name - match the full account number character for character.
-
-=== STEP A · Read the live account first, then STOP ===
-For each pair below, top-right search, dropdown set to "Accounts", paste the
-LIVE 1003xxx account number and open it. Review -> Monthly Data. Tell me the
-EARLIEST month that holds data, and whether that month is actual or accrued.
-Read-only - change nothing. Do both, then stop and show me. I'll give you the
-Replaced On date for each, then you do steps 1-4.
 
 === STEP 1 · Find the account to close ===
 Top-right search, dropdown "Accounts". Paste the full 5000021_ account number,
@@ -70,10 +66,10 @@ Do NOT choose Capture Data.
 
 === STEP 3 · Set Replaced On ===
 On the form find "Replaced On:" - a date field with a calendar icon. Click the
-calendar icon. It opens on the current month, so page back to the month I
-give you and click the day. The field should then read the date in m/d/yyyy
-form (30 Jun 2026 shows as 6/30/2026). If typing works better, type it and
-tab out, then read it back to check the month and day didn't swap.
+calendar icon. It opens on the current month, so page back to March 2026 and
+click 31. The field should then read 3/31/2026. If typing works better, type
+it and tab out, then read it back to check the month and day didn't swap -
+3/31/2026, not 31/3/2026 or 3/1/2026.
 
 Leave "Opened On:" exactly as it was - it is blank on both of these and stays
 blank. Change nothing else on the form.
@@ -82,22 +78,24 @@ Save.
 
 === STEP 4 · Check it ===
 Back on the Account Summary page, the left panel should now read
-"Replaced On : <the date>". Then Review -> Monthly Data: months after the date
-should no longer accrue. If the accruals are still there straight after saving,
-note it - Envizi can take a refresh to drop them - and move on.
+"Replaced On : 3/31/2026". Then Review -> Monthly Data: April 2026 onwards
+should no longer show on this account. If the months are still there straight
+after saving, note it - Envizi can take a refresh to drop them - and move on.
 
 Report, per account: the account number, the location, what Replaced On read
 before, what it reads now, and that Opened On is still blank.
 
-======================== THE TWO PAIRS ========================
+Do the first one, stop and show me. Once I confirm, do the second.
+
+======================== THE TWO ========================
 
  1. Gympie (Location Ref 142)
-    CLOSE:  5000021_3120129028      (accruing Jul 19,118 / Aug 19,955 kWh)
-    LIVE:   1003085_3120129028      (leave it - read its earliest month in step A)
+    CLOSE:  5000021_3120129028      Replaced On -> 3/31/2026
+    LIVE:   1003085_3120129028      leave it (actuals from Apr 2026)
 
  2. Asphalt Prod - Archerfield (406) (Location Ref 406)
-    CLOSE:  5000021_QB05383854      (accruing Jul 83,805 / Aug 78,191 kWh)
-    LIVE:   1003081_QB05383854      (leave it - read its earliest month in step A)
+    CLOSE:  5000021_QB05383854      Replaced On -> 3/31/2026
+    LIVE:   1003081_QB05383854      leave it (actuals from Apr 2026)
 
 RULES
 - Replaced On only. Never delete, move, or edit anything else on any account.
@@ -106,10 +104,9 @@ RULES
 - If a screen doesn't match what I've described, stop and describe what you see.
 ```
 
-Expected: the live account's earliest month is Apr, Jun or Jul 2026, and the Replaced On I give back is
-the last day of the month before it. After the run both `5000021_` accounts read that date on their
-Summary page and the next accounts extract carries it. Only then run prompt 2 — Gympie and Archerfield
-are in that batch and their source is the `1003xxx` account.
+Expected: both `5000021_` accounts read Replaced On 3/31/2026 on their Summary page and the next
+accounts extract carries 31 Mar 2026. Only then run prompt 2 — Gympie and Archerfield are in that batch
+and their source is the `1003xxx` account.
 
 ---
 
