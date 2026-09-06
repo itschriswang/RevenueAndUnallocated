@@ -1,8 +1,10 @@
 # Claude dispatch prompts - Fuel Cards (FTC), Sep-26 cycle
 
 What I paste into Claude (browser dispatch) with Envizi (`au001.envizi.com`) open in the active tab, to
-work Section `2 - Fuel Cards FTC` of `Unallocated_Accounts_FY27_Sep26.xlsx`. Two prompts, run in order:
-a **read-only survey** first, then the **action pass** built on what the survey brings back. Keep Envizi
+work Section `2 - Fuel Cards FTC` of `Unallocated_Accounts_FY27_Sep26.xlsx`. Three prompts. Prompts 1 and 2 are the two-pass form: a **read-only survey** first, then the **action
+pass** built on what the survey brings back. Prompt 3 is the **combined pass** - the same reading, rules
+and actions folded into one loop per account, reporting as it goes, run in batches of 40. Prompt 3 is
+what I run now; 1 and 2 are kept for a re-survey or a cycle where I want to see the readings first. Keep Envizi
 in front while it works - it only sees the active tab.
 
 ## Position as of the 05 Sep 26 accounts extract
@@ -319,6 +321,186 @@ Replaced On, the CLOSE rows there with the date and the `_closed` suffix, and on
 `Unallocated Accounts`. Section 2 of the tracker then gets Status / Date Actioned / Notes filled from the
 report, and the closed rows carry "closed - renamed _closed" in Notes so the next refresh knows not to
 treat a fresh `<job>_<fuel>` at Unallocated as the same account.
+
+---
+
+## 3 · Combined pass - read, decide, act, report, one account at a time
+
+Written after the survey run died part-way through a long session without returning any of its
+readings. This form folds the survey and the action pass into one loop per account and makes dispatch
+output the result line for each account before it starts the next, so whatever gets done is on record
+even if the session dies. It applies my three closing rules itself; anything that fails them, or that
+looks odd, is moved-and-left-open or held, never closed. Same mechanics and the same nevers as prompts
+1 and 2.
+
+Run in batches of 40. This is batch 1 (rows 1-40 of the main list). For batches 2 and 3 swap the
+account block for rows 41-80 and 81-89; the two special rows (16017960_Diesel, 170944_Petrol) stay out
+of every batch. Paste each batch's result lines into the tracker's Status / Date Actioned / Notes
+columns before starting the next batch.
+
+```
+You're helping me allocate and tidy fuel card accounts in IBM Envizi
+(au001.envizi.com). I'm logged in on the Envizi tab. Work through the 40
+accounts listed at the bottom ONE AT A TIME, in order. For each account you
+READ, DECIDE, ACT, then REPORT - and you report that account's result line
+BEFORE starting the next one. Never hold results back to batch them. If you
+have to stop for any reason, output the lines you have first.
+
+Each account is a fuel card (FTC) account sitting at the location
+"Unallocated Accounts". Its job number is the digits before the underscore,
+and that job number is the Location Ref of the location it belongs to.
+
+=========================== PART 1 · READ ===========================
+
+A. The FTC account. Top-right search, dropdown "Accounts". Paste the full
+   account number, open it. Confirm the header shows exactly my number and
+   "Relates to" reads Unallocated Accounts (if it reads anything else, the
+   account has already been moved - record HELD and go to the next). Then
+   Review -> Monthly Data in the account nav (the Summary chart tooltips
+   don't render). Note: first month with a value, last month with a value,
+   number of months, total litres, and whether ANY month from Mar 2026
+   onwards has a value. No records at all = "no records".
+
+B. The target location. Top-right search, dropdown "Locations". Search the
+   name I give you and open the one whose Location Ref on the Summary page
+   is the job number - several locations share a name, the ref decides. If
+   none or more than one matches, record HELD and go to the next. Quick
+   links -> Accounts -> "Show All Accounts". Note:
+   - the supplier account (VIVA / WEX / AMPOL) whose Account Style matches
+     my account's fuel: Petrol -> "Petrol (Gasoline) Transport post 2004",
+     E10 Petrol -> "Petrol Gasoline (E10) Transport post 2004", Diesel ->
+     "Diesel Transport post 2004", Oil & Lubes -> "Petroleum based oils
+     (lubricants)". Open it, Review -> Monthly Data: first month with a
+     value, and whether it has values from Mar 2026 on. None = "no feed".
+   - whether a "<job>_Diesel" FTC row is present with a Replaced On date,
+     and the date.
+   - NAME CLASH: whether any account here, open or closed, already carries
+     EXACTLY my account number or my number with "_closed" on the end.
+
+========================== PART 2 · DECIDE ==========================
+
+HELD (no action) if ANY of: location not found or ambiguous; a name clash;
+the FTC account has a Mar-26+ value AND the supplier feed also has Mar-26+
+values (that is a live double count and I decide it, not you); or anything
+on screen that doesn't match what I've described.
+
+MOVE + CLOSE only if ALL THREE hold:
+  1. the FTC account's last month with a value is Feb 2026 or earlier, or
+     it has no records at all
+  2. a same-fuel supplier account exists at the location AND has values
+     from Mar 2026 on
+  3. the "<job>_Diesel" sibling is present with a Replaced On date, OR the
+     FTC account has no records at all
+
+MOVE (leave open) for everything else. A quiet fuel card is not a dead one.
+
+=========================== PART 3 · ACT ============================
+
+MOVE: go to the Unallocated Accounts location (the "Relates to" link),
+Quick links -> Accounts -> "Show All Accounts". Tick the checkbox on MY
+account's row only. Blue "Actions" -> "Move Account". That menu also holds
+"Delete Account(s)", "Close Account(s)" and "Virtual Account Setup" - never
+click those. In the move dialog pick the target location by name AND
+confirm its Location Ref is the job number before selecting. Save. If
+Envizi says the number already exists at the location, do NOT rename
+anything - record HELD with the colliding number.
+
+CLOSE (MOVE + CLOSE rows only, after the move): open the account, blue
+"Actions" (top right) -> "Edit Account" (not Capture Data). Set "Replaced
+On" to the last day of the FTC account's last month with a value, or
+28 Feb 2026 if it has no records. Change nothing else. Save. If a Replaced
+On is already there, stop and show me. Then Actions -> "Edit Account" again
+and in "Account Number" append "_closed" to the existing value
+("16012399_Petrol" becomes "16012399_Petrol_closed"). Nothing else changes.
+Save.
+
+CHECK: back on the account Summary confirm "Relates to" reads the target
+location, Replaced On reads the date (CLOSE rows) or is blank (MOVE rows),
+and the number is as expected. Opened On stays blank.
+
+========================== PART 4 · REPORT ==========================
+
+One line per account, in this exact shape, output as soon as the account
+is done:
+
+#<n> | <account> | FTC <first>-<last>, <months> mo, <litres> L, Mar26+ <Y/N>
+  | feed <supplier acct number or "no feed">, from <first month>, Mar26+ <Y/N>
+  | Diesel sib <number + Replaced On, or none> | clash <none / number>
+  | <MOVED / MOVED+CLOSED as <new number>, Replaced On <date> / HELD: <why>>
+  | now at <location name> (<ref>)
+
+After every 10 accounts, repeat all lines so far as one block.
+
+Do account 1 completely, then stop and show me. Once I've confirmed it, run
+2 to 40 without stopping.
+
+RULES
+- Never delete anything. Never use Close Account(s), Move on a multi-select,
+  or Virtual Account Setup.
+- Never edit, move or close a VIVA, WEX, AMPOL or Ampol account, a
+  "<job>_Diesel" sibling, or any account I have not named.
+- Replaced On and Account Number are the only fields that ever change, and
+  only on MOVE + CLOSE rows.
+- Match account numbers character for character. "16017764_Petrol" and
+  "16017764_E10 Petrol" are different accounts.
+- If a screen doesn't match what I've described, record HELD, say what you
+  see, and move on to the next account rather than guessing.
+
+================== THE ACCOUNTS · batch 1 of 3, rows 1-40 ==================
+Format: account -> location name (Location Ref). Notes under a row are what
+my extract says - verify them on screen, don't assume them.
+
+  1. 13000907_Oil & Lubes     -> Skilltech Management  (Location Ref 13000907)
+  2. 14000945_Petrol          -> SA Schools Roma Mitchell Overhead  (Location Ref 14000945)
+                             - Diesel sibling 14000945_Diesel closed 19 Aug 26 - verify
+  3. 14001923_E10 Petrol      -> EMOS Transition  (Location Ref 14001923)
+                             - Diesel sibling 14001923_Diesel closed 19 Aug 26 - verify
+  4. 16011405_Petrol          -> Townsville North Land  (Location Ref 16011405)
+  5. 16011491_Petrol          -> Shoalhaven  Range & Training  (Location Ref 16011491)
+  6. 16011520_Petrol          -> Kapooka Military Land  (Location Ref 16011520)
+  7. 16012000_Petrol          -> Melbourne City Council East ServDel  (Location Ref 16012000)
+  8. 16012018_Petrol          -> City of Yarra Streets Serv Del  (Location Ref 16012018)
+  9. 16012225_Petrol          -> Southbank Grounds Serv Del  (Location Ref 16012225)
+ 10. 16012376_Petrol          -> NSW Sch#1 Ironbark Rdg PS Maint  (Location Ref 16012376)
+ 11. 16012378_Petrol          -> NSW Sch#1 Woongarrah PS Maintenance  (Location Ref 16012378)
+ 12. 16012382_Petrol          -> NSW Sch#1 JohnEdm HS Maintenance  (Location Ref 16012382)
+ 13. 16012385_Petrol          -> NSW Sch#2 Warnervale PS Maintenance  (Location Ref 16012385)
+ 14. 16012387_E10 Petrol      -> NSW Sch#2 RopesCross PS Maintenance  (Location Ref 16012387)
+ 15. 16012391_Petrol          -> NSW Sch#2 Tullimbar PS Maintenance  (Location Ref 16012391)
+ 16. 16012393_Petrol          -> NSW Sch#2 Elderslie PS Maintenance  (Location Ref 16012393)
+ 17. 16012397_Petrol          -> NSW Sch#2 Rouse Hill HS Maintenance  (Location Ref 16012397)
+ 18. 16012399_Petrol          -> NSW Sch#2 Kelso HS Maintenance  (Location Ref 16012399)
+                             - Diesel sibling 16012399_Diesel closed 19 Aug 26 - verify
+ 19. 16012401_Petrol          -> NSW Sch#2 Ashtonfield PS Maint  (Location Ref 16012401)
+                             - Diesel sibling 16012401_Diesel closed 19 Aug 26 - verify
+ 20. 16012403_Petrol          -> NSW Sch#2 Halinda SSP Maintenance  (Location Ref 16012403)
+ 21. 16012405_Petrol          -> NSW Sch#2 Kariong Mtns HS Maint  (Location Ref 16012405)
+ 22. 16013532_Petrol          -> VIC Sch Mernda Central P-6 Grounds  (Location Ref 16013532)
+ 23. 16013781_Petrol          -> ANU - Maintenance SD  (Location Ref 16013781)
+ 24. 16016051_Petrol          -> HCMT Train Pakenham East Depot  (Location Ref 16016051)
+ 25. 16017764_E10 Petrol      -> PAS Brisbane EU- Prevent  (Location Ref 16017764)
+ 26. 16017764_Petrol          -> PAS Brisbane EU- Prevent  (Location Ref 16017764)
+ 27. 16017768_Petrol          -> PAS Brisbane Overhead  (Location Ref 16017768)
+ 28. 16017770_Petrol          -> PAS Canungra EU- Prevent  (Location Ref 16017770)
+ 29. 16017771_Petrol          -> PAS Canungra Land  (Location Ref 16017771)
+                             - Diesel sibling 16017771_Diesel closed 19 Aug 26 - verify; NO Petrol supplier feed here (AMPOL only) - rule 2 fails, MOVE only
+ 30. 16017785_E10 Petrol      -> PAS Amberley EU- Prevent  (Location Ref 16017785)
+ 31. 16017785_Petrol          -> PAS Amberley EU- Prevent  (Location Ref 16017785)
+ 32. 16017791_E10 Petrol      -> PAS Darling Downs EU- Prevent  (Location Ref 16017791)
+ 33. 16017791_Petrol          -> PAS Darling Downs EU- Prevent  (Location Ref 16017791)
+ 34. 16017806_E10 Petrol      -> PAS BSC - Cairns EU- Prevent  (Location Ref 16017806)
+ 35. 16017806_Petrol          -> PAS BSC - Cairns EU- Prevent  (Location Ref 16017806)
+ 36. 16017810_E10 Petrol      -> PAS BSC - Cairns Overhead  (Location Ref 16017810)
+ 37. 16017812_Petrol          -> PAS BSC - Towns N EU- Prevent  (Location Ref 16017812)
+ 38. 16017816_E10 Petrol      -> PAS BSC - Towns N Overhead  (Location Ref 16017816)
+ 39. 16017816_Petrol          -> PAS BSC - Towns N Overhead  (Location Ref 16017816)
+ 40. 16017827_E10 Petrol      -> PAS BSC - TWS Sth EU- Prevent  (Location Ref 16017827)
+=============================================================================
+```
+
+Expected per batch: most rows MOVED, the rows whose Diesel sibling is already closed and whose FTC
+records stop at Feb 2026 MOVED+CLOSED, and HELD only for clashes, unmatched locations, or a live
+double count (FTC and supplier both carrying Mar-26+ values) - those come to me.
 
 ---
 

@@ -10,7 +10,7 @@ work them back onto real locations.
 | `Unallocated_Accounts_FY27_Sep26.xlsx` | **The working file.** Current cycle, refreshed on the 03 Sep 2026 accounts extract in `../FY27/`. |
 | `Unallocated_Accounts_FY27_Aug26.xlsx` | The Aug-26 cycle, built on the 25 Aug 2026 extracts. Superseded — its 32 electricity accounts are all allocated. |
 | `Unallocated_Accounts_FY26_May26.xlsx` | The May 2026 cycle. This is the template the later files follow. |
-| `Claude_dispatch_prompts_-_Fuel_Cards_FTC.md` | The two Claude dispatch prompts for working Section 2 in Envizi - a read-only survey of each FTC account's records against the supplier feed at its job, then the move / move-and-close pass. Carries the closing rules and the `_closed` rename convention. |
+| `Claude_dispatch_prompts_-_Fuel_Cards_FTC.md` | The two Claude dispatch prompts for working Section 2 in Envizi - a read-only survey of each FTC account's records against the supplier feed at its job, then the move / move-and-close pass, plus a combined one-account-at-a-time form (prompt 3, batches of 40) that reports as it goes. Carries the closing rules and the `_closed` rename convention. |
 | `Unallocated Accounts - Proposed Location Links.csv` / `.xlsx` | The flat review that fed the Aug-26 tracker — 136 accounts with match basis and confidence each. Superseded as a working document; kept as the evidence trail behind the tracker's Notes columns. |
 
 ## Tracker layout
