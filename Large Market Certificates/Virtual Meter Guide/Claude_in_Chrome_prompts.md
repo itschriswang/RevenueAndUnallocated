@@ -374,6 +374,14 @@ June row. If you stopped early, still produce the report with what you have.
 - Never type credentials. If you get logged out, stop and tell me.
 ```
 
+**Run 06 Sep 26 — done.** All 9 created, Opened On 7/1/2026, Account Ref = NMI, one relationship each to
+the named source, Effective From 7/1/2026, no June row, July and August equal to the source to the kWh.
+No decoy picked, nothing else touched. Quirks the session found, now folded into the later prompts: the
+Account Number filter renders as a checkbox list (no search, ignores typing and wheel-scroll, drag its
+scrollbar) or a search textbox depending on the location and view; in the Source data picker the first
+click on the plus only highlights the row and a second click adds it; the Measure dropdown can take two or
+three clicks to stay open.
+
 The "Expect" figures are the July and August accruals on the CS Energy accounts as at the 06 Sep 26
 export. They move when a bill lands, so a small difference on the day is the source having moved, not
 the link being wrong — the test is that the new account equals the source, whatever the source reads.
@@ -391,40 +399,123 @@ Every certificate account outside Victoria is still on a 24-25 factor (NSW/ACT �
 in NSW, ACT and QLD and under-offsets in SA and TAS. Victoria already has `LGCs Victoria 25-26` (−0.78).
 
 ```
-You're helping me add custom emission factors in IBM Envizi (au001.envizi.com).
+TASK: add seven custom emission factors in IBM Envizi. You are starting with no
+context, so read all of this before touching anything.
 
-We already have LGC certificate factors for 23-24 and 24-25, and one for 25-26
-(Victoria only). I need the rest of the 25-26 set. Each is the NEGATIVE of that
-state's Scope 2 factor from National Greenhouse Accounts Factors 2025.
+=== SETUP · get to Envizi ===
+1. Open a NEW Chrome tab and go to https://au001.envizi.com
+2. If it shows a login page, STOP and tell me - I will log in, then say
+   "continue". Do not type credentials yourself.
+3. You're in when you see a horizontal top bar reading Manage / Monitor /
+   Optimize / Report / Admin, with a search box top-right. Keep this tab in
+   front the whole time - you only see the active tab.
 
-Admin -> Custom Factors. Wait out the loading spinner. In the Name filter search
-"lgc" and open LGCs NSW 24-25 (Region "Australia - New South Wales", -0.66) as
-the template - note every field and screenshot it. Do NOT use LGCs Victoria
-25-26 as the template: its Region reads plain "Australia", which is wrong.
+=== BACKGROUND · what these factors are ===
+Envizi turns kWh into tonnes of CO2e using emission factors. Our renewable
+certificate accounts (data type "Certificates - Location - kWh") use a custom
+factor per state that is the NEGATIVE of that state's grid factor, so 1 kWh of
+certificates cancels 1 kWh of grid electricity. The grid factors were updated
+for 2025-26 (from National Greenhouse Accounts Factors 2025) and Envizi already
+applies them to electricity, but the matching negative certificate factors for
+2025-26 exist only for Victoria. Until the rest exist, NSW/ACT/QLD/SA/TAS
+certificates are still offsetting at the 2024-25 rate and the numbers don't net
+to zero. You are adding the missing 2025-26 rows, copied from an existing row
+with only the name, region and value changed.
 
-Existing rows read: Data Type Certificates - Location - kWh, Factor Set Custom -
-Downer, Sub Type Default.
+The values are NEGATIVE. Every one. That is the whole point.
 
-Create New for each, identical to the template except:
+=== STEP 1 · Open Custom Factors ===
+Top bar: Admin -> Custom Factors (it may sit under a sub-menu; look for the
+words "Custom Factors" or "Emission Factors"). A grid loads with a spinner -
+wait it out. Screenshot the grid header so I can see the column names.
 
-  Name              Region                                     Total CO2e
-  LGCs NSW 25-26    Australia - New South Wales                 -0.64
-  LGCs ACT 25-26    Australia - Australian Capital Territory    -0.64
-  LGCs QLD 25-26    Australia - Queensland                      -0.67
-  LGCs SA 25-26     Australia - South Australia                 -0.22
-  LGCs TAS 25-26    Australia - Tasmania                        -0.20
-  LGCs NT 25-26     Australia - Northern Territory              -0.56
-  LGCs WA 25-26     Australia - Western Australia               -0.50
+=== STEP 2 · Read the template row ===
+In the grid's Name filter type  lgc  and find the row "LGCs NSW 24-25". Open it
+(click the row or its edit/view icon). Screenshot the whole form and write down
+EVERY field and its value - Name, Region, Data Type, Factor Set, Sub Type, the
+value fields, any effective/start/end date fields, any unit fields, anything
+else. You will copy all of it except Name, Region and the value.
 
-Match each name's abbreviation to that state's own existing rows. Every value is
-NEGATIVE - if a field won't take a minus, stop. Check for an existing 25-26 row
-for the region first; skip and tell me if one exists. Never edit or delete an
-existing factor. Do NSW first, stop and show me, then the rest.
+I expect it to read roughly: Region "Australia - New South Wales", Data Type
+"Certificates - Location - kWh", Factor Set "Custom - Downer", Sub Type
+"Default", Total CO2e -0.66. If it reads differently, STOP and show me.
+
+Do NOT use "LGCs Victoria 25-26" as the template. Its Region reads plain
+"Australia", which is wrong, and I don't want that copied.
+
+Also note, from the grid, whether any "LGCs <state> 25-26" row already exists
+for a state below. If one does, skip that state and say so in the report.
+
+=== STEP 3 · Create the seven rows ===
+Close the template without saving. Click "Create New" (or the plus / Add
+button). Fill every field exactly as the template had it, EXCEPT:
+
+  Name               Region                                      Total CO2e
+  LGCs NSW 25-26     Australia - New South Wales                 -0.64
+  LGCs ACT 25-26     Australia - Australian Capital Territory    -0.64
+  LGCs QLD 25-26     Australia - Queensland                      -0.67
+  LGCs SA 25-26      Australia - South Australia                 -0.22
+  LGCs TAS 25-26     Australia - Tasmania                        -0.20
+  LGCs NT 25-26      Australia - Northern Territory              -0.56
+  LGCs WA 25-26      Australia - Western Australia               -0.50
+
+If the template has effective/start/end DATE fields, screenshot them and STOP
+after reading the template - tell me what they say and I will give you the
+25-26 dates. Do not guess them. Set any date with the calendar picker only;
+typing a date mis-parses.
+
+If the form has separate CO2 / CH4 / N2O fields as well as a total, put the
+value in the same field(s) the template used and leave the others as the
+template had them.
+
+If a value field will not accept a minus sign, STOP and show me.
+
+Region is a dropdown - pick the exact "Australia - <state>" entry. Match the
+state abbreviation in the Name to how that state's existing rows are named
+(e.g. if the existing Tasmania rows say "LGCs Tasmania 24-25", name it
+"LGCs Tasmania 25-26"; if they say "LGCs TAS", use TAS). Screenshot each
+completed form before you Save.
+
+=== PACING ===
+Do NSW first, then STOP and show me the saved row in the grid. Wait for me to
+say "continue" before doing the other six.
+
+=== WHEN DONE · the report I paste back into my other session ===
+End with a plain-text block headed "PROMPT 3 REPORT" laid out exactly like this,
+one line per field, no commentary outside it:
+
+  PROMPT 3 REPORT - 25-26 LGC factors - <today's date>
+  Template LGCs NSW 24-25 fields: <every field name = value, comma separated>
+  Date fields on the form: <none / names and what the template had>
+  Created:
+    NSW  <created / skipped-existed / not done - reason>  value <-0.64>  region <...>
+    ACT  <...>
+    QLD  <...>
+    SA   <...>
+    TAS  <...>
+    NT   <...>
+    WA   <...>
+  Any field I could not copy from the template: <none / describe>
+  Any value that would not take a minus: <none / which>
+  Existing rows I edited or deleted: <none>   (must be none)
+  Screens that did not match the prompt: <none / describe>
+  Ready for prompt 4 (fix two Account Refs): <YES / NO - reason>
+
+=== RULES ===
+- Never edit or delete an existing factor. Create only.
+- Never save a factor with a positive value.
+- If a 25-26 row already exists for a state, skip it - do not make a second.
+- If any screen doesn't match what I've described, STOP and describe what you
+  see with a screenshot.
+- Never type credentials. If you get logged out, stop and tell me.
 ```
 
 Expected afterwards: the next certificates export shows `LGCs NSW 25-26` (−0.64) on the NSW accounts
-and Bathurst nets to zero in July instead of −1.08 t. If the accounts stay on 24-25 after the factors
-exist, the factor set's date range or region mapping needs a look — that is a separate, read-only step.
+and Bathurst nets to zero in July instead of −1.08 t. The prompt stops after reading the template if the
+form carries effective-date fields, because the 25-26 rows need the right period (1 Jul 2025 onwards) to
+be picked up and I would rather set that knowingly than have the session guess. If the accounts stay on
+24-25 after the factors exist, the factor set's date range or region mapping needs a look — a separate,
+read-only step.
 
 ---
 
