@@ -1,8 +1,10 @@
 # Claude in Chrome prompts — what is left
 
-What I paste into Claude in Chrome with Envizi (`au001.envizi.com`) open in the active tab. Each form has
-been run against the real screens; the quirks noted inside them are real. Keep Envizi in front while it
-works — it only sees the active tab.
+What I paste into a Claude dispatch session that drives Chrome. Each session starts with no context, so
+every prompt opens with how to get to Envizi (`au001.envizi.com`) and what it is looking at, and ends with a
+report block I paste back into my working session to decide the next step. The quirks noted inside them are
+real — each form has been run against the real screens. Keep Envizi in front while it works; it only sees the
+active tab.
 
 Position as of the 06 Sep 26 exports: **all 60 permanent accounts are built** and every one mirrors its
 source exactly in July and August with no June row. The 12 old Origin accounts read Replaced On 30 Jun
@@ -33,56 +35,88 @@ bill as the live account, so the double count runs from April, not just July; cl
 all of it.
 
 ```
-You're helping me close off two accounts in IBM Envizi (au001.envizi.com). I'm
-logged in on the Envizi tab. Two accounts, ONE AT A TIME, in order.
+TASK: close two accounts in IBM Envizi by setting their "Replaced On" date.
+You are starting with no context, so read all of this before touching anything.
 
-WHAT "CLOSE" MEANS HERE
-Set the account's Replaced On date to 31 March 2026. Nothing else. Do NOT
-delete, move or merge any account, and do NOT touch Opened On - it sits
-directly under Replaced On on the same form and must stay as it is.
+=== SETUP · get to Envizi ===
+1. Open a NEW Chrome tab and go to https://au001.envizi.com
+2. If it shows a login page, STOP and tell me - I will log in, then say
+   "continue". Do not type credentials yourself.
+3. Once you see the Envizi home page (a dark left-hand nav bar with items like
+   Home, Manage, Review, Admin, and a search box top-right), you're in. Keep
+   this tab in front the whole time - you only see the active tab.
 
-WHY
-On each NMI a second CS Energy account created by the Utilities Connector is
-still recording every month with no Opened On, while the live 1003xxx account
-has billed the actuals since April 2026. Closing the connector account at
-31 March 2026 stops the site being counted twice from April on.
+=== BACKGROUND · what you're looking at ===
+Envizi is an emissions-reporting system. It holds LOCATIONS (sites), and each
+location holds ACCOUNTS (an electricity account is one meter/bill stream). An
+account number ends in the NMI, the meter's national ID, after the last
+underscore. Two accounts can share an NMI - that's the problem here.
 
-THIS BATCH HAS DECOYS
-The LIVE account sits at the same location under the same NMI - it is the
-1003xxx one. Never open Edit Account on it. The account to close is always the
-5000021_ one I name - match the full account number character for character.
+At two sites a stale account created by an automated "Utilities Connector" is
+still recording every month alongside the real billed account on the same NMI,
+so the site's electricity is counted twice. The fix is to CLOSE the stale one at
+31 March 2026: the real account has billed every month from April 2026, and the
+stale one carried the genuine bills up to March, so closing it at 31 March
+leaves exactly one account per month with nothing lost.
+
+"Close" in Envizi = set the account's "Replaced On" date. Nothing is deleted.
+
+=== THE TWO ACCOUNTS ===
+Do them ONE AT A TIME, in this order. Each has a decoy - the real account,
+which sits at the same location on the same NMI. NEVER edit the decoy.
+
+ 1. CLOSE:  5000021_3120129028
+    Location: Gympie  (Location Ref 142)
+    DECOY - do not touch:  1003085_3120129028
+
+ 2. CLOSE:  5000021_QB05383854
+    Location: Asphalt Prod - Archerfield (406)  (Location Ref 406)
+    DECOY - do not touch:  1003081_QB05383854
+
+Match the account number character for character. The one to close always
+starts 5000021_. The decoy always starts 1003.
 
 === STEP 1 · Find the account to close ===
-Top-right search, dropdown "Accounts". Paste the full 5000021_ account number,
-open it. You land on the Account Summary page. Confirm three things: the
-account number in the header and left panel is exactly mine, "Relates to" is
-the location I give you, and the left panel reads "Replaced On : -". If any of
-those disagree, stop and show me.
+Top-right of Envizi is a search box with a dropdown next to it. Set the
+dropdown to "Accounts". Paste the full 5000021_ account number and press Enter
+or click the result. You land on the Account Summary page: account number in
+the page header, a left-hand panel of details, blue "Actions" button top right.
 
-=== STEP 2 · Open the form ===
-Click the blue "Actions" button (top right, next to Page Settings). The menu
-has Capture Data, Edit Account and Account Settings. Choose "Edit Account".
-Do NOT choose Capture Data.
+Before going further, confirm THREE things and screenshot them:
+  a. The account number in the header and left panel is EXACTLY the one I gave.
+  b. The left panel's "Relates to" is the location I gave.
+  c. The left panel reads "Replaced On : -"  (a dash = not closed).
+If any of the three disagree, STOP and show me. Do not continue.
+
+=== STEP 2 · Open the edit form ===
+Click the blue "Actions" button (top right, next to "Page Settings"). A small
+menu opens with three items: Capture Data, Edit Account, Account Settings.
+Click "Edit Account". Do NOT click Capture Data - that adds data.
+An "Edit Account" form opens with fields like Account Style, Account Number,
+Account Ref, Supplier, Reader, Opened On, Replaced On, Sub Type.
 
 === STEP 3 · Set Replaced On ===
-On the form find "Replaced On:" - a date field with a calendar icon. Click the
-calendar icon. It opens on the current month, so page back to March 2026 and
-click 31. The field should then read 3/31/2026. If typing works better, type
-it and tab out, then read it back to check the month and day didn't swap -
-3/31/2026, not 31/3/2026 or 3/1/2026.
+Find "Replaced On:" - a date field with a small calendar icon. It sits right
+above "Opened On:". Click the calendar icon. The calendar opens on the current
+month; use its back arrow to page to March 2026, then click 31.
+The field must now read  3/31/2026  (US order, month/day/year).
+If clicking is fiddly, type 3/31/2026 into the field and press Tab, then read
+it back - it must say 3/31/2026, not 31/3/2026 and not 3/1/2026.
 
-Leave "Opened On:" exactly as it was - it is blank on both of these and stays
-blank. Change nothing else on the form.
-
-Save.
+Leave "Opened On:" exactly as it is - it is blank on both accounts and stays
+blank. Change NOTHING else on the form. Screenshot the form, then click Save.
 
 === STEP 4 · Check it ===
-Back on the Account Summary page, the left panel should now read
-"Replaced On : 3/31/2026". Then Review -> Monthly Data: April 2026 onwards
-should no longer show on this account. If the months are still there straight
-after saving, note it - Envizi can take a refresh to drop them - and move on.
+You're back on the Account Summary page. The left panel should now read
+"Replaced On : 3/31/2026". Screenshot it.
+Then in the left nav for this account go Review -> Monthly Data. April 2026
+onwards should no longer be listed for this account (Sep 2025 to Mar 2026 stay).
+If April onwards is still showing straight after saving, note it - Envizi
+sometimes needs a refresh to drop them - and move on.
 
-Do the first one, stop and show me. Once I confirm, do the second.
+=== PACING ===
+Do account 1 fully (steps 1-4), then STOP and show me the screenshots. Wait for
+me to say "continue" before starting account 2.
 
 === WHEN BOTH ARE DONE · the report I paste back into my other session ===
 End with a plain-text block headed "PROMPT 1 REPORT" laid out exactly like this,
@@ -104,21 +138,15 @@ one line per field, no commentary outside it:
 nothing else changed. If you stopped early for any reason, still produce the
 report with what you have.
 
-======================== THE TWO ========================
-
- 1. Gympie (Location Ref 142)
-    CLOSE:  5000021_3120129028      Replaced On -> 3/31/2026
-    LIVE:   1003085_3120129028      leave it (actuals from Apr 2026)
-
- 2. Asphalt Prod - Archerfield (406) (Location Ref 406)
-    CLOSE:  5000021_QB05383854      Replaced On -> 3/31/2026
-    LIVE:   1003081_QB05383854      leave it (actuals from Apr 2026)
-
-RULES
-- Replaced On only. Never delete, move, or edit anything else on any account.
-- Never open Edit Account on the live 1003xxx account.
-- If the 5000021_ account already has a Replaced On, stop and show me.
-- If a screen doesn't match what I've described, stop and describe what you see.
+=== RULES ===
+- Replaced On only. Never delete, move, close-via-menu, or edit anything else
+  on any account. Never use "Delete Account(s)" or "Close Account(s)" from any
+  Actions menu - we close by setting the date on the Edit Account form.
+- Never open Edit Account on the 1003xxx decoy.
+- If the 5000021_ account already shows a Replaced On date, STOP and show me.
+- If any screen doesn't match what I've described, STOP and describe what you
+  see with a screenshot. Never guess at a form you're unsure about.
+- Never type credentials. If you get logged out, stop and tell me.
 ```
 
 Expected: both `5000021_` accounts read Replaced On 3/31/2026 on their Summary page and the next
