@@ -12,10 +12,10 @@ source exactly in July and August with no June row. The 12 old Origin accounts r
 
 | # | Prompt | What it does |
 | --- | --- | --- |
-| 1 | Close the two connector accounts | Gympie and Archerfield still double count — 5000021_ accounts recording beside the live 1003xxx ones. Both close at 31 Mar 2026 |
-| 2 | Build the 9 temporary accounts | Section 3 — the Queensland sites still on CS Energy with no Engie account. Run **after** prompt 1 |
-| 3 | The 25-26 LGC factors | Everything outside Victoria is still offsetting on 24-25 |
-| 4 | Fix two Account Refs | Bathurst and Mogo 4204072845 carry the account number where the NMI should be |
+| 1 | Close the two connector accounts | **Done 06 Sep.** Both read Replaced On 31 Mar 2026 |
+| 2 | Build the 9 temporary accounts | **Done 06 Sep.** All 9 mirror their CS Energy source from July |
+| 3 | The 25-26 LGC factors | **Still to run.** Everything outside Victoria is offsetting on 24-25; the renewal sites net −327 t over Jul–Aug instead of about −111 t |
+| 4 | Fix two Account Refs | **Done 06 Sep.** Both now read the NMI |
 | 5 | Read-only check | Confirm a temporary after it is built |
 
 Prompt 2 assumes prompt 1 has run, so the 5000021_ accounts at Gympie and Archerfield are closed but
@@ -239,9 +239,11 @@ WARNING: that same Actions menu also holds "Delete Account(s)", "Close
 Account(s)" and "Move Account". Never click those. Screenshot the menu before
 you click. If unsure, STOP and show me.
 
-The grid sometimes shows a second row pre-ticked - a display artifact. Confirm
-the breadcrumb on the "Virtual Account Relationships" page names my new _CERTS
-account and the grid reads 0 Row. If it names anything else, STOP.
+The grid can open with another row ALREADY TICKED, carried over from the last
+grid you were on. That is a real selection. Untick every other row before you
+tick your target, then confirm the breadcrumb on the "Virtual Account
+Relationships" page names my new _CERTS account and the grid reads 0 Row. If
+it names anything else, STOP.
 
 === STEP 5 · Create the relationship ===
 On "Virtual Account Relationships" click the blue "Create New...". A "Virtual
@@ -523,6 +525,14 @@ read-only step.
 
 Two of the 60 carry the account number in Account Ref where the other 58 carry the NMI. Cosmetic, but
 the field is what the register matches on, so they get corrected.
+
+**Run 06 Sep 26 — done.** Both Account Refs now read the NMI, Opened On 7/1/2026, one relationship each,
+Effective From 7/1/2026, Bathurst 53,778 / 41,470 and Mogo 29,519 / 28,511 unchanged. Two things the
+session found: the account-level Actions menu had only Edit Account and Account Settings, no Capture
+Data; and on the Mogo accounts grid a checkbox was **pre-ticked on the other Mogo certificate account,
+carried over from the Bathurst grid**. That is a real selection, not the display artifact the earlier
+prompts describe — always untick everything before ticking the target, or Virtual Account Setup opens on
+the wrong account.
 
 ```
 TASK: correct ONE field ("Account Ref") on two accounts in IBM Envizi. You are
