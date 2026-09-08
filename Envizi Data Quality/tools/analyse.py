@@ -339,7 +339,16 @@ save(g10.sort_values("qty", ascending=False), "10_waste_factor_coverage.csv")
 
 # ----------------------------------------------------------------------------- 11. certificates not flowing
 print("11 certificates not flowing")
+# A location's reporting boundary comes from its Classification membership (locations also carry a
+# Portfolio membership, so filtering on Group_Type matters). Certificates at Y_Non Operational Control
+# locations have nothing to offset - the inventory never carries those emissions.
+locs = pd.read_csv(os.path.join(ROOT, "FY27", "Extract_for_Locations 26 Aug 26.csv"), encoding="utf-8-sig", dtype=str)
+cls = locs[locs["Group_Type"] == "Classification"].drop_duplicates("Location_Name").set_index("Location_Name")["Group Level 1"]
+r["location_boundary"] = r["Location"].map(cls).fillna("Not in locations extract")
 nf = r[(r["Rule Name"] == "100% Renewable Energy Certificates") & (r["target_kwh_JulAug"] == 0)]
-save(nf[cols1], "11_certificate_accounts_with_no_FY27_data.csv")
+save(nf[cols1 + ["location_boundary"]], "11_certificate_accounts_with_no_FY27_data.csv")
+save(r[r["Rule Name"] == "100% Renewable Energy Certificates"].groupby(
+    ["location_boundary", "nz_copy"]).size().reset_index(name="certificate_accounts"),
+    "11b_certificates_by_reporting_boundary.csv")
 
 print("done")

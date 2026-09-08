@@ -26,7 +26,7 @@ Ranked by what it does to the reported number.
 | --- | --- | --- | --- | --- |
 | 1 | **Waste carries no emission factor.** Only two of 29 waste styles have one; 7,105 t of waste and 230,000 t of recycling report 0 tCO2e. | 571 waste + 317 recycled accounts | Scope 3 waste understated; indicatively ~3,200 tCO2e on general landfill alone if the 1.3 t/t C&I factor applied | Map factors to the waste styles, starting with `Waste (general solid) to landfill [t]` |
 | 2 | **NZ certificates are undated and have stopped.** 22 `Copy of …_CERTS` accounts credit all history and produce nothing from July. | 22 | –395.8 t credited Mar – Jun (≈ –99 t/month, back to whenever the sources start); ~203 t of FY27 credit missing for Jul – Aug | Set Effective From 2026-07-01, rename, and find out why no Jul/Aug rows exist |
-| 3 | **19 AU certificate accounts have nothing to mirror.** Their source accounts hold zero rows for all six months — 18 PPP sites on Origin/CS Energy plus Tamworth. | 19 | FY27 renewable claim for PPP Schools 2, SICEEP, HQJOC, Southbank TAFE and SCUH is currently zero, and so is their electricity | Chase the feeds; these are dead supplier accounts, not certificate faults |
+| 3 | **18 certificate accounts sit outside the reporting boundary.** All 18 are SICS PPP locations classified `Y_Non Operational Control`, so nothing they could offset is in the Scope 1 & 2 inventory. A 19th, Tamworth, is a genuine dead feed. | 19 | None on the reported number — these locations report nothing either way. 33.7 GWh/yr of contracted supply, ~20,000 tCO2e, sits outside the boundary by design | Decide whether certificate accounts belong at non-operational-control locations at all. Chase the feed for Tamworth only |
 | 4 | **Bitumen – Taranaki gas is double-covered.** 62 days recorded in 31-day months for 11 straight months. | 1 (+62 smaller) | ≈ 237 t overstated over five export months; 63 accounts in total, ≈ 299 t | Delete the overlapping gas records; fix the recurring NZ depot electricity overlaps |
 | 5 | **Mackay's live account is marked replaced.** `A-11525536_3053135053` has Replaced On 1 Apr 26 and is the only Ergon account still recording. | 8 | 128 t of Apr – Aug electricity sits on a "closed" account; 50 t at Archerfield and Gympie is a genuine May double count | Clear Mackay's Replaced On; delete the May records on the two `5000021_` accounts |
 | 6 | **Closed CS Energy accounts still carry overlapping data.** Setting Replaced On did not remove the Apr – Jun records at five QLD sites. | 5 NMIs, 10 accounts | 83.7 t double counted in FY26 (Apr – Jun) | Delete the overlap months on the closed accounts |
@@ -89,21 +89,38 @@ factors were rebuilt on 8 Sep with 26-27 rows; the NZ REC factor needs the same 
 then decide whether the pre-July credit stands (Ecotricity is renewable, so it may be right) or is removed.
 Detail: `csv/03_nz_certificates_undated.csv`.
 
-## 3. Nineteen AU certificate accounts with nothing to mirror
+## 3. Eighteen certificate accounts outside the reporting boundary, plus one dead feed
+
+**Correction.** An earlier draft of this section called all 19 dead supplier feeds and said to chase Origin
+and CS Energy. That is wrong for 18 of them, and the right action is different.
 
 **What it is.** Of the 71 AU relationships on the `100% Renewable Energy Certificates` rule, 50 are
-producing July and August credits (5,032,008 kWh, –3,298.5 t). The other 19 have no rows at all because
-their **source accounts have no rows at all** for Mar – Aug 26: the twelve PPP NSW Schools 2 sites, the four
-SICEEP accounts and HQJOC (all Origin), Southbank TAFE and Sunshine Coast University Hospital (CS Energy),
-plus Tamworth, whose Origin source last recorded in March.
+producing July and August credits (5,032,008 kWh, –3,298.5 t). The other 19 have no rows because their
+source accounts have none. Eighteen are SICS PPP sites — twelve NSW Schools 2, four SICEEP, HQJOC,
+Southbank TAFE and Sunshine Coast University Hospital. The nineteenth is Tamworth (T&I).
 
-**Why it matters.** These are the large-market PPP sites, and it is not a certificate problem: the
-electricity itself is missing from the inventory for six months. Whatever the cause (feed not switched to
-the new Origin contract, connector not mapped), the FY27 renewable claim for those sites is zero and so is
-their Scope 2.
+**The 18 are a boundary matter, not a data one.** Every one of those locations is classified
+**`Y_Non Operational Control`** at Group Level 1 in the locations extract. No `PPP - …` location appears
+anywhere in the Mar – Aug operational-control export, for any category. Their emissions are outside
+Downer's Scope 1 & 2 inventory by design, so there is nothing for a certificate to offset and these
+accounts will read zero for as long as the boundary holds. The supplier feeds are not broken.
 
-**Action.** Treat as dead supplier feeds and chase Origin / CS Energy through the connector. The
-certificate accounts are correctly built and will start mirroring the moment data lands. Detail:
+Of the 70 certificate rows in the programme, 51 are at Operational Control locations, 18 at
+`Y_Non Operational Control`, and one (Torbanlea) is at a location the extract carries under a different
+name — `QTMP MFG Facility Torbanlea`, Operational Control.
+
+**The question that follows.** Should certificate accounts exist at non-operational-control locations at
+all? Downer buys the power for them — the register lists all 18, 33,667,139 kWh a year contracted, about
+20,000 tCO₂e at the NSW 26-27 grid factor — but none of it is reported. Building them costs nothing today
+and credits nothing. The risk is later: if the boundary changes, or a report runs across all Group Level 1
+values, they begin crediting emissions the inventory never carried.
+
+**Assumption.** That the Scope 1 & 2 inventory is drawn on operational control, which is what the export I
+was given contains — every one of its 107,304 rows is Group Level 1 `Operational Control`.
+
+**Action.** Put the boundary question to whoever owns the inventory scope before building the remaining
+three (Mulgrave, Southbank TAFE, Sunshine Coast). Chase the feed for **Tamworth only** — its Origin source
+last recorded in March and its register NMI reads zero, which is a real fault. Detail:
 `csv/11_certificate_accounts_with_no_FY27_data.csv` (the 22 NZ rows from §2 are in the same file).
 
 Also worth knowing: the export still shows every AU certificate on a **24-25 factor** in July and August
