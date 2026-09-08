@@ -23,7 +23,8 @@ EXPORT = os.path.join(ROOT, "Electricity Data as of 060926.xlsx")
 OUT = os.path.join(HERE, "..", "RTS_Market_Based_Check_Jul26.xlsx")
 
 MONTHS = ["Mar 26", "Apr 26", "May 26", "Jun 26", "Jul 26", "Aug 26"]
-# The dashboard's Scope 1 & 2 (market-based) monthly figures, read off the YTD chart.
+# The dashboard's Scope 1 & 2 monthly figures, read off the YTD chart. Confirmed LOCATION-based:
+# Scope 1 + Scope 2 with no certificate credit reproduces these to two decimal places Mar-Jun.
 CHART = {"Mar 26": 635.78, "Apr 26": 557.14, "May 26": 626.46, "Jun 26": 558.22, "Jul 26": 786.33}  # dashboard refreshed 8 Sep 26
 
 FONT = "Arial"
@@ -171,9 +172,9 @@ lines = [
     ("Electricity - location-based Scope 2", 'SUMIFS(Accounts!$N:$N,Accounts!$H:$H,{m})', "Scope 2 reported, all RTS electricity accounts"),
     ("Certificates and renewable deductions (Other)", 'SUMIFS(Accounts!$O:$O,Accounts!$H:$H,{m})', "Other reported - the _CERTS virtual accounts and the Victorian 100% renewable deductions"),
     ("Electricity - market-based (Scope 2 + Other)", "{s2}+{oth}", "What the certificates leave to report"),
-    ("Dashboard Scope 1 & 2 (market-based)", None, "Read off the chart; blank where the chart has no bar yet"),
-    ("Dashboard less market-based electricity", "{chart}-{mkt}", "The non-electricity balance the dashboard implies (Scope 1 and anything else). Steady at ~110 t Mar-May and 86 t in Jun; 620 t in Jul"),
-    ("Dashboard less location-based electricity", "{chart}-{s2}", "Same test with no certificate credit at all"),
+    ("Dashboard Scope 1 & 2 (location-based)", None, "Read off the chart; blank where the chart has no bar yet"),
+    ("Dashboard less market-based electricity", "{chart}-{mkt}", "NOT a residual - the dashboard excludes the certificate credit, so this line double counts it. Kept only to show why it misleads"),
+    ("Dashboard less location-based electricity", "{chart}-{s2}", "Should equal RTS Scope 1 (Jul 47.3 vs 48.3, agrees). Negative Mar-Jun because this workbook reads the 6 Sep electricity export, which still held Torbanlea's two old CS Energy accounts - 352.8 t the 7 Sep export no longer has. See Issues"),
 ]
 rowmap = {}
 for i, (lab, fml, basis) in enumerate(lines):
@@ -242,15 +243,13 @@ ws.cell(row=fr, column=1, value="What I found").font = F(bold=True, size=11)
 findings = [
     "1. The three RTS virtual certificate accounts (Auburn x2, Maryborough QGGG000010) are calculating as set up: each mirrors its "
     "source kWh exactly in July and August, opened 1 Jul 26, no June row, and CO2e = kWh x factor. See Accounts, Check column.",
-    "2. Market-based electricity for RTS FELL in July, from 471.9 t (Jun) to 166.3 t, because those three accounts started crediting on "
-    "1 July. The July spike on the dashboard is not coming from the market-based electricity as it stands in the 6 Sep export.",
-    "3. The 8 Sep refresh brought July down from 928 t to 786 t (the CS Energy accounts at Maryborough and Torbanlea closing at 30 Jun "
-    "removed their July accruals), but July is still ~230 t above June when the electricity says it should be ~300 t below. The gap "
-    "(~510 t over the Mar-Jun non-electricity run-rate) is close to the two new certificate accounts not being credited at all: Auburn "
-    "204.8 t + Maryborough 196.8 t = 401.6 t, plus Torbanlea's high first Engie bill (+56 t). HCMT's deduction IS credited every month "
-    "and the only structural difference is its factor - LGCs Victoria 25-26 - against the new accounts' 24-25 vintage. If the dashboard's "
-    "market-based measure only picks up current-year factors, moving the accounts to 25-26 LGC factors fixes both this and item 4. Scope 1 "
-    "is not in this repo, so a genuine July gas or fuel movement cannot be ruled out.",
+    "2. THE DASHBOARD IS LOCATION-BASED, not market-based. Scope 1 + Scope 2 with no certificate credit reproduces the chart to two "
+    "decimal places (Mar 635.78, Apr 557.14, May 626.46, Jun 558.22) and to within a tonne in July. So the July rise is genuine "
+    "location-based activity, not a certificate or refresh fault. Market-based electricity FELL in July, 471.9 t to 166.3 t.",
+    "3. July location-based rose 104 t on June (634.6 to 739.0) on billed actuals - every RTS electricity row in July is 100% actual. "
+    "Torbanlea +56.3 (first Engie bill), Auburn +19.4, Cardiff +11.9, HCMT +8.4, Maryborough +8.1. Expected RTS market-based July is "
+    "214.6 t as the data stands (Scope 1 48.3 + Scope 2 739.0 - certificates 572.7), or about 160 t once Torbanlea is credited, "
+    "Maryborough follows the net figure and the certificate factors match the grid vintage.",
     "4. All three certificate accounts are on 24-25 LGC factors (NSW -0.66, QLD -0.71) against electricity on 25-26 (0.64, 0.67), so "
     "each site nets slightly below zero: Auburn -6.2 t, Maryborough -11 t before the foundry issue. Needs the 25-26 LGC factors (already open).",
     "5. Maryborough is over-credited by ~95 t a month. The certificate account copies the gross NMI figure (277,212 kWh) but the location "
@@ -258,8 +257,10 @@ findings = [
     "meter follows the net figure or the deduction stops - a Category Management call, and material to the RTS number.",
     "6. Maryborough QGGG000320 has nothing recording since 30 Jun 26 (no Engie account yet). The interval meter reads 12,413 kWh in July and "
     "10,262 in August, about 8 t and 7 t of uncounted location-based emissions.",
-    "7. Torbanlea - QTMP is a named exclusion, so no certificate account is correct. Its Engie account's first bill is 248,502 kWh for July, "
-    "51% above June's 164,454 and well above August's 170,055 - worth confirming the bill period with Engie before relying on July.",
+    "7. Torbanlea - QTMP was wrongly excluded and is now in scope: its Site Register row is green and on the Engie FY26-28 renewal, and "
+    "nothing else offsets it. 900018201_3053253239_CERTS was built on 08 Sep 26. It was the largest uncredited item in RTS - 166.5 t in "
+    "July, ~1,600 t/yr. Its first Engie bill is 248,502 kWh for July, 51% above June's 164,454 and above August's 170,055 - confirm the "
+    "bill period with Engie before relying on July.",
     "8. Two meter oddities at Auburn that do not affect the account-based emissions: the NEMMCO meter on 4103713125 reads exactly twice the "
     "account every month (as Wingfield does), and sub-meter DWR_MSB-5-LATHE reads 601,436 kWh in July against 3 kWh in June - about 385 t "
     "at the NSW factor, which is almost exactly the dashboard's June-to-July increase. If the dashboard reads meters as well as accounts, "
@@ -295,10 +296,11 @@ sites = [
     ("Maryborough", "QGGG000320", "Hold - no open account on the NMI", "Engie", "", "",
      "", "", "79 - Electricity - 25-26 - Queensland",
      "CS Energy account 1003082 closed 30 Jun 26, no Engie account yet. Meter reads 12,413 kWh in July and 10,262 in August - uncounted."),
-    ("Torbanlea - QTMP", "3053253239", "Exclude - named site (QTMP)", "Engie", "900018201_3053253239", "Electricity Small Market",
-     "", "", "79 - Electricity - 25-26 - Queensland",
-     "No certificate account is correct for a named exclusion. July's Engie bill is 248,502 kWh against 164,454 in June and 170,055 in "
-     "August - confirm the bill period. Old CS Energy account 1003571 closed 30 Jun 26 in the 5 Sep extract."),
+    ("Torbanlea - QTMP", "3053253239", "Create - virtual certificate account", "Engie", "900018201_3053253239", "Electricity Small Market",
+     "900018201_3053253239_CERTS", "LGCs QLD 26-27", "79 - Electricity - 25-26 - Queensland",
+     "Was a named exclusion until 08 Sep 26 - wrongly, its register row is green and on the Engie renewal, and nothing else offsets it. "
+     "Certificate account built 08 Sep 26; it will not show in this workbook until an export taken after that. July's Engie bill is "
+     "248,502 kWh against 164,454 in June and 170,055 in August - confirm the bill period. Old CS Energy account 1003571 closed 30 Jun 26."),
     ("Cardiff - Rail", "ZZZZ001261", "Not in the renewal register", "CleanPeak", "700000536_ZZZZ001261", "Electricity Small Market",
      "", "", "77 - Electricity - 25-26 - New South Wales",
      "Small market on CleanPeak, tenant deduction of -104,582 kWh in July. Location-based only; nothing to check for certificates."),
@@ -358,18 +360,22 @@ wi = wb.create_sheet("Issues")
 icols = ["#", "Location", "Issue", "Effect on July (tCO2e)", "Action", "Owner", "Status", "Notes"]
 header(wi, 1, icols, [4, 24, 60, 14, 50, 18, 12, 30])
 issues = [
-    ("Dashboard", "July 928 t does not reconcile to the market-based electricity in the 6 Sep export (166 t). Best fit is a refresh taken while the CS Energy accounts at Maryborough and Torbanlea were still accruing July alongside the Engie actuals, before the certificate accounts were linked.",
-     282, "Refresh the dashboard from current data. If July stays high, pull RTS scope 1 (gas, fuel) for July - it is not in this repo.", "", "Open"),
+    ("Dashboard", "The Scope 1 & 2 chart is LOCATION-based - Scope 1 + Scope 2 with no certificate credit reproduces it to two decimal places. It is not a market-based measure and the July rise is genuine billed activity, not a data fault.",
+     0, "Label the measure, or add a market-based series alongside it. Expected market-based July is 214.6 t as the data stands, about 160 t once Torbanlea, Maryborough and the factor vintages are corrected.", "", "Open"),
     ("Maryborough", "Certificate account 900018200_QGGG000010_CERTS copies the gross NMI figure while the CQMS foundry deduction nets ~141,000 kWh off the location, so Maryborough reports about -103 t.",
      -95, "Category Management to confirm whether certificates are bought for the gross NMI or Downer's net share. If net, repoint the virtual meter or add a matching deduction on the certificate side.", "", "Open"),
     ("Auburn / Maryborough", "Certificate accounts sit on LGCs NSW 24-25 (-0.66) and LGCs QLD 24-25 (-0.71) against electricity on 25-26 (0.64, 0.67).",
      -17, "Add or map the 25-26 LGC factors for NSW and QLD (prompt 3 in the guide) and move the three accounts onto them.", "", "Open"),
     ("Maryborough", "QGGG000320: CS Energy account closed 30 Jun 26, no Engie account yet, so nothing is recording July or August. Meter shows 12,413 and 10,262 kWh.",
      -8, "Chase the Engie account for QGGG000320 through the connector, then allocate it to Maryborough.", "", "Open"),
+    ("Torbanlea - QTMP", "Was excluded as a named site despite a green register row on the Engie FY26-28 renewal, so 166.5 t in July carried no renewable claim. Certificate account built 08 Sep 26.",
+     -166, "Confirm with Category Management that the Engie LGC line covers NMI 3053253239, then check the next export shows the certificate mirroring its source.", "", "In progress"),
     ("Torbanlea - QTMP", "Engie's first bill on 900018201_3053253239 is 248,502 kWh for July, 51% above June and 46% above August.",
      56, "Confirm the July bill period with Engie or Category Management; if it covers late June, split it.", "", "Open"),
     ("Auburn", "Sub-meter DWR_MSB-5-LATHE reads 601,436 kWh in July (3 kWh in June), about 385 t at the NSW factor. Meters carry no CO2e in the account export, but this matches the dashboard's June-to-July increase almost exactly.",
      0, "Check whether the RTS dashboard sums meters as well as accounts. Either way the sub-meter reading is a fault and should be raised with the Watt Watcher / metering provider.", "", "Open"),
+    ("Torbanlea - QTMP", "526,592 kWh / 352.8 tCO2e of Mar-Jun FY26 electricity on the two old CS Energy accounts (1003571_3053253239, 5000021_3053253239) is in the 6 Sep export and gone from the 7 Sep one. Other closed accounts still carry their history, so this is not an export rule.",
+     -353, "Establish whether those records were deleted deliberately. If not, FY26 RTS electricity is understated by 352.8 t and needs restoring.", "", "Open"),
     ("Auburn", "NEMMCO meter 4103713125 reads twice the Origin account every month (567,561 vs 283,780 kWh in July) - the Wingfield pattern.",
      0, "Note only; no effect on account-based emissions. Raise with metering if the meter is ever used for reporting.", "", "Open"),
 ]
