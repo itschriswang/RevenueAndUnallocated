@@ -95,7 +95,9 @@ Prompt 0b in the prompts file reads the state; prompt 1 has the Mogo card.
 still reads 30 Oct 2026); no Engie account has appeared on any of the 9 Queensland NMIs; and the
 certificate accounts are still on the 24-25 factors (NSW/ACT −0.66, QLD −0.71, TAS −0.15) against
 electricity on 25-26 (0.64, 0.67, 0.20), so Bathurst still nets −1.08 t in July. Only Victoria has a 25-26
-certificate factor (−0.78, matching its scope 2). The 25-26 set for the other states is a later session.
+certificate factor (−0.78, matching its scope 2). **Since fixed (08 Sep 26):** every state now has 24-25,
+25-26 and 26-27 rows with Effective From / Effective To dates, so July 2026 on should land on 26-27 — to be
+confirmed in the next export.
 
 ## How the new accounts are structured
 
@@ -259,7 +261,11 @@ contract has not started, and for a site whose consumption sits on a per-locatio
 
 ## Still open
 
-- The 25-26 LGC emission factors for NSW/ACT/QLD/SA/TAS/NT/WA — a later session; prompt 3 is ready.
+- The LGC emission factors are in as of 08 Sep 26: 24-25 closed (Effective To 30 Jun 2025), the 25-26 set
+  finished and closed 30 Jun 2026, the 26-27 set live from 1 Jul 2026 (NSW/ACT −0.60, Vic −0.74, QLD −0.65,
+  SA −0.21, WA −0.45, Tas −0.23, NT −0.55). Left: delete the stray `( Copy of LGCs NSW 23-24 )` and set the
+  Victoria 25-26 region to `Australia - Victoria` — prompt 3. Then check the next export shows 26-27 on the
+  July rows and that the historical `LGCS_` accounts' FY25 / FY26 totals still look right.
 - Mogo: read the two certificate accounts (prompt 0b), link the empty 4204072845 one, remake 4001127731.
 - Section 2: the last 17 permanent accounts.
 - Section 1: close the 14 old accounts (Traralgon's Replaced On back from 30 Oct to 30 Jun 26), and
