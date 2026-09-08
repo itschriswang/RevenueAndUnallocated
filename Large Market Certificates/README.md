@@ -8,7 +8,7 @@ FY26–28 renewal agreements, and everything behind them.
 | File | What it is |
 | --- | --- |
 | `Virtual Meter Guide/Large_Market_Virtual_Meters.html` | **Start here.** Four sections in the order I work them: **1** accounts to close, **2** virtual accounts to make, **3** sites on hold because the contracted retailer has no account yet, **4** everything with no action. Ticks and notes save in the browser. Open it by double-clicking. |
-| `Account_Setup_and_Data_Load_-_PM&C_LMCERTSJUL26_Setup.xlsx` | The review workbook: all 81 register rows with live formulas, the 69 accounts on `Prep` and the load tab (kept as the record of what each account looks like — **not uploaded**, see below), plus the `Manual Setup Checklist` and `LGCS Accounts to Check` tabs. The `Account_Setup_and_Data_Load_-_PM&C_` prefix is what Envizi processes on if a load is ever needed. |
+| `Account_Setup_and_Data_Load_-_PM&C_LMCERTSJUL26_Setup.xlsx` | The review workbook: all 81 register rows with live formulas, the 70 accounts on `Prep` and the load tab (kept as the record of what each account looks like — **not uploaded**, see below), plus the `Manual Setup Checklist` and `LGCS Accounts to Check` tabs. The `Account_Setup_and_Data_Load_-_PM&C_` prefix is what Envizi processes on if a load is ever needed. |
 | `Downer_Energy_Contracting_and_Budget_Summary_FY26-28.xlsx` | The renewal agreement site register (scope, retailers, contract dates) and the rate schedules with the LGC lines. |
 | `Downer_Energy_Contracting_and_Budget_Summary_FY26-28_with_Envizi_accounts.xlsx` | The same workbook with the Envizi account mapping added to `Site Register` as columns V–AE, and an `Envizi mapping notes` tab explaining them. Everything left of column V is untouched. |
 | `ElectricityEnviziSummaryjunejulyaug26.xlsx` | The Jun–Aug 26 Envizi summary — kWh, actual/accrued split, cost, CO2e and the green component. |
@@ -24,7 +24,7 @@ live — the one the guide page now reads its month figures from).
 
 The **green rows** in the Site Register are the renewable ones — 78 of the 81 `AU Large Electricity`
 rows, the other three being the NT sites on Jacana standing offer. A green row gets a virtual meter
-unless it is a named exclusion or already offset another way. 69 accounts get built in all: 60 permanent
+unless it is a named exclusion or already offset another way. 70 accounts get built in all: 61 permanent
 and 9 temporary (section 3). As of the 05 Sep 26 extract, 43 are built.
 
 **The meter class does not decide scope.** Category Management, 4 Sep 26, on a Mogo NMI I queried:
@@ -34,19 +34,19 @@ and 9 temporary (section 3). As of the 05 Sep 26 extract, 43 are built.
 > but from an electricity supply agreement perspective, it's being treated as a large site.
 
 So `Electricity Small Market` in Envizi is the **meter** classification and does not take a site out of
-the renewal; the supply agreement does, and the register's green rows record it. 25 of the 60 accounts
+the renewal; the supply agreement does, and the register's green rows record it. 26 of the 61 accounts
 sit on a small-market-styled source for this reason.
 
 | Outcome | Rows |
 | --- | --- |
-| **Create — virtual certificate account** | **60** — 43 built, 17 to go |
+| **Create — virtual certificate account** | **61** — 44 built, 17 to go |
 | Create — temporary, the contracted retailer has no account on the NMI yet | 9 |
 | Hold — no open electricity account on the NMI at all (Maryborough QGGG000320) | 1 |
 | Exclude — already renewable via the account's green component (Alinta WA) | 7 |
-| Exclude — named site (NT ×3, QTMP) | 4 |
+| Exclude — named site (NT ×3) | 3 |
 | Total register rows reviewed | 81 |
 
-By state the 60 are: NSW 36, VIC 10, QLD 7, SA 4, TAS 2, ACT 1. The full list, with the source account
+By state the 61 are: NSW 36, VIC 10, QLD 8, SA 4, TAS 2, ACT 1. The full list, with the source account
 and the field values for each, is on the guide page and on the workbook's `Manual Setup Checklist` tab.
 
 ## How the sites were matched
@@ -137,6 +137,42 @@ hold LGC data from **2025 and earlier**, so none is empty, none can be converted
 none covers the renewal period. They stay as the historical record and the new account sits beside them.
 The `LGCS Accounts to Check` tab lists them with `Has data?` pre-set to Yes; set one to No and the Action
 column switches to reuse.
+
+## Torbanlea — back in scope (08 Sep 26)
+
+`3053253239` (Torbanlea, the QTMP train manufacturing facility) was a hardcoded named exclusion in
+`build_lmcerts.py`, grouped with the three NT sites. It should not have been:
+
+- Its Site Register row is **green** — the same shading as every site that got a certificate account —
+  `AU Large Electricity`, entity DOWNER EDI SERVICES PTY LTD, contracted to **Engie 1 Jul 2026 – 30 Jun
+  2028**, budget status Ready, annual consumption 6,208,798 kWh. The three NT rows are excluded because
+  they are *not* green (Jacana standing offer); Pakenham is not in the register's large market rows and is
+  already offset. Torbanlea is neither.
+- The recorded reason — that the account sits at `Torbanlea - QTMP`, "absent from the 26 Aug 26 locations
+  extract" — was a name-matching artefact. The site is in that extract twice: `QTMP MFG Facility Torbanlea`
+  (Ref_No `L9.J.70700018`, which is exactly where the account sits) and `Downer QTMP Pty ltd`
+  (`L9.J.71500001`). Both are Operational Control > RTS at 100% report percent, so the site's emissions are
+  fully consolidated while the renewable claim was not.
+- Nothing else offsets it: no historical `LGCS_` account at the location, and the Engie account's own green
+  component reads 0 kWh in July and August.
+
+Left uncorrected it was the largest single uncredited item in the RTS set — 248,502 kWh / 166.5 tCO₂e in
+July and 170,055 kWh / 113.9 t in August, roughly 1,600 t a year at the current run rate.
+
+`900018201_3053253239_CERTS` was built in Envizi on 08 Sep 26 against `900018201_3053253239` (EngieAU),
+Opened On 2026-07-01, 100%. The scripts now treat it as a normal Create, which is why the counts above read
+61 permanent rather than 60. It shows as *to create* on the guide page until an accounts extract that
+contains it goes through — the page reads "built" from the 05 Sep extract, which predates it.
+
+**The lookup bug it exposed.** Both the Python side and the workbook formulas resolved a location's
+reference by **name** against the locations extract. Envizi renames locations between exports, so a
+renamed site read as "Not in locations extract" and fell through to `Hold`. All three now fall back to the
+account's own **Location Account Ref**, matched against the locations extract's `Ref_No`. Worth knowing
+because it would have hit any renamed site, not just this one.
+
+**Still to confirm with Category Management:** that the Engie FY26–28 LGC line covers NMI 3053253239, and
+the read dates on the July invoice — 248,502 kWh against 164,454 in June and 170,055 in August looks like
+it spans more than one month.
 
 ## Section 1 — 14 accounts to close off
 
@@ -273,6 +309,16 @@ reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS
 - **RTS market-based electricity fell in July**, 471.9 t (Jun) to 166.3 t, because those accounts started
   crediting. The dashboard minus market-based electricity is a steady ~110 t Mar–May and 86 t in June, then
   620 t in July — the spike is not in the electricity as it stands now.
+- **The dashboard is location-based**, not market-based. Scope 1 + Scope 2 with no certificate credit
+  reproduces the chart to two decimal places (Mar 635.78, Apr 557.14, May 626.46, Jun 558.22) and to within
+  a tonne in July. So the July rise is genuine billed activity — every RTS electricity row in July is 100%
+  actual — and not a refresh or certificate fault. Expected RTS **market-based** July is **214.6 t** as the
+  data stands (Scope 1 48.3 + Scope 2 739.0 − certificates 572.7), or about **160 t** once Torbanlea is
+  credited, Maryborough follows the net figure and the certificate factors match the grid vintage.
+- **352.8 t of Torbanlea's FY26 electricity disappeared between two exports.** The two old CS Energy
+  accounts (`1003571_3053253239`, `5000021_3053253239`) carry 526,592 kWh / 352.8 tCO₂e across Mar–Jun in
+  the 6 Sep export and no rows at all in the 7 Sep one. Other closed accounts keep their history in that
+  export, so it is not an export rule — worth establishing whether the records were deleted deliberately.
 - **The 8 Sep refresh took 142 t off July** — the CS Energy accounts at Maryborough (`1003077`, `1003082`)
   and Torbanlea (`1003571`) closing at 30 Jun 26 removed their July accruals. What is left, ~510 t over the
   run-rate, is close to the two new certificate accounts not being credited at all (Auburn 204.8 t +
@@ -285,7 +331,7 @@ reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS
   Gross or net is the Category Management question already listed below.
 - The three accounts are on **24-25 LGC factors** (NSW −0.66, QLD −0.71) against 25-26 electricity
   (0.64, 0.67), so Auburn nets −6.2 t. Maryborough `QGGG000320` has nothing recording since 30 Jun (meter:
-  12,413 kWh in July). Torbanlea (a named exclusion, correctly with no certificate account) has a first
+  12,413 kWh in July). Torbanlea (see below — now in scope and built) has a first
   Engie bill of 248,502 kWh for July, 51% above June — confirm the bill period.
 - Two Auburn **meter** oddities with no effect on account-based CO2e: the NEMMCO meter on `4103713125`
   reads twice the account every month (the Wingfield pattern), and sub-meter `DWR_MSB-5-LATHE` reads
@@ -300,6 +346,8 @@ reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS
   Victoria 25-26 region to `Australia - Victoria` — prompt 3. Then check the next export shows 26-27 on the
   July rows and that the historical `LGCS_` accounts' FY25 / FY26 totals still look right.
 - Mogo: read the two certificate accounts (prompt 0b), link the empty 4204072845 one, remake 4001127731.
+- Torbanlea: confirm the Engie LGC line covers `3053253239`, and check the next export shows the new
+  certificate account mirroring its source.
 - Section 2: the last 17 permanent accounts.
 - Section 1: close the 14 old accounts (Traralgon's Replaced On back from 30 Oct to 30 Jun 26), and
   confirm the date for the two CS Energy ones.

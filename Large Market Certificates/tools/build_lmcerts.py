@@ -1,5 +1,6 @@
 """Large market renewable-certificate virtual accounts - Envizi Account Setup and Data Load (PM&C) build."""
-import csv, datetime, os
+import csv
+import os, datetime
 from collections import OrderedDict
 
 import openpyxl
@@ -40,10 +41,14 @@ REC_REF       = "Renewable certificates - virtual account setup"
 SUPPLIER_MAP  = OrderedDict([("Engie", "EngieAU"), ("Origin", "Origin"), ("Shell", "ShellEnergyAU"),
                              ("Alinta", "Alinta"), ("CS Energy", "CSEnergy"), ("Aurora", "Aurora"),
                              ("Jacana Energy", "Jacana"), ("Jacana Energy (Standing)", "Jacana")])
-NAMED_EXCL    = OrderedDict([("3053253239", "QTMP (Torbanlea)"), ("2500033707", "Northern Territory"),
+# Only the three NT rows. They are excluded because they are not green in the Site Register -
+# Jacana standing offer, outside the renewal. Torbanlea (3053253239) was in this list until
+# 08 Sep 26; its register row IS green and on the Engie renewal, so it is in scope and its
+# certificate account was built.
+NAMED_EXCL    = OrderedDict([("2500033707", "Northern Territory"),
                              ("2500044629", "Northern Territory"), ("2500054287", "Northern Territory")])
 D_CREATE, D_LGC, D_GREEN, D_NAMED, D_HOLD = ("Create", "Exclude - offset exists (LGC account)",
-    "Exclude - offset on account green component", "Exclude - named site (NT / QTMP / Pakenham)", "Hold")
+    "Exclude - offset on account green component", "Exclude - named site (NT)", "Hold")
 LM_STYLES = ("Electricity Large Market", "Energetics - Large Market")
 D_TEMP = "Create - temporary, retailer's account not in Envizi yet"
 MAKE = (D_CREATE, D_TEMP)          # both get an account built; D_TEMP gets remade later
@@ -142,9 +147,11 @@ keep["_kind"]  = (keep["Data Type"] == CERT_TYPE).astype(int)
 with open(SRC_LOC, newline="", encoding="utf-8-sig") as fh:
     loc_rows = list(csv.reader(fh))
 LOC_HEADERS, loc_body = loc_rows[0], loc_rows[1:]
-loc_ref = {}
+loc_ref = {}                 # Location_Name -> Location Ref
+loc_ref_by_refno = {}        # Ref_No        -> Location Ref
 for rec in loc_body:
     loc_ref.setdefault(rec[1], rec[4])
+    loc_ref_by_refno.setdefault(rec[3], rec[4])
 
 summ = pd.read_excel(SRC_SUMM).fillna("")
 summ["_nmi"] = summ["Item Number"].astype(str).map(nmi_of)
@@ -175,7 +182,15 @@ for i, x in enumerate(register):
     m = elec_act[elec_act._nmi == nmi]
     a = m.iloc[0] if len(m) else None
     location = a["Location"] if a is not None else "Not found"
-    lref = loc_ref.get(location, "Not in locations extract") if a is not None else ""
+    # A location can be named differently in the accounts and locations extracts (Envizi renames
+    # between exports), so match on name first and fall back to the account's own Location Account
+    # Ref, which is the locations extract's Ref_No. Only accept a ref the extract actually carries.
+    lref = ""
+    if a is not None:
+        lref = loc_ref.get(location, "")
+        if not lref:
+            lref = loc_ref_by_refno.get(str(a.get("Location Account Ref", "") or "").strip(), "")
+        lref = lref or "Not in locations extract"
     c_loc = certs_act[certs_act["Location"] == location] if a is not None else certs_act.iloc[0:0]
     c_nmi = c_loc[c_loc._nmi == nmi]
     s = summ_keep[summ_keep["Item Number"].astype(str) == (a["Account Number"] if a is not None else "~")]
@@ -213,11 +228,7 @@ for i, x in enumerate(register):
         decision = D_CREATE
     # reason text
     if decision == D_NAMED:
-        reason = f"Named exclusion - {named}."
-        if named.startswith("QTMP"):
-            reason += " The account sits at 'Torbanlea - QTMP', which is also absent from the 26 Aug 26 locations extract."
-        else:
-            reason += " Jacana Energy site; not green in the Site Register either."
+        reason = f"Named exclusion - {named}. Jacana Energy site; not green in the Site Register either."
     elif decision == D_LGC:
         names = ", ".join(c_loc["Account Number"])
         if len(c_nmi):
@@ -348,6 +359,8 @@ hdr(R, HR, REV_HEAD, height=58)
 ACC_M, ACC_L, ACC_D, ACC_G, ACC_I = [f"{q(S_ACC)}!${c}$2:${c}${ACC_N}" for c in ("AL", "AL", "D", "G", "I")]
 ACCJ = f"{q(S_ACC)}!$J$2:$J${ACC_N}"; ACCAJ = f"{q(S_ACC)}!$AJ$2:$AJ${ACC_N}"; ACCAM = f"{q(S_ACC)}!$AM$2:$AM${ACC_N}"; ACCAO = f"{q(S_ACC)}!$AO$2:$AO${ACC_N}"; ACCAP = f"{q(S_ACC)}!$AP$2:$AP${ACC_N}"
 LOCB, LOCE = f"{q(S_LOC)}!$B$2:$B${LOC_N}", f"{q(S_LOC)}!$E$2:$E${LOC_N}"
+LOCD = f"{q(S_LOC)}!$D$2:$D${LOC_N}"          # Ref_No, for the rename fallback below
+ACC_E = f"{q(S_ACC)}!$E$2:$E${ACC_N}"         # the account's own Location Account Ref
 SUMH, SUML, SUMW, SUMR = [f"{q(S_SUM)}!${c}$2:${c}${SUM_N}" for c in ("H", "L", "W", "R")]
 rv = lambda col: f"{REV}!${col}${FR}:${col}${LR}"
 SUP_FR = FR + len(review) + 3
@@ -367,7 +380,10 @@ for j, x in enumerate(review):
     m = f"MATCH($C{r},{ACC_M},0)"
     f = {11: f'=IFERROR(INDEX({ACCJ},{m}),"Not found")',
          12: f'=IFERROR(INDEX({ACC_D},{m}),"Not found")',
-         13: f'=IF(L{r}="Not found","",IFERROR(INDEX({LOCE},MATCH(L{r},{LOCB},0)),"Not in locations extract"))',
+         # Match the location by name; if it has been renamed between the two extracts, fall back to
+         # the account's Location Account Ref, which is the locations extract's Ref_No.
+         13: (f'=IF(L{r}="Not found","",IFERROR(INDEX({LOCE},MATCH(L{r},{LOCB},0)),'
+              f'IFERROR(INDEX({LOCE},MATCH(INDEX({ACC_E},{m}),{LOCD},0)),"Not in locations extract")))'),
          14: f'=IFERROR(INDEX({ACC_G},{m}),"")',
          15: f'=IFERROR(INDEX({ACC_I},{m}),"")',
          16: f'=IF(L{r}="Not found",0,COUNTIF({ACCAM},L{r}))',
@@ -449,7 +465,10 @@ for j, x in enumerate(creates):
     k = f"MATCH($V{r},{rv('C')},0)"
     pf = {1: f"={REV}!{IN_ORG}", 2: f"={REV}!{IN_ORGNAME}",
           3: f'=IFERROR(INDEX({rv("L")},{k}),"")',
-          4: f'=IFERROR(INDEX({LOCE},MATCH(C{r},{LOCB},0)),"")',
+          # Same rename fallback as the Review tab: name first, then the Location Account Ref the
+          # accounts extract carries for that location, matched against the locations Ref_No.
+          4: (f'=IFERROR(INDEX({LOCE},MATCH(C{r},{LOCB},0)),'
+              f'IFERROR(INDEX({LOCE},MATCH(INDEX({ACC_E},MATCH(C{r},{ACC_D},0)),{LOCD},0)),""))'),
           5: style_link_formula, 6: f"={REV}!{IN_CAPTION}",
           8: f'=IFERROR(INDEX({rv("X")},{k}),"")', 9: f"=$V{r}",
           10: f'=IFERROR(INDEX({rv("Y")},{k}),"")',
@@ -758,9 +777,10 @@ notes = [
   "electricity supply agreement perspective, it's being treated as a large site.' So Electricity Small Market in Envizi is the metering "
   "classification and does not take a site out of the renewal - the register's green rows decide. 35 of the 70 accounts sit on a "
   "small-market-styled source for that reason.", False),
- ("Also in scope: the green AU Large Electricity rows. The three Northern Territory sites are not green and are named exclusions anyway; "
-  "QTMP (Torbanlea, 3053253239) is a named exclusion. Pakenham (HCMT - East Pakenham Depot) is not in the register's large market rows "
-  "and already carries LGCS_HCMT plus the SEC VIC 100% Renewable Deduction in Envizi.", False),
+ ("Also in scope: the green AU Large Electricity rows. The three Northern Territory sites are not green and are named exclusions anyway. "
+  "Pakenham (HCMT - East Pakenham Depot) is not in the register's large market rows and already carries LGCS_HCMT plus the SEC VIC 100% "
+  "Renewable Deduction in Envizi. Torbanlea (3053253239) was excluded as a named site until 08 Sep 26; its register row is green and on "
+  "the Engie renewal, so it is back in scope and its certificate account has been built.", False),
  ("Existing LGCS_<NMI> accounts: 52 rows at 40 locations already have one. Checked in Envizi on 4 Sep 26, all of them hold LGC data from 2025 "
   "and earlier, so none can become a virtual meter and none covers the renewal period - those sites get a new virtual account too (70 in all) and "
   "the old accounts stay as the historical record. The input at C15 switches back to excluding them if any turn out to be empty.", False),
@@ -823,5 +843,9 @@ wb.properties.title = "Account Setup and Data Load - PM&C - Large market certifi
 wb.save(OUT)
 print("saved", OUT)
 
-# stash the python-side view for the README / summary
-pd.DataFrame(review).to_csv("/tmp/claude-0/-home-user-RevenueAndUnallocated/3dd2248b-bb2f-5ae5-bbe4-76df52397984/scratchpad/review.csv", index=False)
+# stash the python-side view for the README / summary. Written beside the workbook only when
+# REVIEW_CSV is set, so the script does not depend on a scratch directory that may not exist.
+_review_csv = os.environ.get("REVIEW_CSV")
+if _review_csv:
+    pd.DataFrame(review).to_csv(_review_csv, index=False)
+    print("review csv:", _review_csv)
