@@ -12,7 +12,7 @@ source exactly in July and August with no June row. The 12 old Origin accounts r
 | --- | --- | --- |
 | 1 | Close the two connector accounts | Gympie and Archerfield still double count — 5000021_ accounts accruing beside the live 1003xxx ones |
 | 2 | Build the 9 temporary accounts | Section 3 — the Queensland sites still on CS Energy with no Engie account. Run **after** prompt 1 |
-| 3 | The 25-26 LGC factors | Everything outside Victoria is still offsetting on 24-25 |
+| 3 | The LGC factors | Close 24-25, turn the seven `( Copy of … )` rows into 25-26, copy those to 26-27 now NGA 2026 is out |
 | 4 | Fix two Account Refs | Bathurst and Mogo 4204072845 carry the account number where the NMI should be |
 | 5 | Read-only check | Confirm a temporary after it is built |
 
@@ -297,48 +297,124 @@ form. The delete register on the guide page carries the tick per row.
 
 ---
 
-## 3 · The 25-26 LGC emission factors
+## 3 · The LGC emission factors — close 24-25, finish 25-26, add 26-27
 
-Every certificate account outside Victoria is still on a 24-25 factor (NSW/ACT −0.66, QLD −0.71, SA
-−0.23, TAS −0.15) against electricity on 25-26 (0.64, 0.67, 0.22, 0.20), so a 100% meter over-offsets
-in NSW, ACT and QLD and under-offsets in SA and TAS. Victoria already has `LGCs Victoria 25-26` (−0.78).
+Where this stands: seven `( Copy of LGCs <state> 24-25 )` rows were made in Custom Factors but never
+edited — they still carry the 24-25 value and their Region reads `*Select Region*` (Envizi's Copy action
+clears the region). Victoria never needed a copy because `LGCs Victoria 25-26` (−0.78) already exists.
+Meanwhile the 24-25 rows have no Replaced On, so every certificate account outside Victoria is still
+offsetting on 24-25. National Greenhouse Accounts Factors 2026 is out now as well, so the 26-27 set can
+go in at the same time.
+
+The vintages, each the NEGATIVE of the state's Scope 2 location-based factor:
+
+| State | 24-25 (NGA 2024, closing) | 25-26 (NGA 2025) | 26-27 (NGA 2026) |
+| --- | --- | --- | --- |
+| NSW | −0.66 | −0.64 | −0.60 |
+| ACT | −0.66 | −0.64 | −0.60 |
+| Victoria | −0.79 | −0.78 (exists) | −0.74 |
+| QLD | −0.71 | −0.67 | −0.65 |
+| SA | −0.23 | −0.22 | −0.21 |
+| WA (SWIS) | −0.51 | −0.50 | −0.45 |
+| Tasmania | −0.15 | −0.20 | −0.23 |
+| NT (DKIS) | −0.56 | −0.56 | −0.55 |
+
+Dates follow the FY the vintage is named for: 24-25 closes 30 Jun 2025, 25-26 runs 1 Jul 2025 to
+30 Jun 2026, 26-27 opens 1 Jul 2026 and stays open. Three stages, in order, with a stop after each.
 
 ```
-You're helping me add custom emission factors in IBM Envizi (au001.envizi.com).
+You're helping me maintain custom emission factors in IBM Envizi
+(au001.envizi.com). I'm logged in on the Envizi tab. Admin -> Custom Factors.
+Wait out the loading spinner. In the Name filter search "lgc" so only the LGC
+rows show. There are THREE STAGES. Do them in order, one row at a time, and
+STOP where I say so.
 
-We already have LGC certificate factors for 23-24 and 24-25, and one for 25-26
-(Victoria only). I need the rest of the 25-26 set. Each is the NEGATIVE of that
-state's Scope 2 factor from National Greenhouse Accounts Factors 2025.
+The rows all share: Data Type "Certificates - Location [kWh]", Factor Set
+"Custom - Downer", Sub Type "Default". Do not change any of those. Every
+factor value is NEGATIVE - if a field won't take a minus, stop and show me.
+Never delete a factor. Only touch the rows I name; match names character for
+character (there are 23-24 rows and Victoria rows that stay as they are unless
+I list them).
 
-Admin -> Custom Factors. Wait out the loading spinner. In the Name filter search
-"lgc" and open LGCs NSW 24-25 (Region "Australia - New South Wales", -0.66) as
-the template - note every field and screenshot it. Do NOT use LGCs Victoria
-25-26 as the template: its Region reads plain "Australia", which is wrong.
+Dates: type them and tab out, then read the field back and confirm the month
+and day didn't swap (30 Jun 2025 shows as 6/30/2025). If the form's end-date
+field isn't called "Replaced On" (e.g. "End Date", "Valid To"), or there is
+no date field at all, stop and show me the form before changing anything.
 
-Existing rows read: Data Type Certificates - Location - kWh, Factor Set Custom -
-Downer, Sub Type Default.
+=== STAGE 1 · Close the 24-25 factors ===
+Open each of these and set Replaced On = 30 Jun 2025. Change nothing else.
 
-Create New for each, identical to the template except:
+  LGCs NSW 24-25
+  LGCs ACT 24-25
+  LGCs QLD 24-25
+  LGCs SA 24-25
+  LGCs WA 24-25
+  LGCs Tasmania 24-25
+  LGCs NT 24-25
+  LGCs Victoria 24-25
 
-  Name              Region                                     Total CO2e
-  LGCs NSW 25-26    Australia - New South Wales                 -0.64
-  LGCs ACT 25-26    Australia - Australian Capital Territory    -0.64
-  LGCs QLD 25-26    Australia - Queensland                      -0.67
-  LGCs SA 25-26     Australia - South Australia                 -0.22
-  LGCs TAS 25-26    Australia - Tasmania                        -0.20
-  LGCs NT 25-26     Australia - Northern Territory              -0.56
-  LGCs WA 25-26     Australia - Western Australia               -0.50
+Before saving the first one (NSW), screenshot the Edit form so I can see every
+field and what the start date reads, then stop and show me. Once I say go, do
+the rest. If a 24-25 row already has a Replaced On, leave it and tell me what
+it reads. If a name isn't found, say so and move on - don't pick a near match.
 
-Match each name's abbreviation to that state's own existing rows. Every value is
-NEGATIVE - if a field won't take a minus, stop. Check for an existing 25-26 row
-for the region first; skip and tell me if one exists. Never edit or delete an
-existing factor. Do NSW first, stop and show me, then the rest.
+=== STAGE 2 · Turn the seven copies into the 25-26 set ===
+The rows to edit are named "( Copy of LGCs NSW 24-25 )" etc. - brackets and
+spaces are part of the name, Region reads "*Select Region*". Open each and set
+Name, Region and Total CO2e exactly as below, plus Replaced On = 30 Jun 2026
+(the 26-27 set takes over from 1 Jul 2026). If the form has a start / opened
+date, set it to 1 Jul 2025.
+
+  Copy row                              New name                Region                                     Total CO2e
+  ( Copy of LGCs NSW 24-25 )            LGCs NSW 25-26          Australia - New South Wales                 -0.64
+  ( Copy of LGCs ACT 24-25 )            LGCs ACT 25-26          Australia - Australian Capital Territory    -0.64
+  ( Copy of LGCs QLD 24-25 )            LGCs QLD 25-26          Australia - Queensland                      -0.67
+  ( Copy of LGCs SA 24-25 )             LGCs SA 25-26           Australia - South Australia                 -0.22
+  ( Copy of LGCs WA 24-25 )             LGCs WA 25-26           Australia - Western Australia               -0.50
+  ( Copy of LGCs Tasmania 24-25 )       LGCs Tasmania 25-26     Australia - Tasmania                        -0.20
+  ( Copy of LGCs NT 24-25 )             LGCs NT 25-26           Australia - Northern Territory              -0.56
+
+Then open the existing "LGCs Victoria 25-26" and set Replaced On = 30 Jun 2026
+only. Leave its Region as it is (it reads plain "Australia" - I'll deal with
+that separately) and leave the value at -0.78.
+
+Check before each edit that no row with the new name already exists; if one
+does, skip and tell me. Do NSW first, stop and show me the saved row, then the
+rest.
+
+=== STAGE 3 · Copy the 25-26 set to make 26-27 ===
+Use the same Copy action that made the "( Copy of ... )" rows. Copy each 25-26
+row (the eight from Stage 2, Victoria included) and edit the copy to:
+
+  Copy from                New name                Region                                     Total CO2e
+  LGCs NSW 25-26           LGCs NSW 26-27          Australia - New South Wales                 -0.60
+  LGCs ACT 25-26           LGCs ACT 26-27          Australia - Australian Capital Territory    -0.60
+  LGCs Victoria 25-26      LGCs Victoria 26-27     Australia - Victoria                        -0.74
+  LGCs QLD 25-26           LGCs QLD 26-27          Australia - Queensland                      -0.65
+  LGCs SA 25-26            LGCs SA 26-27           Australia - South Australia                 -0.21
+  LGCs WA 25-26            LGCs WA 26-27           Australia - Western Australia               -0.45
+  LGCs Tasmania 25-26      LGCs Tasmania 26-27     Australia - Tasmania                        -0.23
+  LGCs NT 25-26            LGCs NT 26-27           Australia - Northern Territory              -0.55
+
+Copy clears the Region, so set it on every one. Start / opened date 1 Jul 2026
+if the form has one. Replaced On stays BLANK - these are the live set. Copying
+carries the 30 Jun 2026 Replaced On across from the 25-26 row, so clear it on
+each copy and read the field back to make sure it's empty. Do NSW first, stop
+and show me, then the rest.
+
+=== OUTPUT ===
+When all three stages are done, filter Name "lgc" again and give me one table
+of every LGC row: Name | Region | Total CO2e | start date | Replaced On. I'm
+expecting 24 rows across 24-25 / 25-26 / 26-27 plus the 23-24 rows, no
+"( Copy of" names left, and no "*Select Region*" left.
 ```
 
-Expected afterwards: the next certificates export shows `LGCs NSW 25-26` (−0.64) on the NSW accounts
-and Bathurst nets to zero in July instead of −1.08 t. If the accounts stay on 24-25 after the factors
-exist, the factor set's date range or region mapping needs a look — that is a separate, read-only step.
-
+Expected afterwards: the next certificates export shows `LGCs NSW 26-27` (−0.60) on the NSW accounts
+for July 2026 on, and Bathurst nets to zero in July instead of −1.08 t. The historical `LGCS_` accounts
+will recalculate onto whichever vintage their month falls in — that is the intended outcome, but the
+next export is worth a glance at FY25 and FY26 totals for those accounts. If the accounts stay on 24-25
+after the dates are in, the factor set's date handling or region mapping needs a look — that is a
+separate, read-only step.
 ---
 
 ## 4 · Fix the two Account Refs

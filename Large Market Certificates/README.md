@@ -259,7 +259,8 @@ contract has not started, and for a site whose consumption sits on a per-locatio
 
 ## Still open
 
-- The 25-26 LGC emission factors for NSW/ACT/QLD/SA/TAS/NT/WA — a later session; prompt 3 is ready.
+- The LGC emission factors: close the 24-25 rows (Replaced On 30 Jun 2025), finish the seven `( Copy of … 24-25 )`
+  rows into the 25-26 set, and copy those to 26-27 from NGA Factors 2026 — prompt 3 does all three in order.
 - Mogo: read the two certificate accounts (prompt 0b), link the empty 4204072845 one, remake 4001127731.
 - Section 2: the last 17 permanent accounts.
 - Section 1: close the 14 old accounts (Traralgon's Replaced On back from 30 Oct to 30 Jun 26), and
