@@ -9,6 +9,7 @@ FY26/                        Jul 2025 – Jun 2026
 FY27/                        Jul 2026 – Jun 2027          see FY27/README.md
 Unallocated Accounts/        Unallocated-account trackers, by MDS cycle
 Large Market Certificates/   Renewable certificate virtual accounts for the large market sites
+Envizi Data Quality/         Sep-26 review of the four Envizi exports — findings.md and the CSVs behind it
 ```
 
 Each fiscal year folder contains:

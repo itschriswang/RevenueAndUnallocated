@@ -1,0 +1,68 @@
+group,Location,Supplier,Account Style,accounts,open,export_tco2e
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Clinical waste [t],40,33,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Contaminated Soil [t],7,7,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Liquid Waste - Oily Water [t],79,42,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Liquid Waste [t],26,19,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste (general solid) to landfill [t],411,324,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste (solid) sent to hazardous waste facility [t],52,38,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste - Chemical [t],67,51,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste - Commercial and Industrial - [t],76,57,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste - Commingled [t],182,164,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste - Medical [t],18,16,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste - Sanitary [t],21,19,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste Recycled - Commingled [t],139,114,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste Recycled - Fluoro Tubes/Globes [t],16,11,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste Recycled - Secure Materials [t],94,64,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste recycled - Green waste [t],15,10,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste recycled-cardboard & paper [t],57,45,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste recycled-electronics [t],43,25,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste recycled-liquid [t],12,6,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste recycled-metal [t],26,19,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste recycled-organics [t],38,34,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste recycled-plastics [t],12,10,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste recycled-timber [t],50,34,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste recycled-waste oil [t],40,27,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste-Grease Traps [t],48,39,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Waste-hazardous liquid sent to hazardous waste facility [t],4,3,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,Wastewater-sewage [t],10,8,0.0
+Cleanaway waste,Unallocated Cleanaway,Cleanaway,"Water Discharged (to stormwater, creek etc.) [t]",4,2,0.0
+Other unallocated,E&U Unallocated fuel expenses,Downer - manual entry,Biodiesel B10 Transport [L],1,1,0.97
+Other unallocated,E&U Unallocated fuel expenses,Downer - manual entry,Biodiesel B5 - Transport,1,1,0.0
+Other unallocated,E&U Unallocated fuel expenses,Downer - manual entry,Diesel Transport post 2004 [L],1,1,72.47
+Other unallocated,E&U Unallocated fuel expenses,Downer - manual entry,Fuel E85 Ethanol Transport (L),1,1,0.07
+Other unallocated,E&U Unallocated fuel expenses,Downer - manual entry,Fuel Oil (fuel additive) Transport [kL],1,1,0.0
+Other unallocated,E&U Unallocated fuel expenses,Downer - manual entry,Liquefied Petroleum Gas (LPG) Stationary [L],1,1,0.01
+Other unallocated,E&U Unallocated fuel expenses,Downer - manual entry,Petrol (Gasoline) Transport [L],1,1,31.75
+Other unallocated,E&U Unallocated fuel expenses,Downer - manual entry,Petrol Gasoline (E10) Transport [L],1,1,7.37
+Other unallocated,E&U Unallocated fuel expenses,,Diesel Transport post 2004 [L],1,1,0.0
+Other unallocated,E&U Unallocated fuel expenses,,Petrol (Gasoline) Transport post 2004 [L],1,1,0.01
+Other unallocated,Unallocated Accounts,BOC,Acetylene [m3] - No Accrual,7,7,0.0
+Other unallocated,Unallocated Accounts,BOC,Liquefied Petroleum Gas (LPG) Stationary [L] - No Accrual,5,4,0.38
+Other unallocated,Unallocated Accounts,FTC Finance Report,Diesel Transport post 2004 [L],1,0,0.0
+Other unallocated,Unallocated Accounts,FTC Finance Report,Petrol (Gasoline) Transport post 2004 [L],1,1,0.0
+Other unallocated,Unallocated Accounts,Viva Energy,Diesel Stationary [L] - No Accrual,1,1,81.29
+Other unallocated,Unallocated Plant OSM,Downer,Diesel Stationary - L,1,0,0.0
+Other unallocated,Unallocated Plant OSM,Downer,Petrol (Gasoline) Stationary [L],1,0,0.0
+Other unallocated,Unallocated Plant OSM,Downer,Petroleum based oils (lubricants) Stationary – not combusted [L],1,0,0.0
+Other unallocated,_CLOSED_FY24 Interim_Unallocated Scope 3 Category 2,Finance,S3.1 - Computer systems design and related services - USD or local,1,0,0.0
+Other unallocated,_CLOSED_FY24 Interim_Unallocated Scope 3 Category 2,Finance,S3.1 - Housing - USD or local,1,0,0.0
+Other unallocated,_CLOSED_FY24 Interim_Unallocated Scope 3 Category 2,Finance,S3.1 - Machinery - USD or local,1,0,0.0
+Other unallocated,_CLOSED_FY24 Interim_Unallocated Scope 3 Category 2,Finance,S3.1 - Management of companies and enterprises - USD or local,1,0,0.0
+Other unallocated,_CLOSED_FY24 Interim_Unallocated Scope 3 Category 2,Finance,"S3.1 - Other real estate, general - USD or local",1,0,0.0
+Other unallocated,_CLOSED_FY24 Interim_Unallocated Scope 3 Category 2,Finance,"S3.1 - Other transportation equip., general - USD or local",1,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,AIR LIQUIDE AUSTRALIA LTD,LPG Stationary,1,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Downer,Diesel Stationary - L,2,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Downer,Diesel Transport post 2004 [L],4,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Downer,Electricity – purchased from grid [kWh],3,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Downer,Greases (petroleum based) Stationary – not combusted [L],1,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Downer,Petrol (Gasoline) Transport post 2004 [L],3,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Downer,Petroleum based oils (lubricants) Stationary – not combusted [L],2,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Downer,Solvents (mineral turpentine or white spirit) - not combusted [L],1,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Fuel Card,Fuel Diesel Transport post-2004 - L,1,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Fuel Card,Fuel E10 Ethanol Transport post-2004 (L),1,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Fuel Card,Fuel Petrol Transport post-2004 (L),1,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,Subcontractor,Diesel Transport post 2004 [L],53,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,,Diesel Stationary - L,1,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,,Electricity Green,1,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,,Fuel Diesel Transport post-2004 - L,1,0,0.0
+Other unallocated,_CLOSED_Unallocated JDE Accounts,,Fuel Petrol Stationary (L),1,0,0.0

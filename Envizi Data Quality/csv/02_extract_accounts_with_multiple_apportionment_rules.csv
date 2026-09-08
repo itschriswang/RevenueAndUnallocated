@@ -1,0 +1,3 @@
+Account Link,Account Number,Location,Account Style,Effective From,Effective To,rules,total_pct,usage_types,uses,exceeds_100,same_usage_type_twice
+6288390,HIGGINS CONTRACTORS,113 - Hawkins Limited CENTRAL_Other Subcontractors,Diesel Stationary - L,,,2,200.0,Consolidation | Decarbonisation Pathway,CO2e and Base Measure | Subcontractors,True,False
+6390866,FY23SI&CS_Subcontractor_Diesel,SI&CS FY20 and FY23 Subcontractors,Diesel Transport post 2004 [L],,,2,100.0,Consolidation | Decarbonisation Pathway,CO2e and Base Measure | Subcontractors,False,False
