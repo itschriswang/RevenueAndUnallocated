@@ -80,10 +80,14 @@ at that rate, roughly –3,000 t; I can only see four of those months.
 not the export. On the `RECs NZ - 2026` factor that is **≈ 203 t of FY27 credit missing** so far, growing
 by ~100 t a month.
 
-**Assumption.** I have assumed the missing rows are the factor: `RECs NZ - 2026` is the only NZ certificate
-factor in the export and its name suggests a calendar or fiscal 2026 bound. If it ends 30 Jun 26 and there
-is no successor, Envizi has nothing to calculate and writes no row. The README already notes the AU LGC
-factors were rebuilt on 8 Sep with 26-27 rows; the NZ REC factor needs the same treatment.
+**Assumption, now confirmed (survey run in Envizi 08 Sep 26).** `RECs NZ - 2026` runs 1 Jul 2025 to
+30 Jun 2026 and nothing covers July on; the only other row, `RECs NZ` (-0.0729), closed 30 Jun 2025. Inside
+Envizi the Mt Maunganui certificate account *does* hold July and August kWh (114,834 and 113,116, matching
+its source) with the factor and emissions blank, so the relationship is mirroring correctly and the export
+simply drops months with no CO2e. The factor is the whole gap. The 2026 row is the sign-flip of the
+`Electricity used - 2024` grid factor (0.10111894, MfE guide 2025) that the sources are still on in FY27, so
+the successor `RECs NZ - 2027` takes -0.10111894 from 1 Jul 26. The README already notes the AU LGC factors
+were rebuilt on 8 Sep with 26-27 rows; this is the same treatment.
 
 **Action.** Date all 22 relationships 2026-07-01, drop the `Copy of` prefix, add the FY27 NZ REC factor, and
 then decide whether the pre-July credit stands (Ecotricity is renewable, so it may be right) or is removed.

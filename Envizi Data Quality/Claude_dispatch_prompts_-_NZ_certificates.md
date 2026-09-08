@@ -13,15 +13,56 @@ in front while it works - it only sees the active tab.
   2026-07-01.
 - They credited -395.8 tCO2e across Mar-Jun 26 on the factor `RECs NZ - 2026` (-0.101 kg/kWh), about
   -99 t a month. The sources go back to late 2023.
-- **None of the 22 has a July or August 2026 row**, while 20 of the sources recorded 2,008,386 kWh in
-  those two months. The Australian certificate accounts do have July and August rows, so it is not the
-  export. My working assumption is the factor: `RECs NZ - 2026` is the only NZ certificate factor and
-  looks to have an Effective To of 30 Jun 2026 with nothing after it. The survey checks that before
-  anything is changed.
+- **None of the 22 has a July or August 2026 row in the export**, while 20 of the sources recorded
+  2,008,386 kWh in those two months. The Australian certificate accounts do have July and August rows, so
+  it is not the export. My working assumption was the factor: `RECs NZ - 2026` is the only NZ certificate
+  factor and looks to have an Effective To of 30 Jun 2026 with nothing after it. The survey (below)
+  confirmed it.
 - One of the 22 is a duplicate. `Eco_ICP_0000024050WE5E2` (a Waikato ICP) exists as a live account at
   **both** Asphalt Prod - Hamilton (link 6223426, Dec 2023) and Hastings Depot (link 6391000, Nov 2025),
   each with its own `Copy of …_CERTS`. The Hastings pair is accrual-only and double counts ~24 t; it gets
   closed, not dated.
+
+## Survey result - prompt 0 run 08 Sep 26
+
+**A - the factor.** Two rows, both region New Zealand / `Certificates - Location [kWh]` / Custom - Downer:
+
+| Name | Value (kgCO2e/kWh) | Effective From | Effective To |
+| --- | --- | --- | --- |
+| `RECs NZ` | -0.07289174 | 1 Jul 2024 | 30 Jun 2025 |
+| `RECs NZ - 2026` | -0.10111894 | 1 Jul 2025 | 30 Jun 2026 |
+
+No `( Copy of … )` variant. **Nothing covers 1 July 2026 onwards.** The naming convention is the FY end
+year, so the successor is `RECs NZ - 2027`, not the `2026-27` I had pencilled in below - prompt 1 now says
+so.
+
+**B - the certificate account** (`Copy of Eco_ICP_0000939570TUEC4_CERTS`). Envizi's Monthly Data holds
+July 2026 (114,834.3168 kWh) and August 2026 (113,116.21 kWh), both with 31 days, but the Emission Factor
+and Emissions columns are blank on both. June carries the -0.1011 factor and -11,356.96 kg. The relationship
+reads source `Eco_ICP_0000939570TUEC4`, 100%, rule `100% Renewable Energy Certificates`, Effective From and
+Effective To both blank.
+
+**C - the source account.** June 112,312.914, July 114,834.3168, August 113,116.21 kWh, all Automatically
+Accrued. Same figures the export shows.
+
+**What that settles.** The relationship is working - it mirrored the kWh into July and August the moment
+the source accrued. The gap is the factor alone: with no row covering July, Envizi carries the kWh but
+writes no emissions, and the data export drops months with no CO2e, which is why the 22 looked "silent"
+from the outside. So it is **prompt 1, then prompt 2, then 3, then 4**, in that order. Prompt 2 still
+runs - the blank Effective From is a separate tidy-up, not the cause of the gap.
+
+**The FY27 value.** I no longer need to look this up. The 2026 row is an exact sign-flip of the NZ grid
+factor the 22 source accounts sit on - `Electricity used - 2024`, 0.10111894 kgCO2e/kWh, sourced from the
+MfE *Measuring emissions guide 2025* - and the FY25 row (-0.07289174) is the same treatment against the
+prior guide. The sources are **still on that 2024 grid factor in July and August 2026**, so the value that
+makes the certificate credit net each site to zero for FY27 is:
+
+    RECs NZ - 2027   =   -0.10111894 kgCO2e/kWh   (1 Jul 2026 - 30 Jun 2027)
+
+Caution: this only holds while the NZ scope 2 grid factor is 0.10111894. If someone loads the
+*Measuring emissions guide 2026* grid figure against the electricity accounts for FY27, the REC row has to
+move to match it or the sites will no longer net to zero. I have not seen a 2026-guide row in the export;
+if one appears, re-run survey A before changing anything.
 
 ## What I am not deciding here
 
@@ -112,9 +153,10 @@ What I do with the answer:
 
 ## 1 · Extend the NZ REC factor into FY27
 
-Only if the survey confirmed the factor stops at 30 Jun 2026. I give the FY27 value on the day - the
-2026 row carries -0.10111894 kg/kWh and I need the NZ grid-average figure it should offset from 1 Jul 26
-before this runs. Do not run this prompt with a blank value.
+The survey confirmed the factor stops at 30 Jun 2026, so this runs next. The value is -0.10111894, the
+same as the 2026 row, because the source accounts are still on the 0.10111894 grid factor for FY27 (see
+the survey result above). The name follows the existing convention, `RECs NZ` then `RECs NZ - 2026`, so
+the new row is `RECs NZ - 2027`.
 
 ```
 You're helping me add one emission-factor row in IBM Envizi (au001.envizi.com).
@@ -134,12 +176,13 @@ Effective From, Effective To, source text. Show me before going on.
 Use the screen's copy / duplicate action if it has one (it keeps the
 category and unit mapping); otherwise "Add" and fill each field to match the
 2026 row EXCEPT:
-  Name:            RECs NZ - 2026-27
+  Name:            RECs NZ - 2027
   Effective From:  01 Jul 2026
   Effective To:    30 Jun 2027
-  Value:           <I give this to you - stop and ask if I haven't>
-Region stays New Zealand. Sign stays NEGATIVE - it is a credit. Unit stays
-kgCO2e per kWh.
+  Value:           -0.10111894
+Region stays New Zealand. Data type stays Certificates - Location [kWh].
+Sign stays NEGATIVE - it is a credit. Unit stays kgCO2e per kWh. If the form
+rounds the value when you read it back, tell me how many decimals it kept.
 
 === STEP 3 · Check the 2026 row is unchanged ===
 Re-open "RECs NZ - 2026" and confirm its Effective To still reads 30 Jun 2026
@@ -150,7 +193,15 @@ touching anything else.
 If saving prompts a recalculation of dependent accounts, accept it. If it
 doesn't, tell me - I'll trigger it from the account side in prompt 4.
 
-Report back the two rows side by side.
+=== STEP 5 · Spot-check one account ===
+Search Accounts for "Copy of Eco_ICP_0000939570TUEC4_CERTS" (Bitumen - Mt
+Maunganui), Review -> Monthly Data. July and August 2026 already show
+114,834.3168 and 113,116.21 kWh; what I want to know is whether the Emission
+Factor and Emissions columns have now filled in on those two months (I expect
+-0.1011 and roughly -11,612 and -11,438 kg). If they are still blank, say so -
+the recalculation has not run yet and prompt 4 picks it up.
+
+Report back the three factor rows side by side, then the spot-check.
 ```
 
 ---
@@ -292,11 +343,14 @@ edits.
 
 1. Search Accounts for "Eco_ICP_0000939570TUEC4_CERTS" (no "Copy of").
    Open it, confirm location Bitumen - Mt Maunganui, then Review -> Monthly
-   Data. I want June, July and August 2026: kWh and CO2e for each. June
-   should still show a figure; July and August should now show a kWh equal
-   to the source (114,834 and 113,116 last time I looked) with a NEGATIVE
-   CO2e. If July and August are still empty, tell me and open the account's
-   relationship settings to read the Effective From back.
+   Data. I want June, July and August 2026: kWh, Emission Factor and
+   Emissions for each. June should still read -0.1011 and -11,356.96. July
+   and August already held the kWh (114,834.3168 and 113,116.21) before any
+   of this; what changed should be the factor and emissions, which were
+   blank and should now read -0.1011 and about -11,612 and -11,438 kg on the
+   "RECs NZ - 2027" row. If they are still blank, tell me, then open the
+   factor and read back its Effective From / To and data type - a mismatch
+   there is the likeliest reason.
 2. Search Accounts for "Copy of Eco_ICP". Tell me how many results remain and
    list them. I expect exactly one: the Hastings Depot one, now closed.
 3. Search Accounts for "Eco_ICP_0000024050WE5E2" and confirm the Hastings
@@ -305,4 +359,5 @@ Show me all three.
 ```
 
 After prompt 4 passes, the next data export should show the 21 NZ certificate accounts with July and
-August rows on the FY27 factor and no `Copy of` names, and `findings.md` §2 and §7 can be closed off.
+August rows on `RECs NZ - 2027`, about -203 t across the two months, and no `Copy of` names, and
+`findings.md` §2 and §7 can be closed off.
