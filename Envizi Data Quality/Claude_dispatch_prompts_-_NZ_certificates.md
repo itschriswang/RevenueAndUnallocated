@@ -1,9 +1,16 @@
 # Claude dispatch prompts - NZ certificate accounts, Sep-26
 
 What I paste into Claude (browser dispatch) with Envizi (`au001.envizi.com`) open in the active tab, to
-fix the 22 NZ renewable-certificate virtual accounts found in `findings.md` §2 and §7. Four prompts, run
-in order: a **read-only survey** first, then three action passes built on what it brings back. Keep Envizi
-in front while it works - it only sees the active tab.
+fix the 22 NZ renewable-certificate virtual accounts found in `findings.md` §2 and §7. Three prompts, run
+in order: a **read-only survey** first, then the FY27 factor rows, then the Hastings duplicate, then a
+read-only check. Keep Envizi in front while it works - it only sees the active tab.
+
+The 21 genuine relationships are **left as they are** - names and blank dates included. I had a pass
+drafted to date them 2026-07-01 and drop the `Copy of ` prefix, copied from the Australian LGC set-up,
+and pulled it after the survey: the AU date marks a contract start, but Ecotricity is a renewable retailer
+and the credit runs for the whole supply period, which is exactly what a blank Effective From does. Dating
+them would have wiped the FY24-FY26 credit. The `Copy of ` names are untidy but change nothing in the
+numbers, so they stay too.
 
 ## Position as of the 07 Sep 26 exports
 
@@ -48,8 +55,8 @@ Accrued. Same figures the export shows.
 **What that settles.** The relationship is working - it mirrored the kWh into July and August the moment
 the source accrued. The gap is the factor alone: with no row covering July, Envizi carries the kWh but
 writes no emissions, and the data export drops months with no CO2e, which is why the 22 looked "silent"
-from the outside. So it is **prompt 1, then prompt 2, then 3, then 4**, in that order. Prompt 2 still
-runs - the blank Effective From is a separate tidy-up, not the cause of the gap.
+from the outside. So it is **prompt 1, then 2, then the check in 3**. The blank Effective From on the
+relationships is not the cause and is not touched.
 
 **The FY27 value.** The REC row has always been the sign-flip of the NZ grid factor the 22 source
 accounts sit on: `RECs NZ` (-0.07289174) mirrored the 2024 guide's calendar-2023 figure for FY25, and
@@ -77,11 +84,12 @@ I am **not** restating FY26; the 2024 row and the 2026 REC row stay as they are.
 T&D-loss figure (0.005956) is not used: the NZ electricity accounts carry no scope 3 component today
 (zero across all 1,214 rows in the export), so nothing to mirror.
 
-## What I am not deciding here
+## The pre-July credit stays
 
-Whether the pre-July credit stays. Ecotricity is a renewable retailer, so the FY24-FY26 credit may be
-right in substance even though the relationships are undated. Dating them 2026-07-01 removes it going
-forward only; nothing here deletes history. That call sits with whoever signs off the NZ inventory.
+The relationships are undated, so the 21 genuine certificate accounts credit every month their source has
+ever held. Ecotricity is a renewable retailer, so that is right in substance, and nothing here changes it.
+The one thing worth a line from whoever signs off the NZ inventory is confirmation that the Ecotricity
+supply was renewable across the whole period, since that is what the blank date asserts.
 
 ## The 22 accounts
 
@@ -89,7 +97,7 @@ forward only; nothing here deletes history. That call sits with whoever signs of
 | --- | --- | --- | --- | --- |
 | 1 | Asphalt Prod - Auckland | Copy of Eco_ICP_1001126325LC57C_CERTS | Eco_ICP_1001126325LC57C | |
 | 2 | Asphalt Prod - Dunedin | Copy of Eco_ICP_0000102308DEAD2_CERTS | Eco_ICP_0000102308DEAD2 | |
-| 3 | Asphalt Prod - Hamilton | Copy of Eco_ICP_0000024050WE5E2_CERTS | Eco_ICP_0000024050WE5E2 | The real one - keep, date it |
+| 3 | Asphalt Prod - Hamilton | Copy of Eco_ICP_0000024050WE5E2_CERTS | Eco_ICP_0000024050WE5E2 | The real one - keep |
 | 4 | Asphalt Prod - Invercargill | Copy of Eco_ICP_0000734355NVC9C_CERTS | Eco_ICP_0000734355NVC9C | |
 | 5 | Asphalt Prod - Wellington | Copy of Eco_ICP_1001113152UNBF4_CERTS | Eco_ICP_1001113152UNBF4 | |
 | 6 | Asphalt Prod - Whangarei | Copy of Eco_ICP_0000519132NR7B9_CERTS | Eco_ICP_0000519132NR7B9 | |
@@ -101,7 +109,7 @@ forward only; nothing here deletes history. That call sits with whoever signs of
 | 12 | BOP Omanawa - 345 Matakokiri Drive, Tauranga | Copy of Eco_ICP_1000610486PC18D_CERTS | Eco_ICP_1000610486PC18D | |
 | 13 | Hamilton Depot | Copy of Eco_ICP_0000031643WEA48_CERTS | Eco_ICP_0000031643WEA48 | |
 | 14 | Hastings Depot | Copy of Eco_ICP_0000015023HBABD_CERTS | Eco_ICP_0000015023HBABD | |
-| 15 | Hastings Depot | Copy of Eco_ICP_0000024050WE5E2_CERTS | Eco_ICP_0000024050WE5E2 | **Duplicate - prompt 3 closes it, do not date it** |
+| 15 | Hastings Depot | Copy of Eco_ICP_0000024050WE5E2_CERTS | Eco_ICP_0000024050WE5E2 | **Duplicate - prompt 2 closes it** |
 | 16 | Hawkins Construction Recharges | Copy of Eco_ICP_0141534532LCA70_CERTS | Eco_ICP_0141534532LCA70 | Source reads 0 kWh every month |
 | 17 | Hawkins Construction Recharges | Copy of Eco_ICP_1002147325UN75B_CERTS | Eco_ICP_1002147325UN75B | Source stopped after May 26 |
 | 18 | Nelson Depot | Copy of Eco_ICP_0000052034NT6A8_CERTS | Eco_ICP_0000052034NT6A8 | |
@@ -110,7 +118,7 @@ forward only; nothing here deletes history. That call sits with whoever signs of
 | 21 | Wellington Depot | Copy of Eco_ICP_1001151226CK008_CERTS | Eco_ICP_1001151226CK008 | |
 | 22 | Wiri (130 Kerrs Rd) | Copy of Eco_ICP_1001240514LC3EB_CERTS | Eco_ICP_1001240514LC3EB | |
 
-Row 15 is excluded from prompt 2 and handled in prompt 3. That leaves **21** to date and rename.
+Row 15 is the only one of the 22 that is edited, in prompt 2. The other 21 are not opened.
 
 ---
 
@@ -159,8 +167,8 @@ What I do with the answer:
 
 - If A shows `RECs NZ - 2026` ends 30 Jun 2026 and nothing covers July on: **prompt 1**.
 - If A shows a factor covering July but B still has no July row: the relationship is the problem -
-  skip prompt 1, run prompt 2 and re-check with prompt 4.
-- If B shows July data after all: the export was stale; run prompt 2 only.
+  skip prompt 1 and look at the relationship before anything else.
+- If B shows July data after all: the export was stale; nothing to fix.
 
 ---
 
@@ -230,7 +238,7 @@ altered either, tell me before touching anything else.
 
 === STEP 6 · Recalculate if offered ===
 If any save prompts a recalculation of dependent accounts, accept it. If it
-doesn't, tell me - prompt 4 picks it up.
+doesn't, tell me - prompt 3 picks it up.
 
 === STEP 7 · Spot-check one site ===
 Search Accounts for "Eco_ICP_0000939570TUEC4" (Bitumen - Mt Maunganui),
@@ -247,88 +255,7 @@ Report back the four factor rows side by side, then the spot-check.
 
 ---
 
-## 2 · Date and rename the 21 relationships
-
-The Australian certificate accounts show what right looks like: name `<source>_CERTS`, relationship
-Effective From 2026-07-01, no Effective To. This makes the 21 NZ ones match. Row 15 in the table
-above (the Hastings copy of the Hamilton ICP) is **not** in this list - prompt 3 closes it.
-
-```
-You're helping me tidy 21 virtual-meter relationships in IBM Envizi
-(au001.envizi.com). I'm logged in on the Envizi tab. Work ONE account at a
-time, in the order listed, and after the FIRST one stop and show me before
-continuing with the rest.
-
-WHAT CHANGES, PER ACCOUNT - two things only
-  1. The relationship's Effective From becomes 01 Jul 2026 (2026-07-01).
-     Effective To stays blank.
-  2. The account's name / number loses the leading "Copy of " so
-     "Copy of Eco_ICP_1001126325LC57C_CERTS" becomes
-     "Eco_ICP_1001126325LC57C_CERTS".
-Nothing else moves. Source account stays the same, apportionment stays 100%,
-rule stays "100% Renewable Energy Certificates", location stays, Opened On /
-Replaced On untouched, no records deleted.
-
-THIS BATCH HAS A DECOY
-"Copy of Eco_ICP_0000024050WE5E2_CERTS" exists at TWO locations. The one at
-Asphalt Prod - Hamilton is in this list. The one at Hastings Depot is NOT -
-never open it in this prompt. Always confirm "Relates to" shows the location
-I give you before you edit anything.
-
-=== PER ACCOUNT ===
-STEP 1  Top-right search, dropdown "Accounts", paste the full name including
-        "Copy of ". Open it. Confirm the header name matches character for
-        character and "Relates to" is the location I give. If two results
-        appear, pick by location.
-STEP 2  Open the virtual meter / relationship settings for the account
-        (Actions -> Account Settings, then the virtual meter or relationship
-        tab; if the screen calls it "Source Accounts" or "Apportionment", that
-        is it). You should see one source row: the Eco_ICP account, 100%.
-        If you see anything other than exactly one source at 100%, stop and
-        show me.
-STEP 3  Set that relationship's Effective From to 01 Jul 2026. Use the
-        calendar or type it and tab out, then read it back - the field shows
-        m/d/yyyy, so it must read 7/1/2026, not 1/7/2026. Leave Effective To
-        blank. Save.
-STEP 4  Back on the account, Actions -> Edit Account. In the account name /
-        number field delete the leading "Copy of " (and the space after it).
-        Change nothing else on the form. Save.
-STEP 5  Re-open the account and read back: name, location, relationship
-        Effective From. Move to the next one.
-
-If a save is refused because the new name already exists, STOP and tell me
-which one - do not pick a different name.
-
-=== THE 21, in order (name -> location) ===
-Copy of Eco_ICP_1001126325LC57C_CERTS -> Asphalt Prod - Auckland
-Copy of Eco_ICP_0000102308DEAD2_CERTS -> Asphalt Prod - Dunedin
-Copy of Eco_ICP_0000024050WE5E2_CERTS -> Asphalt Prod - Hamilton   (NOT Hastings)
-Copy of Eco_ICP_0000734355NVC9C_CERTS -> Asphalt Prod - Invercargill
-Copy of Eco_ICP_1001113152UNBF4_CERTS -> Asphalt Prod - Wellington
-Copy of Eco_ICP_0000519132NR7B9_CERTS -> Asphalt Prod - Whangarei
-Copy of Eco_ICP_0000931749NV418_CERTS -> Bitumen - Bluff
-Copy of Eco_ICP_0006863450RN0A4_CERTS -> Bitumen - Lyttleton
-Copy of Eco_ICP_0007202058RN859_CERTS -> Bitumen - Lyttleton
-Copy of Eco_ICP_0000939570TUEC4_CERTS -> Bitumen - Mt Maunganui
-Copy of Eco_ICP_0001510110PCCA2_CERTS -> Bitumen - Taranaki
-Copy of Eco_ICP_1000610486PC18D_CERTS -> BOP Omanawa - 345 Matakokiri Drive, Tauranga
-Copy of Eco_ICP_0000031643WEA48_CERTS -> Hamilton Depot
-Copy of Eco_ICP_0000015023HBABD_CERTS -> Hastings Depot
-Copy of Eco_ICP_0141534532LCA70_CERTS -> Hawkins Construction Recharges
-Copy of Eco_ICP_1002147325UN75B_CERTS -> Hawkins Construction Recharges
-Copy of Eco_ICP_0000052034NT6A8_CERTS -> Nelson Depot
-Copy of Eco_ICP_0005302992ENB6A_CERTS -> Quarry - WOK
-Copy of Eco_ICP_1000522230PCA6E_CERTS -> Tauranga Area Manager
-Copy of Eco_ICP_1001151226CK008_CERTS -> Wellington Depot
-Copy of Eco_ICP_1001240514LC3EB_CERTS -> Wiri (130 Kerrs Rd)
-
-When all 21 are done, give me a table: old name, new name, location,
-relationship Effective From as read back.
-```
-
----
-
-## 3 · Close the Hastings copy of the Hamilton ICP
+## 2 · Close the Hastings copy of the Hamilton ICP
 
 `Eco_ICP_0000024050WE5E2` is a Waikato ICP (the `WE` network code). Its live account belongs at Asphalt
 Prod - Hamilton. The copy at Hastings Depot was created in Nov 2025, holds only accruals that alternate
@@ -376,14 +303,14 @@ Open both accounts at Asphalt Prod - Hamilton and confirm each still reads
 
 ---
 
-## 4 · Read-only check after prompts 1-3
+## 3 · Read-only check after prompts 1 and 2
 
 ```
 Read-only in IBM Envizi (au001.envizi.com), I'm logged in on the tab. No
 edits.
 
-1. Search Accounts for "Eco_ICP_0000939570TUEC4_CERTS" (no "Copy of").
-   Open it, confirm location Bitumen - Mt Maunganui, then Review -> Monthly
+1. Search Accounts for "Copy of Eco_ICP_0000939570TUEC4_CERTS". Open it,
+   confirm location Bitumen - Mt Maunganui, then Review -> Monthly
    Data. I want June, July and August 2026: kWh, Emission Factor and
    Emissions for each. June should still read -0.1011 and -11,356.96. July
    and August already held the kWh (114,834.3168 and 113,116.21) before any
@@ -394,14 +321,15 @@ edits.
    the pair nets to zero. If the certificate cells are still blank, tell
    me, then open the factor and read back its Effective From / To and data
    type - a mismatch there is the likeliest reason.
-2. Search Accounts for "Copy of Eco_ICP". Tell me how many results remain and
-   list them. I expect exactly one: the Hastings Depot one, now closed.
-3. Search Accounts for "Eco_ICP_0000024050WE5E2" and confirm the Hastings
-   row shows a Replaced On and the Hamilton row does not.
+2. Search Accounts for "Eco_ICP_0000024050WE5E2". Two results. Confirm the
+   Hastings Depot row shows a Replaced On and the Hamilton row does not.
+   Then the same for "Copy of Eco_ICP_0000024050WE5E2_CERTS".
+3. Search Accounts for "Copy of Eco_ICP" and tell me how many results there
+   are. I expect 22, unchanged - none of them was renamed.
 Show me all three.
 ```
 
-After prompt 4 passes, the next data export should show the 21 NZ certificate accounts with July and
+After prompt 3 passes, the next data export should show the 21 NZ certificate accounts with July and
 August rows on `RECs NZ - 2027`, about -158 t across the two months (2,008,386 kWh at 0.078662), the
-sources on `Electricity used - 2025` for the same months, no `Copy of` names, and
+sources on `Electricity used - 2025` for the same months, and the Hastings pair closed. Then
 `findings.md` §2 and §7 can be closed off.
