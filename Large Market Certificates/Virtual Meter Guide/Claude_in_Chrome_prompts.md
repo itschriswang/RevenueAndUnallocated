@@ -6,13 +6,15 @@ works — it only sees the active tab.
 
 Position as of the 06 Sep 26 exports: **all 60 permanent accounts are built** and every one mirrors its
 source exactly in July and August with no June row. The 12 old Origin accounts read Replaced On 30 Jun
-2026 and no longer accrue. Mogo has both its accounts. What remains, in the order I run it:
+2026 and no longer accrue. Mogo has both its accounts. The LGC factors are done as of 08 Sep 26 — 24-25
+closed 30 Jun 2025, the 25-26 set finished and closed 30 Jun 2026, the 26-27 set live from 1 Jul 2026.
+What remains, in the order I run it:
 
 | # | Prompt | What it does |
 | --- | --- | --- |
 | 1 | Close the two connector accounts | Gympie and Archerfield still double count — 5000021_ accounts accruing beside the live 1003xxx ones |
 | 2 | Build the 9 temporary accounts | Section 3 — the Queensland sites still on CS Energy with no Engie account. Run **after** prompt 1 |
-| 3 | The 25-26 LGC factors | Everything outside Victoria is still offsetting on 24-25 |
+| 3 | LGC factors tidy-up | All four vintages are in (08 Sep 26). Delete the stray `( Copy of LGCs NSW 23-24 )` and fix the Victoria 25-26 region |
 | 4 | Fix two Account Refs | Bathurst and Mogo 4204072845 carry the account number where the NMI should be |
 | 5 | Read-only check | Confirm a temporary after it is built |
 
@@ -297,48 +299,63 @@ form. The delete register on the guide page carries the tick per row.
 
 ---
 
-## 3 · The 25-26 LGC emission factors
+## 3 · The LGC emission factors — tidy-up after the 08 Sep 26 run
 
-Every certificate account outside Victoria is still on a 24-25 factor (NSW/ACT −0.66, QLD −0.71, SA
-−0.23, TAS −0.15) against electricity on 25-26 (0.64, 0.67, 0.22, 0.20), so a 100% meter over-offsets
-in NSW, ACT and QLD and under-offsets in SA and TAS. Victoria already has `LGCs Victoria 25-26` (−0.78).
+The three-stage run (close 24-25, finish the 25-26 copies, add 26-27) is done. Custom Factors now holds
+33 LGC rows: four bands of eight plus one stray. On the Custom Factor form the dates are **Effective
+From** and **Effective To**, not Opened On / Replaced On — the 23-24 rows carry an Effective To with no
+Effective From, and the three later bands carry both.
+
+| State | 23-24 (to 30/06/2024) | 24-25 (01/07/2024 – 30/06/2025) | 25-26 (01/07/2025 – 30/06/2026) | 26-27 (from 01/07/2026, live) |
+| --- | --- | --- | --- | --- |
+| NSW | −0.68 | −0.66 | −0.64 | −0.60 |
+| ACT | −0.68 | −0.66 | −0.64 | −0.60 |
+| Victoria | −0.79 | −0.77 | −0.78 | −0.74 |
+| QLD | −0.73 | −0.71 | −0.67 | −0.65 |
+| SA | −0.25 | −0.23 | −0.22 | −0.21 |
+| WA (SWIS) | −0.53 | −0.51 | −0.50 | −0.45 |
+| Tasmania | −0.12 | −0.15 | −0.20 | −0.23 |
+| NT (DKIS) | −0.54 | −0.56 | −0.56 | −0.55 |
+
+Every value is the negative of the state's Scope 2 location-based factor for the NGA Factors edition of
+that vintage. One that does not match: `LGCs Victoria 24-25` reads −0.77 where NGA Factors 2024 gives
+Victoria 0.79. It is closed history now and its months have been reported, so it stays; noting it here so
+nobody "corrects" it to match the table above.
+
+Regions read `Australia - <State>` throughout except `LGCs Victoria 25-26`, which still reads plain
+`Australia`. Two things left, one prompt:
 
 ```
-You're helping me add custom emission factors in IBM Envizi (au001.envizi.com).
+You're helping me tidy up custom emission factors in IBM Envizi
+(au001.envizi.com). I'm logged in on the Envizi tab. Admin -> Custom Factors,
+wait out the loading spinner, Name filter "lgc". Two rows, one at a time.
+Nothing else on the screen gets touched.
 
-We already have LGC certificate factors for 23-24 and 24-25, and one for 25-26
-(Victoria only). I need the rest of the 25-26 set. Each is the NEGATIVE of that
-state's Scope 2 factor from National Greenhouse Accounts Factors 2025.
+=== 1 · Delete the stray copy ===
+Find the row whose Name is exactly "( Copy of LGCs NSW 23-24 )" - brackets
+and spaces included, Region "*Select Region*", Total CO2e -0.68, Effective To
+30/06/2024. Open it and screenshot the form so I can see every field, then
+stop and show me. Once I say go, delete that row. Do NOT delete "LGCs NSW
+23-24" (Region "Australia - New South Wales") - that is the real one and it
+stays. If the Copy row's name isn't found character for character, stop and
+tell me what you do see.
 
-Admin -> Custom Factors. Wait out the loading spinner. In the Name filter search
-"lgc" and open LGCs NSW 24-25 (Region "Australia - New South Wales", -0.66) as
-the template - note every field and screenshot it. Do NOT use LGCs Victoria
-25-26 as the template: its Region reads plain "Australia", which is wrong.
+=== 2 · Fix the Victoria 25-26 region ===
+Open "LGCs Victoria 25-26" (Total CO2e -0.78, Effective From 01/07/2025,
+Effective To 30/06/2026, Region "Australia"). Set Region to "Australia -
+Victoria" and save. Change nothing else - the value and both dates stay.
+Read the saved row back to me.
 
-Existing rows read: Data Type Certificates - Location - kWh, Factor Set Custom -
-Downer, Sub Type Default.
-
-Create New for each, identical to the template except:
-
-  Name              Region                                     Total CO2e
-  LGCs NSW 25-26    Australia - New South Wales                 -0.64
-  LGCs ACT 25-26    Australia - Australian Capital Territory    -0.64
-  LGCs QLD 25-26    Australia - Queensland                      -0.67
-  LGCs SA 25-26     Australia - South Australia                 -0.22
-  LGCs TAS 25-26    Australia - Tasmania                        -0.20
-  LGCs NT 25-26     Australia - Northern Territory              -0.56
-  LGCs WA 25-26     Australia - Western Australia               -0.50
-
-Match each name's abbreviation to that state's own existing rows. Every value is
-NEGATIVE - if a field won't take a minus, stop. Check for an existing 25-26 row
-for the region first; skip and tell me if one exists. Never edit or delete an
-existing factor. Do NSW first, stop and show me, then the rest.
+=== OUTPUT ===
+Filter "lgc" again and confirm: 32 rows, none named "( Copy of", none with
+Region "*Select Region*" or plain "Australia".
 ```
 
-Expected afterwards: the next certificates export shows `LGCs NSW 25-26` (−0.64) on the NSW accounts
-and Bathurst nets to zero in July instead of −1.08 t. If the accounts stay on 24-25 after the factors
-exist, the factor set's date range or region mapping needs a look — that is a separate, read-only step.
-
+Expected afterwards: the next certificates export shows `LGCs NSW 26-27` (−0.60) on the NSW accounts
+for July 2026 on, and Bathurst nets to zero in July instead of −1.08 t. The historical `LGCS_` accounts
+recalculate onto whichever vintage their month now falls in — intended, but the FY25 and FY26 totals on
+those accounts are worth a glance in that export. If the accounts stay on 24-25 after the dates are in,
+the factor set's date handling or region mapping needs a look — that is a separate, read-only step.
 ---
 
 ## 4 · Fix the two Account Refs
