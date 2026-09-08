@@ -24,7 +24,7 @@ OUT = os.path.join(HERE, "..", "RTS_Market_Based_Check_Jul26.xlsx")
 
 MONTHS = ["Mar 26", "Apr 26", "May 26", "Jun 26", "Jul 26", "Aug 26"]
 # The dashboard's Scope 1 & 2 (market-based) monthly figures, read off the YTD chart.
-CHART = {"Mar 26": 625.05, "Apr 26": 543.82, "May 26": 612.33, "Jun 26": 542.12, "Jul 26": 928.48}
+CHART = {"Mar 26": 635.78, "Apr 26": 557.14, "May 26": 626.46, "Jun 26": 558.22, "Jul 26": 786.33}  # dashboard refreshed 8 Sep 26
 
 FONT = "Arial"
 F = lambda **k: Font(name=FONT, size=k.pop("size", 10), **k)
@@ -172,7 +172,7 @@ lines = [
     ("Certificates and renewable deductions (Other)", 'SUMIFS(Accounts!$O:$O,Accounts!$H:$H,{m})', "Other reported - the _CERTS virtual accounts and the Victorian 100% renewable deductions"),
     ("Electricity - market-based (Scope 2 + Other)", "{s2}+{oth}", "What the certificates leave to report"),
     ("Dashboard Scope 1 & 2 (market-based)", None, "Read off the chart; blank where the chart has no bar yet"),
-    ("Dashboard less market-based electricity", "{chart}-{mkt}", "The non-electricity balance the dashboard implies (Scope 1 and anything else). Steady at ~99 t Mar-May and 70 t in Jun; 762 t in Jul"),
+    ("Dashboard less market-based electricity", "{chart}-{mkt}", "The non-electricity balance the dashboard implies (Scope 1 and anything else). Steady at ~110 t Mar-May and 86 t in Jun; 620 t in Jul"),
     ("Dashboard less location-based electricity", "{chart}-{s2}", "Same test with no certificate credit at all"),
 ]
 rowmap = {}
@@ -244,11 +244,13 @@ findings = [
     "source kWh exactly in July and August, opened 1 Jul 26, no June row, and CO2e = kWh x factor. See Accounts, Check column.",
     "2. Market-based electricity for RTS FELL in July, from 471.9 t (Jun) to 166.3 t, because those three accounts started crediting on "
     "1 July. The July spike on the dashboard is not coming from the market-based electricity as it stands in the 6 Sep export.",
-    "3. Best fit for the 928 t: the dashboard was refreshed while the old CS Energy accounts at Maryborough (1003077, 1003082) and "
-    "Torbanlea (1003571) still had no Replaced On and were accruing July (~165 + 7 + 110 = ~282 t) on top of the Engie actuals, and "
-    "before the certificate accounts were linked. 739 (location-based) + 282 - 171 (HCMT deduction) + ~70-99 non-electricity = 920-950 t. "
-    "The CS Energy accounts were closed at 30 Jun 26 between the 3 Sep and 5 Sep extracts, so a refresh should clear it. Scope 1 is not "
-    "in this repo, so I cannot rule out a genuine July scope 1 movement - check gas and fuel for RTS if the refresh does not clear it.",
+    "3. The 8 Sep refresh brought July down from 928 t to 786 t (the CS Energy accounts at Maryborough and Torbanlea closing at 30 Jun "
+    "removed their July accruals), but July is still ~230 t above June when the electricity says it should be ~300 t below. The gap "
+    "(~510 t over the Mar-Jun non-electricity run-rate) is close to the two new certificate accounts not being credited at all: Auburn "
+    "204.8 t + Maryborough 196.8 t = 401.6 t, plus Torbanlea's high first Engie bill (+56 t). HCMT's deduction IS credited every month "
+    "and the only structural difference is its factor - LGCs Victoria 25-26 - against the new accounts' 24-25 vintage. If the dashboard's "
+    "market-based measure only picks up current-year factors, moving the accounts to 25-26 LGC factors fixes both this and item 4. Scope 1 "
+    "is not in this repo, so a genuine July gas or fuel movement cannot be ruled out.",
     "4. All three certificate accounts are on 24-25 LGC factors (NSW -0.66, QLD -0.71) against electricity on 25-26 (0.64, 0.67), so "
     "each site nets slightly below zero: Auburn -6.2 t, Maryborough -11 t before the foundry issue. Needs the 25-26 LGC factors (already open).",
     "5. Maryborough is over-credited by ~95 t a month. The certificate account copies the gross NMI figure (277,212 kWh) but the location "
