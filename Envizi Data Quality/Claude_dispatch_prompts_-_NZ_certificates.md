@@ -215,11 +215,14 @@ Re-open "RECs NZ - 2026": value still -0.10111894, Effective To still
 30 Jun 2026. If the copy action altered it, tell me before touching
 anything else.
 
-=== STEP 4 · Recalculate if offered ===
-If saving prompts a recalculation of dependent accounts, accept it. If it
-doesn't, tell me - prompt 3 picks it up.
+=== STEP 4 · Apply Factors ===
+Saving does NOT recalculate anything. Back on the Custom Factors screen
+there is an "Apply Factors" button that queues a job to push factor changes
+through the accounts. Click it once. If it asks for a scope or date range,
+choose everything / all dates - it must reach July and August 2026. Tell me
+what it said (queued, running, done, job number). Do not click it twice.
 
-=== STEP 5 · Spot-check one site ===
+=== STEP 5 · Spot-check one site (after the job has run) ===
 Top-right search, dropdown "Accounts", paste
   Copy of Eco_ICP_0000939570TUEC4_CERTS
 (the header may show the name without _CERTS - that is the same account;
@@ -232,6 +235,11 @@ prompt 3 picks it up.
 
 Report back the three RECs NZ rows side by side, then the spot-check.
 ```
+
+**Run on 08 Sep 26.** `RECs NZ - 2027` created by copy, 8 decimals kept, sign intact, 2026 row untouched.
+Saving triggered nothing and the spot-check still showed July and August blank - that is how I learned
+about Apply Factors, which was outside the brief as first written and is now Step 4. The 2027 row exists;
+the recalculation is the outstanding piece.
 
 ---
 
