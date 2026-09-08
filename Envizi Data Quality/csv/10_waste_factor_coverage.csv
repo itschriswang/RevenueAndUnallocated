@@ -1,0 +1,44 @@
+Category,Account Style/Component,Supplier,has_factor,accounts,rows,qty,tco2e
+Waste,Waste General (kg),,True,1,6,662400.0,861.1
+Waste Recycled,RAP used [t],Downer,False,18,108,143677.0,0.0
+Waste Recycled,RAP used [t],,False,13,78,85360.9,0.0
+Waste,Waste (asbestos) sent to landfill [t],,False,2,12,2640.9,0.0
+Waste,Waste (general solid) to landfill [t],Cleanaway,False,294,1129,2306.8,0.0
+Waste,Waste - Commingled [t],,False,1,4,446.4,0.0
+Waste,Waste - Chemical [t],Cleanaway,False,24,45,286.5,0.0
+Landfill,Contaminated Soil [t],Cleanaway,False,2,3,282.4,0.0
+Waste Recycled,RAP used [t],RPQ,False,1,6,275.1,0.0
+Waste,Waste - Commingled [t],Cleanaway,False,152,536,244.0,0.0
+Waste,Water Discharged-sewer or tradewaste [kL],CBRE - Brisbane Airport,False,1,6,219.7,0.0
+Waste,Waste-Grease Traps [t],Cleanaway,False,25,45,197.3,0.0
+Waste,Waste (general solid) to landfill [t],,False,4,12,163.4,0.0
+Waste,Liquid Waste - Oily Water [t],Cleanaway,False,9,19,162.6,0.0
+Waste,"Water Discharged (to stormwater, creek etc.) [t]",Cleanaway,False,2,4,155.2,0.0
+Waste,Waste (solid) sent to hazardous waste facility [t],,False,1,1,112.0,0.0
+Waste Recycled,Waste recycled-metal [t],Cleanaway,False,11,31,111.2,0.0
+Waste Recycled,Waste Recycled - Commingled [t],Cleanaway,False,85,304,106.4,0.0
+Waste Recycled,Waste recycled-timber [t],Cleanaway,False,21,57,105.8,0.0
+Waste Recycled,Waste recycled-waste oil [t],Cleanaway,False,13,29,104.0,0.0
+Waste Recycled,Waste recycled-co-mingled [t],,False,2,11,49.7,0.0
+Waste,Trade Waste,,False,1,6,47.7,0.0
+Waste Recycled,Waste recycled - Green waste [t],Cleanaway,False,7,23,38.2,0.0
+Waste,Wastewater-sewage [t],Cleanaway,False,4,14,37.0,0.0
+Waste Recycled,Waste recycled-plastics [t],Cleanaway,False,7,31,31.7,0.0
+Waste,Wastewater-sewage [kL],,False,2,11,31.1,0.0
+Waste Recycled,Waste recycled-organics [t],Cleanaway,False,30,108,28.5,0.0
+Waste Recycled,Waste Recycled - Secure Materials [t],Cleanaway,False,48,164,27.2,0.0
+Waste,Waste - Medical [t],Cleanaway,False,8,19,22.1,0.0
+Waste,Waste (solid) sent to hazardous waste facility [t],Cleanaway,False,22,34,20.1,0.0
+No Recovery,Clinical waste [t],Cleanaway,False,27,70,17.5,0.0
+Waste Recycled,Waste recycled-cardboard & paper [t],Cleanaway,False,40,82,16.7,0.0
+Waste,Waste sent to liquid waste facility [kL],,False,1,6,11.9,0.0
+Waste Recycled,Waste recycled-concrete [t],,False,2,12,11.2,0.0
+Waste Recycled,Waste recycled-electronics [t],Cleanaway,False,10,14,8.3,0.0
+Waste Recycled,Waste recycled-timber [t],,False,1,6,4.3,0.0
+Waste Recycled,Waste recycled-plastics [t],,False,1,6,3.5,0.0
+Waste Recycled,Waste recycled-cardboard & paper [t],,False,1,5,2.0,0.0
+Waste Recycled,Waste recycled - Green waste [t],,False,1,1,0.4,0.0
+Waste Recycled,Waste recycled-metal [t],,False,1,1,0.2,0.0
+Waste Recycled,Waste Recycled - Fluoro Tubes/Globes [t],Cleanaway,False,4,8,0.2,0.0
+Waste,Waste - Commercial and Industrial - [t],Cleanaway,True,29,84,0.0,0.0
+Waste,Waste - Sanitary [t],Cleanaway,False,18,55,0.0,0.0

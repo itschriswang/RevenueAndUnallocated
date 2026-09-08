@@ -1,0 +1,130 @@
+is_spend_account,supplier_feed_live_JulAug,Data Type,accounts
+False,True,Diesel Transport post-2004 [L],10463
+False,True,Diesel Stationary [L],1051
+False,True,Petroleum Based Oils Stationary [kL] - NC,615
+False,True,Petrol Transport post-2004 [L],349
+False,True,Waste - General Landfill [t],282
+False,True,Petrol Transport [L],221
+False,False,Petroleum Based Oils Stationary [kL] - NC,215
+False,True,Diesel Transport [L],203
+False,True,Ethanol E10 Transport post-2004 [L],190
+False,True,Waste - Commingled [t],126
+False,True,Petrol Stationary [L],113
+False,True,Waste Recycled - Commingled [t],97
+False,True,Petroleum Based Oils Stationary [L],81
+True,True,Revenue [AUD Million],73
+False,True,Other Gaseous Fossil Fuels [m3],65
+False,False,Certificates - Location [kWh],65
+False,True,Liquefied Petroleum Gas (LPG) Stationary [L],64
+False,True,Waste Landfilled - Commercial and Industrial [t],62
+False,True,Liquefied Petroleum Gas (LPG) Transport post-2004 [L],59
+False,True,Waste Recycled - Secured Materials [t],56
+False,False,Petrol Transport [L],53
+False,False,Electricity [kWh],49
+False,False,Diesel Transport post-2004 [L],48
+False,False,Diesel Stationary [L],46
+False,True,Electricity [kWh],43
+False,True,Waste - Sanitary waste [t],38
+False,True,Liquid Waste - Oily Water [t],36
+False,True,Waste - Grease Traps [t],35
+False,True,Waste - Chemical [t] - No Scope,29
+False,True,Natural Gas [GJ],25
+False,True,Waste - Medical [t],24
+False,True,Liquefied Petroleum Gas (LPG) Transport [L],23
+False,True,Clinical Waste [t],23
+False,True,Waste Recycled - Organics [t],22
+False,False,Petrol Stationary [L],21
+False,True,Waste - Hazardous (solid) [t],20
+False,True,Certificates - Location [kWh],20
+False,True,Liquid Waste [t],20
+False,True,Waste Recycled - Electonics [t],17
+False,True,Waste Recycled - Timber [t],16
+False,True,Ethanol E10 Stationary [L],15
+False,False,Liquefied Petroleum Gas (LPG) Transport [L],15
+False,True,Waste Recycled - Waste Oil [t],15
+False,True,Waste Recycled - Green Waste [t],14
+True,False,Farms [USD],13
+False,True,Waste Recycled - Paper and Cardboard [t],12
+False,True,Waste Recycled - Metals [t] - No Scope,12
+True,False,Construction [USD],12
+False,False,Business flights [pkm],11
+True,False,"Other services, except government [USD]",11
+False,True,Waste Recycled - Fluorescent Tubes [t],10
+False,False,Recycled Asphalt Used [t],9
+False,False,Liquefied Petroleum Gas (LPG) Stationary [L],9
+False,True,Waste Recycled - Liquid [t],6
+False,True,Kerosene (NOT for use as fuel in aircraft) Stationary [L] - NC,6
+False,True,Contaminated Soil [t],6
+True,False,Nonmetallic mineral products [USD],6
+False,True,Recycled Asphalt Used [t],6
+True,False,Fabricated metal products [USD],6
+True,False,Administrative and support services [USD],5
+False,True,Liquid Waste - Sewage Discharge [t],5
+True,False,Other retail [USD],5
+True,False,"Other transportation equip., general [USD]",5
+True,False,"Electrical equipment, appliances, other [USD]",5
+False,True,Aviation Kerosene - Transport [L],5
+True,False,Chemical products [USD],5
+True,False,"Amusements, gambling, and recreation [USD]",4
+False,True,Waste Recycled - Plastic - Average Plastics [t],4
+False,False,Asphalt Produced [t],3
+True,False,Plastics and rubber products [USD],3
+False,True,Synthetic Gases - Hydrofluorocarbons [kg],3
+True,False,Apparel and leather and allied products [USD],3
+True,False,Miscellaneous manufacturing [USD],3
+False,True,Waste - Hazardous (Liquid) [t],3
+False,True,Grease and Lubes [L] - NC,3
+True,False,Wholesale trade [USD],2
+True,False,"General merchandise, general [USD]",2
+True,False,Furniture and related products [USD],2
+True,False,Other transportation and support activities [USD],2
+True,False,Primary metals [USD],2
+True,False,Educational services [USD],2
+False,False,Natural Gas [MJ],2
+False,False,Petrol Transport post-2004 [L],2
+False,False,Waste - General Landfill [t],2
+True,False,Truck transportation [USD],2
+False,False,Kerosene (NOT for use as fuel in aircraft) Stationary [L] - NC,2
+False,True,Petroleum Based Greases Staionary [kL] - NC,2
+False,True,Natural Gas [MJ],2
+False,False,Water Discharged [kL],1
+False,False,Kerosene (NOT for use as fuel in aircraft) [L],1
+False,False,Diesel Transport [L],1
+False,False,Electricity - Solar Generation [kWh],1
+False,False,Electricity - not from grid [kWh],1
+False,False,Synthetic Gases - Sulphur Hexafluoride (SF6) [kg],1
+False,False,Waste - Hazardous (solid) [t],1
+False,False,Waste Landfilled - Commercial and Industrial [t],1
+False,False,Aviation Gasoline - Stationary [L],1
+False,True,Asphalt Produced [t],1
+False,True,Biodiesel B5 Transport [L],1
+False,True,Fuel Oil Transport [kL],1
+False,True,Hydrogen [kg],1
+False,False,Biodiesel B100 Transport [L],1
+False,False,Biodiesel B100 Stationary [L],1
+False,False,Aviation Kerosene - Transport [L],1
+False,False,Contaminated Soil [t],1
+False,False,Liquid Waste [t],1
+False,False,Liquid Waste [kL],1
+False,False,Material Use - Cement [t],1
+False,False,Solvents (mineral turpentine or white spirit) Stationary [L] - NC,1
+True,False,Computer and electronic products [USD],1
+True,False,Ambulatory health care services [USD],1
+False,True,Synthetic Gases - Sulphur Hexafluoride (SF6) [kg],1
+True,False,Food and beverage and tobacco products [USD],1
+True,False,"Motor vehicles, bodies and trailers, parts [USD]",1
+True,False,Motor vehicle and parts dealers [USD],1
+True,False,Machinery [USD],1
+True,False,"Mining, except oil and gas [USD]",1
+True,False,"Legal services, general [USD]",1
+True,False,Housing [USD],1
+True,False,"Forestry, fishing, and related activities [USD]",1
+True,False,"Food and beverage, general [USD]",1
+True,False,"Fed Res banks, credit services, and other [USD]",1
+True,False,"Other real estate, general [USD]",1
+True,False,Pipeline transportation [USD],1
+True,False,Rail transportation [USD],1
+True,False,Support activities for mining [USD],1
+True,False,Social assistance [USD],1
+True,False,Water transportation [USD],1
+True,False,Wood products [USD],1

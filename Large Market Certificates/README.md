@@ -12,6 +12,7 @@ FY26–28 renewal agreements, and everything behind them.
 | `Downer_Energy_Contracting_and_Budget_Summary_FY26-28.xlsx` | The renewal agreement site register (scope, retailers, contract dates) and the rate schedules with the LGC lines. |
 | `Downer_Energy_Contracting_and_Budget_Summary_FY26-28_with_Envizi_accounts.xlsx` | The same workbook with the Envizi account mapping added to `Site Register` as columns V–AE, and an `Envizi mapping notes` tab explaining them. Everything left of column V is untouched. |
 | `ElectricityEnviziSummaryjunejulyaug26.xlsx` | The Jun–Aug 26 Envizi summary — kWh, actual/accrued split, cost, CO2e and the green component. |
+| `RTS_Market_Based_Check_Jul26.xlsx` | The RTS (Rail & Transit Systems) market-based check for Mar–Aug 26, built from the 6 Sep 26 electricity export. `Summary` reconciles the electricity to the RTS Scope 1 & 2 dashboard month by month, `Accounts` re-derives every CO2e from kWh × factor and checks each `_CERTS` account mirrors its source, `Sites` is the register rows for the RTS sites, `Issues` is the worklist. See [RTS check](#rts-check--the-july-spike) below. |
 
 The accounts and locations extracts it reads are in `../FY27/` (`Extract_for_Accounts 05 Sep 26.csv`,
 `Extract_for_Locations 26 Aug 26.csv`). Two Jun–Aug 26 energy exports sit one folder up: `../Electricity
@@ -258,6 +259,38 @@ to Ecotricity 1 Jan 27). 114 of the 158 NZ green ICPs resolve to 80 open Envizi 
 already have a CERTS account; 44 cannot be placed from the extracts. Nothing NZ is set up yet — the NTOU
 contract has not started, and for a site whose consumption sits on a per-location account rather than an
 `Eco_ICP_` account, what the virtual meter should copy needs deciding first.
+
+## RTS check — the July spike
+
+The RTS Scope 1 & 2 dashboard showed July 26 at 928 t against 542 t in June on 7 Sep; refreshed on 8 Sep it
+reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS_Market_Based_Check_Jul26.xlsx`):
+
+- **The three RTS certificate accounts are calculating as set up.** `50002617957_4103713125_CERTS` and
+  `50002617965_4103711576_CERTS` (Auburn, Origin large market) and `900018200_QGGG000010_CERTS`
+  (Maryborough, Engie) each mirror their source kWh exactly in July and August, opened 1 Jul 26, no June row,
+  and CO2e = kWh × factor. Certificate credits sit in **Other CO2e**, not Scope 2, so market-based is
+  Scope 2 + Other.
+- **RTS market-based electricity fell in July**, 471.9 t (Jun) to 166.3 t, because those accounts started
+  crediting. The dashboard minus market-based electricity is a steady ~110 t Mar–May and 86 t in June, then
+  620 t in July — the spike is not in the electricity as it stands now.
+- **The 8 Sep refresh took 142 t off July** — the CS Energy accounts at Maryborough (`1003077`, `1003082`)
+  and Torbanlea (`1003571`) closing at 30 Jun 26 removed their July accruals. What is left, ~510 t over the
+  run-rate, is close to the two new certificate accounts not being credited at all (Auburn 204.8 t +
+  Maryborough 196.8 t) plus Torbanlea's high first bill (+56 t). HCMT's deduction is credited every month and
+  the only structural difference is its factor, `LGCs Victoria 25-26`, against the new accounts' 24-25
+  vintage — if the dashboard's market-based measure only picks up current-year factors, the 25-26 LGC
+  factors fix both. Scope 1 is not in this repo.
+- **Maryborough is over-credited by ~95 t a month.** The certificate account copies the gross NMI figure
+  while the CQMS foundry deduction (−141,380 kWh) nets the location, so Maryborough reports −103 t in July.
+  Gross or net is the Category Management question already listed below.
+- The three accounts are on **24-25 LGC factors** (NSW −0.66, QLD −0.71) against 25-26 electricity
+  (0.64, 0.67), so Auburn nets −6.2 t. Maryborough `QGGG000320` has nothing recording since 30 Jun (meter:
+  12,413 kWh in July). Torbanlea (a named exclusion, correctly with no certificate account) has a first
+  Engie bill of 248,502 kWh for July, 51% above June — confirm the bill period.
+- Two Auburn **meter** oddities with no effect on account-based CO2e: the NEMMCO meter on `4103713125`
+  reads twice the account every month (the Wingfield pattern), and sub-meter `DWR_MSB-5-LATHE` reads
+  601,436 kWh in July against 3 kWh in June — ~385 t at the NSW factor, almost exactly the dashboard's
+  June-to-July increase. If the dashboard sums meters as well as accounts, that is the spike.
 
 ## Still open
 

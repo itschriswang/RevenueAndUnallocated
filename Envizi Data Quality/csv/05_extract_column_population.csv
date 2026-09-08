@@ -1,0 +1,141 @@
+extract,rows,column,populated,populated_pct
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Location Link,59333,100.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Account Link,59333,100.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Associate,59333,100.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Location,59333,100.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Location Account Ref,37435,63.1
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Data Type,59333,100.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Account Style,59333,100.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Sub Type,145,0.2
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Supplier,56916,95.9
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Account Number,59333,100.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Account Reference,24295,40.9
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Reader,25380,42.8
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Serial_No,12,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Opened On,2463,4.2
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Replaced On,35810,60.4
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Usage Type,12040,20.3
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Use,12040,20.3
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Apportionment,12040,20.3
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Effective From,1078,1.8
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Effective To,20,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Cost Centre Group Chain,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Cost Centre,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Report Percent,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Cost Centre Effective From,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Cost Centre Effective To,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Cost Centre Membership Description,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Relationship,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Related Account,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Relationship Percent,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Relationship Effective From,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Relationship Effective To,0,0.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Account Style Accrue Type,59333,100.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Account Style Consumption Accrue Method,59333,100.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Account Style Cost Accrue Method,59333,100.0
+Extract_for_Accounts (1).csv (07 Sep 26),59333,Updated On,59333,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Location Link,59266,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Account Link,59266,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Associate,59266,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Location,59266,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Location Account Ref,37409,63.1
+Extract_for_Accounts 05 Sep 26.csv,59266,Data Type,59266,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Account Style,59266,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Sub Type,145,0.2
+Extract_for_Accounts 05 Sep 26.csv,59266,Supplier,56849,95.9
+Extract_for_Accounts 05 Sep 26.csv,59266,Account Number,59266,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Account Reference,24269,40.9
+Extract_for_Accounts 05 Sep 26.csv,59266,Reader,25380,42.8
+Extract_for_Accounts 05 Sep 26.csv,59266,Serial_No,12,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Opened On,2437,4.1
+Extract_for_Accounts 05 Sep 26.csv,59266,Replaced On,35842,60.5
+Extract_for_Accounts 05 Sep 26.csv,59266,Usage Type,12040,20.3
+Extract_for_Accounts 05 Sep 26.csv,59266,Use,12040,20.3
+Extract_for_Accounts 05 Sep 26.csv,59266,Apportionment,12040,20.3
+Extract_for_Accounts 05 Sep 26.csv,59266,Effective From,1078,1.8
+Extract_for_Accounts 05 Sep 26.csv,59266,Effective To,20,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Cost Centre Group Chain,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Cost Centre,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Report Percent,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Cost Centre Effective From,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Cost Centre Effective To,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Cost Centre Membership Description,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Relationship,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Related Account,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Relationship Percent,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Relationship Effective From,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Relationship Effective To,0,0.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Account Style Accrue Type,59266,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Account Style Consumption Accrue Method,59266,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Account Style Cost Accrue Method,59266,100.0
+Extract_for_Accounts 05 Sep 26.csv,59266,Updated On,59266,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Location Link,59205,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Account Link,59205,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Associate,59205,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Location,59205,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Location Account Ref,37348,63.1
+Extract_for_Accounts 03 Sep 26.csv,59205,Data Type,59205,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Account Style,59205,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Sub Type,145,0.2
+Extract_for_Accounts 03 Sep 26.csv,59205,Supplier,56788,95.9
+Extract_for_Accounts 03 Sep 26.csv,59205,Account Number,59205,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Account Reference,24208,40.9
+Extract_for_Accounts 03 Sep 26.csv,59205,Reader,25361,42.8
+Extract_for_Accounts 03 Sep 26.csv,59205,Serial_No,10,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Opened On,2394,4.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Replaced On,35836,60.5
+Extract_for_Accounts 03 Sep 26.csv,59205,Usage Type,12040,20.3
+Extract_for_Accounts 03 Sep 26.csv,59205,Use,12040,20.3
+Extract_for_Accounts 03 Sep 26.csv,59205,Apportionment,12040,20.3
+Extract_for_Accounts 03 Sep 26.csv,59205,Effective From,1078,1.8
+Extract_for_Accounts 03 Sep 26.csv,59205,Effective To,20,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Cost Centre Group Chain,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Cost Centre,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Report Percent,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Cost Centre Effective From,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Cost Centre Effective To,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Cost Centre Membership Description,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Relationship,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Related Account,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Relationship Percent,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Relationship Effective From,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Relationship Effective To,0,0.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Account Style Accrue Type,59205,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Account Style Consumption Accrue Method,59205,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Account Style Cost Accrue Method,59205,100.0
+Extract_for_Accounts 03 Sep 26.csv,59205,Updated On,59205,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Location Link,59186,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Account Link,59186,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Associate,59186,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Location,59186,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Location Account Ref,37329,63.1
+Extract_for_Accounts 26 Aug 26.csv,59186,Data Type,59186,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Account Style,59186,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Sub Type,145,0.2
+Extract_for_Accounts 26 Aug 26.csv,59186,Supplier,56770,95.9
+Extract_for_Accounts 26 Aug 26.csv,59186,Account Number,59186,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Account Reference,24193,40.9
+Extract_for_Accounts 26 Aug 26.csv,59186,Reader,25343,42.8
+Extract_for_Accounts 26 Aug 26.csv,59186,Serial_No,10,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Opened On,2371,4.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Replaced On,35819,60.5
+Extract_for_Accounts 26 Aug 26.csv,59186,Usage Type,12040,20.3
+Extract_for_Accounts 26 Aug 26.csv,59186,Use,12040,20.3
+Extract_for_Accounts 26 Aug 26.csv,59186,Apportionment,12040,20.3
+Extract_for_Accounts 26 Aug 26.csv,59186,Effective From,1078,1.8
+Extract_for_Accounts 26 Aug 26.csv,59186,Effective To,20,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Cost Centre Group Chain,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Cost Centre,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Report Percent,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Cost Centre Effective From,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Cost Centre Effective To,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Cost Centre Membership Description,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Relationship,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Related Account,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Relationship Percent,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Relationship Effective From,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Relationship Effective To,0,0.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Account Style Accrue Type,59186,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Account Style Consumption Accrue Method,59186,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Account Style Cost Accrue Method,59186,100.0
+Extract_for_Accounts 26 Aug 26.csv,59186,Updated On,59186,100.0

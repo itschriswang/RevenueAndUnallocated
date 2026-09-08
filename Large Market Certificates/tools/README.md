@@ -7,6 +7,7 @@ The generators behind everything in the folder above. Run them from anywhere; pa
 | `build_lmcerts.py` | Site register, Jun–Aug 26 summary, `FY27/Extract_for_Accounts 05 Sep 26.csv`, `FY27/Extract_for_Locations 26 Aug 26.csv` | `Account_Setup_and_Data_Load_-_PM&C_LMCERTSJUL26_Setup.xlsx` |
 | `build_guide_data.py` | The workbook above, the Jun–Aug 26 energy export taken after the first Claude in Chrome batches (`Electricity download after the first Claude in Chrome batches.xlsx`, repo root), the accounts extract | `guide_data.json` |
 | `build_register_map.py` | The pristine budget summary, the accounts extract, `guide_data.json` | `..._with_Envizi_accounts.xlsx` |
+| `build_rts_check.py` | `Electricity Data as of 060926.xlsx` (repo root) | `RTS_Market_Based_Check_Jul26.xlsx` — standalone; recalc after building |
 | `guide_template.html` + `guide_data.json` | — | `Virtual Meter Guide/Large_Market_Virtual_Meters.html` (replace `/*__DATA__*/null` with the JSON) |
 
 Order: `build_lmcerts.py` → recalc the workbook (LibreOffice, `recalc.py` from the xlsx skill) →

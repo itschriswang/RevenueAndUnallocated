@@ -1,0 +1,5 @@
+Location,Item Number,Data Type,Account_Meter_Link,Accrued Percent_Apr26,Accrued Percent_Aug26,Accrued Percent_Jul26,Accrued Percent_Jun26,Accrued Percent_Mar26,Accrued Percent_May26,Total CO2e(t)_Apr26,Total CO2e(t)_Aug26,Total CO2e(t)_Jul26,Total CO2e(t)_Jun26,Total CO2e(t)_Mar26,Total CO2e(t)_May26,Total Data_Apr26,Total Data_Aug26,Total Data_Jul26,Total Data_Jun26,Total Data_Mar26,Total Data_May26
+Asphalt Prod - Hamilton,Copy of Eco_ICP_0000024050WE5E2_CERTS,Certificates - Location [kWh],6397548,0.0,,,0.0,0.0,0.0,-4.5,,,-5.3,-5.1,-4.8,44967.5,,,52666.7,50250.9,47769.2
+Asphalt Prod - Hamilton,Eco_ICP_0000024050WE5E2,Electricity [kWh],6223426,100.0,100.0,100.0,100.0,100.0,100.0,4.5,4.7,5.2,5.3,5.1,4.8,44967.5,46404.2,51902.3,52666.7,50250.9,47769.2
+Hastings Depot,Copy of Eco_ICP_0000024050WE5E2_CERTS,Certificates - Location [kWh],6397567,0.0,,,0.0,0.0,0.0,-4.8,,,-4.8,-4.9,-4.9,47099.1,,,47099.1,48669.1,48669.1
+Hastings Depot,Eco_ICP_0000024050WE5E2,Electricity [kWh],6391000,100.0,0.0,100.0,100.0,100.0,100.0,4.8,0.0,4.9,4.8,4.9,4.9,47099.1,0.0,48669.1,47099.1,48669.1,48669.1

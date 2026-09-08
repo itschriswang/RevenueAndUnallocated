@@ -1,0 +1,3 @@
+Location,Virtual Account Name,Virtual Account Link,relationships,rules,variables,formulas,sources,apportionment,effective_from,same_variable_twice
+Cardiff - Rail,Tenant 700000536_ZZZZ001261,6397575,2,Cardiff Electricity Apportionment | Cardiff Tenant Apportionment,Total Cost | Kilowatt hours,-({6000024})*{6000025} | (-{6000020})*{6000021},700000536_ZZZZ001261 | 700000536_ZZZZ001261,100.0000 | 100.0000,blank | blank,False
+Cardiff - Rail,Tenant Electricity_Cardiff Rail,6397574,2,Cardiff Electricity Apportionment | Cardiff Tenant Apportionment,Total Cost | Kilowatt hours,-({6000024})*{6000025} | (-{6000020})*{6000021},Electricity_Cardiff Rail | Electricity_Cardiff Rail,100.0000 | 100.0000,blank | blank,False

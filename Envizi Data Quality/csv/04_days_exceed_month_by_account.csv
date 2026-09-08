@@ -1,0 +1,64 @@
+Location,Account_Number,Supplier,Data Type,Replaced_On,months_flagged,first_month,last_month,max_days_of_data,months_in_export,export_qty,export_tco2e,est_excess_qty,est_excess_tco2e
+Bitumen - Taranaki,3045_Natural Gas,Downer,Natural Gas [MJ],,11,Sep 25,Jul 26,62.0,5,8753310.0,474.5,4376655.0,237.25
+RPQ NSW Chinderah,A-7098FD44_4407159044,Origin,Electricity [kWh],,7,Dec 25,Jun 26,93.0,4,31896.57,20.41,20390.6,13.05
+"Wharf Road, Coromandel",9009_Electricity - Purchased from grid,,Electricity [kWh],,9,Sep 25,Jun 26,124.0,4,78287.0,7.92,52217.4,5.28
+Cardiff - Rail,700000536_ZZZZ001261,CleanPeakEnergy,Electricity [kWh],,1,May 26,May 26,32.0,1,227003.32,145.28,7037.1,4.5
+Dunedin Depot (Green Island ),55660_Electricity - Purchased from grid,,Electricity [kWh],,9,Sep 25,Jun 26,62.0,3,75804.0,7.67,37902.0,3.83
+Taumarunui Depot,55563_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,93.0,4,56368.0,5.7,36204.3,3.66
+Wiri (130 Kerrs Rd),91145_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,62.0,4,70486.0,7.13,35243.0,3.56
+Gisborne Depot,55580_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,217.0,4,41238.0,4.17,32990.4,3.34
+Invercargill Depot,55670_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,62.0,4,62111.0,6.28,31055.5,3.14
+Hawkins Construction Recharges,9010_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,262.0,4,37450.38,3.79,30755.7,3.11
+MMA,883005_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,568.0,4,32951.15,3.33,30691.6,3.1
+Queenstown Depot,55680_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,62.0,4,57767.0,5.84,28883.5,2.92
+RPQ NSW South Grafton,A-480CA3BE_4001277522,Origin,Electricity [kWh],,6,Jan 26,Jun 26,62.0,4,6261.16,4.01,3119.3,2.0
+Maryborough,A-011B63B4_3041781236,Ergon,Electricity [kWh],,1,May 26,May 26,62.0,1,4454.97,2.98,2227.5,1.49
+Tauriko (763 SH29),91426_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,62.0,4,20928.0,2.12,10464.0,1.06
+Albany Depot(Water),55535_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,93.0,4,14353.0,1.45,9573.5,0.97
+Utilities Support Misc Rechges,63990_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,178.0,4,11572.23,1.17,9081.3,0.92
+Whangarei Depot,55510_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,124.0,4,12973.91,1.31,7469.1,0.76
+N01 Anzac Square - Terrica Place,141362_153568,,Electricity [kWh],,7,Sep 25,Apr 26,32.0,2,27702.93,18.56,872.4,0.58
+Waitoki Depot,55524_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,62.0,4,10970.0,1.11,5485.0,0.56
+Taupo (36-39 Matai St),91648_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,62.0,4,10748.0,1.09,5374.0,0.54
+Lawrence (6 Irvine St),DS2675_Electricity - Purchased from grid,Meridian,Electricity [kWh],,9,Oct 25,Jun 26,62.0,4,9558.42,0.97,4356.4,0.44
+Tirau Depot,55568_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,62.0,4,7892.0,0.8,3946.0,0.4
+DNZ National Radio Comms,561544_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,93.0,4,5980.0,0.6,3506.4,0.36
+Te Anau Depot,55682_Electricity - Purchased from grid,,Electricity [kWh],,1,Mar 26,Mar 26,62.0,1,4986.0,0.5,2493.0,0.25
+New Plymouth Depot,55572_Electricity - Purchased from grid,,Electricity [kWh],,3,Jan 26,Mar 26,84.0,1,8724.78,0.88,1788.6,0.18
+Engineers Camp (Lewis Pass),55614_Electricity - Purchased from grid,,Electricity [kWh],,8,Sep 25,Apr 26,180.0,2,2133.0,0.22,1756.8,0.18
+Cell Towers,91999_Electricity - Purchased from grid,,Electricity [kWh],,4,Mar 26,Jun 26,62.0,4,3463.49,0.35,1559.0,0.16
+"45 Clem Newby Road, Hamilton - Power & Gas Depot",79211_Electricity - Purchased from grid,Meridian,Electricity [kWh],,4,Sep 25,Apr 26,62.0,1,3104.0,0.31,1552.0,0.16
+Hamilton Depot,55540_Electricity - Purchased from grid,,Electricity [kWh],,1,Apr 26,Apr 26,60.0,1,2988.0,0.3,1494.0,0.15
+RPQ Townsville,A-E566291E_3051641232,Ergon,Electricity [kWh],,1,Apr 26,Apr 26,31.0,1,6249.29,4.19,200.0,0.13
+MT-Brazil_Office,Electricity_MT-Brazil_Office,CEMIG,Electricity [kWh],,9,Sep 25,May 26,124.0,3,1821.0,0.12,1365.7,0.09
+Logistics Ops South Island,63981_Electricity - Purchased from grid,,Electricity [kWh],,1,Apr 26,Apr 26,60.0,1,1673.0,0.17,836.5,0.08
+Balclutha Depot,55674_Electricity - Purchased from grid,,Electricity [kWh],,10,Sep 25,Jun 26,62.0,4,1593.0,0.16,796.5,0.08
+Hamilton (Gilchrist Rd),91411_Electricity - Purchased from grid,,Electricity [kWh],,1,Apr 26,Apr 26,60.0,1,914.0,0.09,457.0,0.05
+Auckland (4a Wellesley Court),91407_Electricity - Purchased from grid,,Electricity [kWh],,2,Apr 26,May 26,90.0,2,520.0,0.05,346.8,0.04
+Maungatoroto (32 Hurndall St),91409_Electricity - Purchased from grid,,Electricity [kWh],,1,Apr 26,Apr 26,60.0,1,721.0,0.07,360.5,0.04
+Dargaville Depot,55512_Electricity - Purchased from grid,,Electricity [kWh],,1,Apr 26,Apr 26,60.0,1,817.0,0.08,408.5,0.04
+NZTA Contract PW S88/01,556260_Electricity - Purchased from grid,,Electricity [kWh],,1,Mar 26,Mar 26,62.0,1,321.0,0.03,160.5,0.02
+Te Anau (103 Howden St),91336_Electricity - Purchased from grid,,Electricity [kWh],,1,Mar 26,Mar 26,62.0,1,268.0,0.03,134.0,0.01
+Asphalt Prod - Hamilton,Eco_ICP_0000024050WE5E2,Ecotricity,Electricity [kWh],,1,Sep 25,Sep 25,60.0,0,0.0,0.0,0.0,0.0
+Asphalt Prod - Mackay (400),A-4176013D_3053135053,Ergon,Electricity [kWh],2026/01/01,2,Sep 25,Oct 25,59.0,0,0.0,0.0,0.0,0.0
+Blenheim (29 Old Renwick Road),91388_Electricity - Purchased from grid,,Electricity [kWh],,1,May 26,May 26,62.0,1,0.0,0.0,0.0,0.0
+Asphalt Prod - Wingfield (523),2100431_5510072233,ShellEnergyAU,Natural Gas [GJ],,1,Sep 25,Sep 25,59.0,0,0.0,0.0,0.0,0.0
+Asphalt Prod - Somerton (303),2100429_5330662312,ShellEnergyAU,Natural Gas [GJ],,1,Sep 25,Sep 25,59.0,0,0.0,0.0,0.0,0.0
+"95a Tirangi Road Wellington, Project Site",DS2675_Electricity - Purchased from grid,Meridian,Electricity [kWh],,1,Sep 25,Sep 25,43.0,0,0.0,0.0,0.0,0.0
+1259 Okau Road  Ahititi,0007821200WMAC9,Meridian,Electricity [kWh],,1,May 26,May 26,62.0,0,0.0,0.0,0.0,0.0
+GSC Planning Support,241721_Hydrogen Transport,VIVA,Hydrogen [kg],,1,Jul 26,Jul 26,62.0,0,0.0,0.0,0.0,0.0
+Asphalt Prod - Dunedin,Eco_ICP_0000102308DEAD2,Ecotricity,Electricity [kWh],,1,Dec 25,Dec 25,62.0,0,0.0,0.0,0.0,0.0
+Asphalt Prod - Bayswater (302),2100427_5310000243,ShellEnergyAU,Natural Gas [GJ],,1,Jan 26,Jan 26,61.0,0,0.0,0.0,0.0,0.0
+Asphalt Prod - Mackay (400),A-294CE7F1_3052354415,Ergon,Electricity [kWh],,2,Sep 25,Oct 25,60.0,0,0.0,0.0,0.0,0.0
+PPP - NSW Schools 2 (Ropes Crossing PS),7113511617_5247072812,AGL,Natural Gas [GJ],,5,Sep 25,Jul 26,61.0,0,0.0,0.0,0.0,0.0
+PPP - NSW Schools 2 (Ashtonfield PS),7113513001_5247058378,AGL,Natural Gas [GJ],,3,May 26,Jul 26,60.0,0,0.0,0.0,0.0,0.0
+PPP - NSW Schools 2 (Elderslie PS),9009_Electricity - Purchased from grid,Meridian,Electricity [kWh],,1,Dec 25,Dec 25,124.0,0,0.0,0.0,0.0,0.0
+PPP - NSW Schools 2 (Kariong),7113515329_5243917108,AGL,Natural Gas [GJ],,3,May 26,Jul 26,60.0,0,0.0,0.0,0.0,0.0
+RPQ Mackay Depot,A-313CFBA6_3036098256,Ergon,Electricity [kWh],,2,Nov 25,Dec 25,56.0,0,0.0,0.0,0.0,0.0
+RPQ Mackay Depot,A-D2324744_3050097725,Ergon,Electricity [kWh],2026/01/05,2,Sep 25,Oct 25,60.0,0,0.0,0.0,0.0,0.0
+PPP - Southbank TAFE (QLD),A-0818208A_5410078053,Origin,Natural Gas [GJ],,3,Nov 25,Jan 26,62.0,0,0.0,0.0,0.0,0.0
+PPP - Southbank TAFE (QLD),A-87825F48_5410086500,Origin,Natural Gas [GJ],,3,Apr 26,Jun 26,62.0,0,0.0,0.0,0.0,0.0
+Skilltech - Mitchell,SkilltechMitchell_Elec,,Electricity [kWh],,1,Nov 25,Nov 25,31.0,0,0.0,0.0,0.0,0.0
+SH1/29 SAFETY IMPROVEMENTS,JP_DN1208_Electricity - Purchased from grid,,Electricity [kWh],,1,Sep 25,Sep 25,60.0,0,0.0,0.0,0.0,0.0
+Stratford Depot,55574_Electricity - Purchased from grid,,Electricity [kWh],,1,Jan 26,Jan 26,62.0,0,0.0,0.0,0.0,0.0
+_CLOSED_Porirua CCWRT,UN0001_Electricity - Purchased from grid,,Electricity [kWh],2026/03/31,4,Dec 25,Mar 26,196.0,1,-231.49,-0.02,-194.9,-0.02
