@@ -25,7 +25,7 @@ Ranked by what it does to the reported number.
 | # | Issue | Accounts | Effect on Mar – Aug 26 figures | Action |
 | --- | --- | --- | --- | --- |
 | 1 | **Waste carries no emission factor.** Only two of 29 waste styles have one; 7,105 t of waste and 230,000 t of recycling report 0 tCO2e. | 571 waste + 317 recycled accounts | Scope 3 waste understated; indicatively ~3,200 tCO2e on general landfill alone if the 1.3 t/t C&I factor applied | Map factors to the waste styles, starting with `Waste (general solid) to landfill [t]` |
-| 2 | **NZ certificates are undated and have stopped.** 22 `Copy of …_CERTS` accounts credit all history and produce nothing from July. | 22 | –395.8 t credited Mar – Jun (≈ –99 t/month, back to whenever the sources start); ~203 t of FY27 credit missing for Jul – Aug | Set Effective From 2026-07-01, rename, and find out why no Jul/Aug rows exist |
+| 2 | **NZ certificates are undated and have stopped.** 22 `Copy of …_CERTS` accounts credit all history and produce nothing from July. | 22 | –395.8 t credited Mar – Jun (≈ –99 t/month, back to whenever the sources start); ~203 t of FY27 credit missing for Jul – Aug | Add the FY27 grid and REC factor rows; leave the relationships undated - the credit is meant to cover all history |
 | 3 | **19 AU certificate accounts have nothing to mirror.** Their source accounts hold zero rows for all six months — 18 PPP sites on Origin/CS Energy plus Tamworth. | 19 | FY27 renewable claim for PPP Schools 2, SICEEP, HQJOC, Southbank TAFE and SCUH is currently zero, and so is their electricity | Chase the feeds; these are dead supplier accounts, not certificate faults |
 | 4 | **Bitumen – Taranaki gas is double-covered.** 62 days recorded in 31-day months for 11 straight months. | 1 (+62 smaller) | ≈ 237 t overstated over five export months; 63 accounts in total, ≈ 299 t | Delete the overlapping gas records; fix the recurring NZ depot electricity overlaps |
 | 5 | **Mackay's live account is marked replaced.** `A-11525536_3053135053` has Replaced On 1 Apr 26 and is the only Ergon account still recording. | 8 | 128 t of Apr – Aug electricity sits on a "closed" account; 50 t at Archerfield and Gympie is a genuine May double count | Clear Mackay's Replaced On; delete the May records on the two `5000021_` accounts |
@@ -80,13 +80,22 @@ at that rate, roughly –3,000 t; I can only see four of those months.
 not the export. On the `RECs NZ - 2026` factor that is **≈ 203 t of FY27 credit missing** so far, growing
 by ~100 t a month.
 
-**Assumption.** I have assumed the missing rows are the factor: `RECs NZ - 2026` is the only NZ certificate
-factor in the export and its name suggests a calendar or fiscal 2026 bound. If it ends 30 Jun 26 and there
-is no successor, Envizi has nothing to calculate and writes no row. The README already notes the AU LGC
-factors were rebuilt on 8 Sep with 26-27 rows; the NZ REC factor needs the same treatment.
+**Assumption, now confirmed (survey run in Envizi 08 Sep 26).** `RECs NZ - 2026` runs 1 Jul 2025 to
+30 Jun 2026 and nothing covers July on; the only other row, `RECs NZ` (-0.0729), closed 30 Jun 2025. Inside
+Envizi the Mt Maunganui certificate account *does* hold July and August kWh (114,834 and 113,116, matching
+its source) with the factor and emissions blank, so the relationship is mirroring correctly and the export
+simply drops months with no CO2e. The factor is the whole gap. The 2026 row is the sign-flip of the
+`Electricity used - 2024` grid factor (0.10111894, MfE guide 2025), which turns out to be Envizi-managed
+rather than custom and is still applied to July and August 2026, so the successor `RECs NZ - 2027` takes
+-0.10111894 from 1 Jul 26 and the grid row is left to IBM. The 2026 guide
+(`emission_factors_2026_v2_long.csv` in the repo root) puts calendar 2025 at 0.078662; when IBM loads it
+the managed factor will move and the REC row has to be edited to match on the same day - each export gets
+an equal-and-opposite check on the two factors. The README already notes the AU LGC factors were rebuilt on
+8 Sep with 26-27 rows; this is the same treatment.
 
-**Action.** Date all 22 relationships 2026-07-01, drop the `Copy of` prefix, add the FY27 NZ REC factor, and
-then decide whether the pre-July credit stands (Ecotricity is renewable, so it may be right) or is removed.
+**Action.** Add the FY27 grid and REC factor rows (the dispatch prompts). The relationships stay undated and
+keep their names: Ecotricity is a renewable retailer, the credit is meant to cover the whole supply period,
+and dating them 2026-07-01 would have wiped the FY24-FY26 credit. Decided 08 Sep 26.
 Detail: `csv/03_nz_certificates_undated.csv`.
 
 ## 3. Nineteen AU certificate accounts with nothing to mirror
