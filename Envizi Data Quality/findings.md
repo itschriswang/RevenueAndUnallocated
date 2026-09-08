@@ -85,11 +85,12 @@ by ~100 t a month.
 Envizi the Mt Maunganui certificate account *does* hold July and August kWh (114,834 and 113,116, matching
 its source) with the factor and emissions blank, so the relationship is mirroring correctly and the export
 simply drops months with no CO2e. The factor is the whole gap. The 2026 row is the sign-flip of the
-`Electricity used - 2024` grid factor (0.10111894, MfE guide 2025), and that grid row has no FY27 successor
-either - the sources are still on it in July and August. The 2026 guide (`emission_factors_2026_v2_long.csv`
-in the repo root) gives calendar 2025 at 0.078662, so FY27 needs two rows from 1 Jul 26:
-`Electricity used - 2025` at +0.078662 and `RECs NZ - 2027` at -0.078662. At that factor the missing
-Jul - Aug credit is ≈ 158 t rather than 203. The README already notes the AU LGC factors were rebuilt on
+`Electricity used - 2024` grid factor (0.10111894, MfE guide 2025), which turns out to be Envizi-managed
+rather than custom and is still applied to July and August 2026, so the successor `RECs NZ - 2027` takes
+-0.10111894 from 1 Jul 26 and the grid row is left to IBM. The 2026 guide
+(`emission_factors_2026_v2_long.csv` in the repo root) puts calendar 2025 at 0.078662; when IBM loads it
+the managed factor will move and the REC row has to be edited to match on the same day - each export gets
+an equal-and-opposite check on the two factors. The README already notes the AU LGC factors were rebuilt on
 8 Sep with 26-27 rows; this is the same treatment.
 
 **Action.** Add the FY27 grid and REC factor rows (the dispatch prompts). The relationships stay undated and

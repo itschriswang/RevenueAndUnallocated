@@ -10,7 +10,7 @@ FY27/                        Jul 2026 – Jun 2027          see FY27/README.md
 Unallocated Accounts/        Unallocated-account trackers, by MDS cycle
 Large Market Certificates/   Renewable certificate virtual accounts for the large market sites
 Envizi Data Quality/         Sep-26 review of the four Envizi exports — findings.md and the CSVs behind it
-emission_factors_2026_v2_long.csv   MfE Measuring emissions guide 2026 in long form (one row per gas); the FY27 NZ grid and REC factors come from its Purchased Electricity rows
+emission_factors_2026_v2_long.csv   MfE Measuring emissions guide 2026 in long form (one row per gas); the NZ grid factor in Envizi is IBM-managed, so this is the reference for when it moves
 ```
 
 Each fiscal year folder contains:

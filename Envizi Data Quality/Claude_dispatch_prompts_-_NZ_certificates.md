@@ -1,8 +1,8 @@
 # Claude dispatch prompts - NZ certificate accounts, Sep-26
 
 What I paste into Claude (browser dispatch) with Envizi (`au001.envizi.com`) open in the active tab, to
-fix the 22 NZ renewable-certificate virtual accounts found in `findings.md` §2 and §7. Three prompts, run
-in order: a **read-only survey** first, then the FY27 factor rows, then the Hastings duplicate, then a
+fix the 22 NZ renewable-certificate virtual accounts found in `findings.md` §2 and §7. Four prompts, run
+in order: a **read-only survey** first, then the FY27 REC factor row, then the Hastings duplicate, then a
 read-only check. Keep Envizi in front while it works - it only sees the active tab.
 
 The 21 genuine relationships are **left as they are** - names and blank dates included. I had a pass
@@ -59,30 +59,33 @@ from the outside. So it is **prompt 1, then 2, then the check in 3**. The blank 
 relationships is not the cause and is not touched.
 
 **The FY27 value.** The REC row has always been the sign-flip of the NZ grid factor the 22 source
-accounts sit on: `RECs NZ` (-0.07289174) mirrored the 2024 guide's calendar-2023 figure for FY25, and
-`RECs NZ - 2026` (-0.10111894) mirrors `Electricity used - 2024` from the 2025 guide for FY26. For FY27
-that means the 2026 guide's calendar-2025 figure. I have it in `emission_factors_2026_v2_long.csv` in the
-repo root (MfE *Measuring emissions guide 2026*, long form, one row per gas):
+accounts sit on: `RECs NZ` (-0.07289174) mirrored the grid figure in force for FY25 and `RECs NZ - 2026`
+(-0.10111894) mirrors `Electricity used - 2024`, in force for FY26 and still applied to July and August
+2026. The first run of prompt 1 (08 Sep 26) established that this grid factor is **Envizi-managed, not
+custom**: no `Electricity used - 2024` exists under Custom - Downer (the custom NZ grid series stops at
+`Electricity - New Zealand - 2014`), while the source account's July emissions divide by its kWh to
+0.10111894 exactly. IBM maintains that row from the MfE guide, so it is not mine to close, clone or
+override. That settles the value:
 
-| Row (Purchased Electricity, Annual Averages) | CO2 | CH4 | N2O | Total kgCO2e/kWh |
-| --- | --- | --- | --- | --- |
-| Electricity Used - 2025 | 0.076133 | 0.002407 | 0.000123 | **0.078662** |
-| Electricity Used - 2024 (restated) | 0.096777 | 0.002394 | 0.000189 | 0.099360 |
+    RECs NZ - 2027   =   -0.10111894 kgCO2e/kWh   (1 Jul 2026 - 30 Jun 2027)
 
-So there are **two rows to add, not one**, and the order matters:
+i.e. the mirror of what Envizi is actually applying, which is the only thing that nets the sites to zero.
 
-    Electricity used - 2025   =   +0.078662 kgCO2e/kWh   (1 Jul 2026 - 30 Jun 2027)   scope 2
-    RECs NZ - 2027            =   -0.078662 kgCO2e/kWh   (1 Jul 2026 - 30 Jun 2027)   credit
+**Watch item - the 2026 guide.** `emission_factors_2026_v2_long.csv` in the repo root (MfE *Measuring
+emissions guide 2026*, long form) puts calendar 2025 purchased electricity at **0.078662** kgCO2e/kWh
+(CO2 0.076133, CH4 0.002407, N2O 0.000123) and restates 2024 at 0.099360. When IBM loads that guide the
+managed factor on the FY27 months will move, and `RECs NZ - 2027` has to be edited to the new mirror on
+the same day or the sites stop netting to zero. The test is simple and is in prompt 3: source factor and
+certificate factor on the same month must be equal and opposite. If the source ever reads 0.0787 and the
+certificate still reads -0.1011, edit the certificate row. The T&D-loss figure in the guide (0.005956) is
+not relevant: the NZ electricity accounts carry no scope 3 component (zero across all 1,214 export rows).
 
-The sources are still on `Electricity used - 2024` (0.10111894) in July and August, because that row has
-no successor either. If I only added the REC row at -0.078662 the sites would net to +0.0225 kg/kWh; if I
-added it at -0.10111894 to match today, it would go wrong the day the grid factor is updated. Both rows go
-in together, both dated from 1 Jul 2026, and prompt 1 now does exactly that.
+**Not a stray.** `RECs NZ` at -0.07289174 does not match any figure in the 2026 guide because that guide
+restates earlier years; it is the FY25 mirror of the grid factor as published at the time and stays.
 
-Two cautions. The 2026 guide restates calendar 2024 at 0.099360 against the 0.10111894 Envizi carries -
-I am **not** restating FY26; the 2024 row and the 2026 REC row stay as they are. And the 2026 guide's
-T&D-loss figure (0.005956) is not used: the NZ electricity accounts carry no scope 3 component today
-(zero across all 1,214 rows in the export), so nothing to mirror.
+**Account display name.** The certificate account shows as `Copy of Eco_ICP_0000939570TUEC4` in the
+account header; `…_CERTS` is on the account number, which is what the search matches. Prompts below say
+which they mean.
 
 ## The pre-July credit stays
 
@@ -172,85 +175,62 @@ What I do with the answer:
 
 ---
 
-## 1 · Add the FY27 NZ grid factor and its REC mirror
+## 1 · Add the FY27 NZ REC factor
 
-The survey confirmed the factor stops at 30 Jun 2026, so this runs next. Two rows: the FY27 grid factor
-from the 2026 guide (`Electricity used - 2025`, 0.078662) and the certificate credit that mirrors it
-(`RECs NZ - 2027`, -0.078662). The names follow the conventions already in the list. Values are from
-`emission_factors_2026_v2_long.csv`; the per-gas split is in the survey result above if the form wants it.
+One row. The grid factor it mirrors is Envizi-managed and is left alone (see the survey result); the
+certificate row is Custom - Downer and is mine to add. Its first run on 08 Sep 26 stopped at the read step
+on purpose, having found the grid factor was not custom - this is the rewritten version.
 
 ```
-You're helping me add two emission-factor rows in IBM Envizi (au001.envizi.com).
-I'm logged in on the Envizi tab. TWO new rows, one existing row gets an
-Effective To. Nothing else edited, nothing deleted. Stop and show me after
-each step.
+You're helping me add one emission-factor row in IBM Envizi (au001.envizi.com).
+I'm logged in on the Envizi tab. ONE new row, nothing edited or deleted.
 
 WHY
-The NZ grid factor "Electricity used - 2024" and the certificate credit
-"RECs NZ - 2026" both stop at 30 June 2026 with nothing after them. The 2026
-Measuring Emissions Guide gives the calendar-2025 grid figure, 0.078662
-kgCO2e/kWh, which applies from 1 July 2026, and the certificate credit has to
-be its exact mirror so the Ecotricity sites net to zero.
+The NZ certificate credit "RECs NZ - 2026" ends on 30 June 2026 and nothing
+covers July 2026 on, so the 22 NZ certificate accounts hold July and August
+kWh with no emissions. The grid factor the credit mirrors is Envizi-managed
+and is NOT to be touched; the successor credit row takes the same value the
+grid factor is applying today, 0.10111894, with the sign flipped.
 
-=== STEP 1 · Read both existing rows ===
-Emission Factors. Search "Electricity used - 2024", region New Zealand,
-data type Electricity [kWh]. Open it read-only. Note: name, region, data
-type, unit, value (should be 0.10111894), whether it is Custom - Downer or an
-Envizi-managed factor, Effective From, Effective To, source text. If it is
-Envizi-managed rather than custom, STOP and tell me - I'll handle it
-differently. Then search "RECs NZ - 2026" and note the same fields (value
--0.10111894, Certificates - Location [kWh], Custom - Downer, 1 Jul 2025 to
-30 Jun 2026). Show me both before going on.
+=== STEP 1 · Open the existing row ===
+Emission Factors -> filter name "RECs" -> open "RECs NZ - 2026" read-only.
+Confirm: region New Zealand, data type Certificates - Location [kWh],
+Custom - Downer, value -0.10111894, Effective From 1 Jul 2025, Effective To
+30 Jun 2026. Show me, then go on.
 
-=== STEP 2 · Close the 2024 grid row at 30 June 2026 ===
-Only if STEP 1 showed "Electricity used - 2024" is Custom - Downer AND its
-Effective To is blank. Edit it, set Effective To = 30 Jun 2026, read it back
-(the field shows m/d/yyyy, so 6/30/2026), Save. Value and Effective From
-untouched. If Effective To was already set, leave it and tell me what it was.
-
-=== STEP 3 · Create the FY27 grid row ===
-Use copy / duplicate on "Electricity used - 2024" if the screen has it;
-otherwise Add and match every field EXCEPT:
-  Name:            Electricity used - 2025
-  Effective From:  01 Jul 2026
-  Effective To:    30 Jun 2027
-  Value:           0.078662     (POSITIVE - this is the grid factor)
-  Source:          Measuring emissions guide 2026 -
-                   https://environment.govt.nz/publications/measuring-emissions-guide-2026/
-If the form asks per gas: CO2 0.076133, CH4 0.002407, N2O 0.000123.
-Region New Zealand, data type Electricity [kWh], scope 2, unit kgCO2e per kWh.
-Save. Read back the value - tell me how many decimals it kept.
-
-=== STEP 4 · Create the FY27 certificate row ===
-Copy / duplicate "RECs NZ - 2026", or Add and match it EXCEPT:
+=== STEP 2 · Create the successor ===
+Use the screen's copy / duplicate action if it has one; otherwise Add and
+match every field of the 2026 row EXCEPT:
   Name:            RECs NZ - 2027
   Effective From:  01 Jul 2026
   Effective To:    30 Jun 2027
-  Value:           -0.078662    (NEGATIVE - it is a credit)
+  Value:           -0.10111894
 Region New Zealand, data type Certificates - Location [kWh], Custom - Downer,
-unit kgCO2e per kWh. Save and read back.
+unit kgCO2e per kWh. Sign NEGATIVE - it is a credit. Per-gas and source can
+stay blank as they are on the 2026 row. Read the value back before saving -
+tell me how many decimals the form kept. Save.
 
-=== STEP 5 · Check the two old rows are unchanged ===
-Re-open "Electricity used - 2024": value still 0.10111894, Effective To now
-30 Jun 2026 (from STEP 2), nothing else moved. Re-open "RECs NZ - 2026":
-value -0.10111894, Effective To 30 Jun 2026, unchanged. If a copy action
-altered either, tell me before touching anything else.
+=== STEP 3 · Check the 2026 row is unchanged ===
+Re-open "RECs NZ - 2026": value still -0.10111894, Effective To still
+30 Jun 2026. If the copy action altered it, tell me before touching
+anything else.
 
-=== STEP 6 · Recalculate if offered ===
-If any save prompts a recalculation of dependent accounts, accept it. If it
+=== STEP 4 · Recalculate if offered ===
+If saving prompts a recalculation of dependent accounts, accept it. If it
 doesn't, tell me - prompt 3 picks it up.
 
-=== STEP 7 · Spot-check one site ===
-Search Accounts for "Eco_ICP_0000939570TUEC4" (Bitumen - Mt Maunganui),
-Review -> Monthly Data: July and August 2026 should now show factor 0.0787
-and emissions about 9,033 and 8,898 kg (they read 0.1011 / 11,612 / 11,438
-before). Then "Copy of Eco_ICP_0000939570TUEC4_CERTS", same months: the kWh
-were already there (114,834.3168 and 113,116.21); factor should now read
--0.0787 and emissions about -9,033 and -8,898 kg. June on both should be
-unchanged. If any of the four cells is still blank or still on the 2024
-figure, say so - the recalculation has not run yet.
+=== STEP 5 · Spot-check one site ===
+Top-right search, dropdown "Accounts", paste
+  Copy of Eco_ICP_0000939570TUEC4_CERTS
+(the header may show the name without _CERTS - that is the same account;
+confirm "Relates to" is Bitumen - Mt Maunganui). Review -> Monthly Data,
+July and August 2026: the kWh were already there (114,834.3168 and
+113,116.21); the Emission Factor should now read -0.1011 and Emissions
+about -11,612 and -11,438 kg. June unchanged at -11,356.96. If the two
+months are still blank, say so - the recalculation has not run yet and
+prompt 3 picks it up.
 
-Report back the four factor rows side by side, then the spot-check.
+Report back the three RECs NZ rows side by side, then the spot-check.
 ```
 
 ---
@@ -311,14 +291,19 @@ edits.
 
 1. Search Accounts for "Copy of Eco_ICP_0000939570TUEC4_CERTS". Open it,
    confirm location Bitumen - Mt Maunganui, then Review -> Monthly
-   Data. I want June, July and August 2026: kWh, Emission Factor and
-   Emissions for each. June should still read -0.1011 and -11,356.96. July
+   Data (the header may show the name without _CERTS; "Relates to" must
+   be Bitumen - Mt Maunganui). I want June, July and August 2026: kWh,
+   Emission Factor and Emissions for each. June should still read -0.1011
+   and -11,356.96. July
    and August already held the kWh (114,834.3168 and 113,116.21) before any
    of this; what changed should be the factor and emissions, which were
-   blank and should now read -0.0787 and about -9,033 and -8,898 kg on the
-   "RECs NZ - 2027" row. Then the source "Eco_ICP_0000939570TUEC4", same
-   months: factor 0.0787, emissions about 9,033 and 8,898 (positive), so
-   the pair nets to zero. If the certificate cells are still blank, tell
+   blank and should now read -0.1011 and about -11,612 and -11,438 kg on
+   the "RECs NZ - 2027" row. Then the source "Eco_ICP_0000939570TUEC4",
+   same months: factor 0.1011, emissions 11,611.93 and 11,438.2 (positive),
+   so the pair nets to zero. The factors MUST be equal and opposite - if
+   the source has moved to a different figure (0.0787 would mean IBM has
+   loaded the 2026 guide) and the certificate has not, tell me that first.
+   If the certificate cells are still blank, tell
    me, then open the factor and read back its Effective From / To and data
    type - a mismatch there is the likeliest reason.
 2. Search Accounts for "Eco_ICP_0000024050WE5E2". Two results. Confirm the
@@ -330,6 +315,7 @@ Show me all three.
 ```
 
 After prompt 3 passes, the next data export should show the 21 NZ certificate accounts with July and
-August rows on `RECs NZ - 2027`, about -158 t across the two months (2,008,386 kWh at 0.078662), the
-sources on `Electricity used - 2025` for the same months, and the Hastings pair closed. Then
+August rows on `RECs NZ - 2027`, about -203 t across the two months (2,008,386 kWh at 0.10111894), the
+sources still on the managed `Electricity used - 2024` for the same months, and the Hastings pair closed.
+Each later export gets the same equal-and-opposite check on the factors. Then
 `findings.md` §2 and §7 can be closed off.
