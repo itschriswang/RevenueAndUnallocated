@@ -12,6 +12,7 @@ FY26–28 renewal agreements, and everything behind them.
 | `Downer_Energy_Contracting_and_Budget_Summary_FY26-28.xlsx` | The renewal agreement site register (scope, retailers, contract dates) and the rate schedules with the LGC lines. |
 | `Downer_Energy_Contracting_and_Budget_Summary_FY26-28_with_Envizi_accounts.xlsx` | The same workbook with the Envizi account mapping added to `Site Register` as columns V–AE, and an `Envizi mapping notes` tab explaining them. Everything left of column V is untouched. |
 | `ElectricityEnviziSummaryjunejulyaug26.xlsx` | The Jun–Aug 26 Envizi summary — kWh, actual/accrued split, cost, CO2e and the green component. |
+| `FY27_Electricity_Budget_Forecast_Email.html` | The FY27 market-based electricity forecast email for the budget: one table by business unit, T&I split into Australia and New Zealand, total market-based on the last row, Jul–Aug 26 run-rate × 12 with the caveats under it. Built by `tools/build_budget_forecast_email.py` from the 6 Sep 26 export; re-run it and re-paste once the remaining accounts and the NZ FY27 factor are in. |
 
 The accounts and locations extracts it reads are in `../FY27/` (`Extract_for_Accounts 05 Sep 26.csv`,
 `Extract_for_Locations 26 Aug 26.csv`). Two Jun–Aug 26 energy exports sit one folder up: `../Electricity
