@@ -8,6 +8,11 @@ Position as of the 06 Sep 26 exports: **all 60 permanent accounts are built** an
 source exactly in July and August with no June row. The 12 old Origin accounts read Replaced On 30 Jun
 2026 and no longer accrue. Mogo has both its accounts. The LGC factors are done as of 08 Sep 26 — 24-25
 closed 30 Jun 2025, the 25-26 set finished and closed 30 Jun 2026, the 26-27 set live from 1 Jul 2026.
+New since: all seven WA Alinta meters come off the exclusion list — prompt 5. The find ran on 09 Sep:
+their green component is a capture field on the account style (C_7), not an account, so there is nothing
+to convert and no per-account switch — and Power BI does not read it. Call made: build all seven. That
+puts 69 of the 78 green register rows on a certificate account; prompt 2 takes it to 76, and QTMP and
+Maryborough are blocked in Envizi. The double count it leaves behind is written up under prompt 5.
 What remains, in the order I run it:
 
 | # | Prompt | What it does |
@@ -16,10 +21,12 @@ What remains, in the order I run it:
 | 2 | Build the 9 temporary accounts | Section 3 — the Queensland sites still on CS Energy with no Engie account. Run **after** prompt 1 |
 | 3 | LGC factors tidy-up | All four vintages are in (08 Sep 26). Delete the stray `( Copy of LGCs NSW 23-24 )` and fix the Victoria 25-26 region |
 | 4 | Fix two Account Refs | Bathurst and Mogo 4204072845 carry the account number where the NMI should be |
-| 5 | Read-only check | Confirm a temporary after it is built |
+| 5 | The seven WA Alinta meters | All seven flipped from Exclude to Create — PCEC ×2, Beckenham, Maddington, Albany, Geraldton, Hope Valley. Their green component is not read by Power BI. Takes coverage to 69 of the 78 green rows |
+| 6 | Read-only check | Confirm an account after it is built |
+| 7 | Close the stale `LGCS_4001287259` | Two accounts share that name; the NSW Spray Seal one sits on a NMI that moved to RPQ NSW Moree in 2020 |
 
 Prompt 2 assumes prompt 1 has run, so the 5000021_ accounts at Gympie and Archerfield are closed but
-still listed. The earlier prompts (the 17 permanent accounts, the 12 Origin close-offs, the Mogo read)
+still listed. Prompt 5 stands on its own — nothing in 1–4 touches the WA sites. The earlier prompts (the 17 permanent accounts, the 12 Origin close-offs, the Mogo read)
 are done and have been taken out; they are in the git history if I ever need the form again.
 
 ---
@@ -414,7 +421,291 @@ RULES
 
 ---
 
-## 5 · Read-only check on a finished account
+## 5 · Certificate accounts for every green site — the seven WA Alinta meters
+
+The goal is that **every green row in the contract register has a `Certificates - Location - kWh`
+account**, because that is the data type Power BI reads. It picks up `Certificates - Location - kWh` and
+it does not pick up `Electricity - Green [kWh]`, so a site can be recording 100% green kWh in Envizi and
+still show as unabated on the dashboard.
+
+The register has 78 green rows of 81 (the three NT rows are not green and are named exclusions anyway).
+Where they stand:
+
+| | Green rows | Certificate account | Where |
+| --- | ---: | --- | --- |
+| The 60 permanent | 60 | **built** — verified 06 Sep 26 | section 2, done |
+| WA Alinta | **7** | **built by this prompt** | below |
+| QLD, retailer not in Envizi yet | 9 | temporary accounts | **prompt 2**, run after prompt 1 |
+| QTMP Torbanlea `3053253239` | 1 | **built since the review** | `900018201_3053253239_CERT` — see the note below |
+| Rail - Maryborough `QGGG000320` | 1 | cannot yet | no active electricity account on the NMI, so nothing for a virtual account to follow |
+| | **78** | | |
+
+So this prompt takes it to **68 of 78** and prompt 2 to **77**. Only Rail - Maryborough is left, and it is
+blocked on Envizi rather than on the form — it needs something recording on the NMI. It is on the
+**Still open** list.
+
+**QTMP is done.** `900018201_3053253239_CERT` exists at `Torbanlea - QTMP`, style
+`Certificates - Location - kWh`, Account Ref 3053253239, supplier `LGC Virtual Account`, Opened On
+7/1/2026, 418,557 kWh of certificates over two months — built against the Engie account
+`900018201_3053253239` some time after the 05 Sep extract. My earlier note that it was blocked was wrong:
+the location was missing from the 26 Aug **locations** extract, not from Envizi.
+
+It is named **`_CERT`, singular**, where the other 65 are `_CERTS`. Cosmetic — the register matches on
+Account Ref — but it means **a filter on "CERTS" will not find it**. Filter on `CERT` instead, which is
+what step 2 below now does. Worth renaming it to `_CERTS` some time for consistency.
+
+Step 0 below re-counts the certificate accounts before building anything, so the 60 are proved rather
+than assumed, and anything already built is skipped rather than duplicated.
+
+### Why the seven Alinta sites were excluded, and why they are being built now
+
+All seven are on the agreement — register rows **159–165**, a contiguous block, all WA, all
+green-highlighted, all starting 1 Jul 2026, priced in `Rates & Source Data` rows 1453–1461 at an all-in
+**$0.31176/kWh** for FY27 and FY28 with no separate LGC line. They were excluded from the original 60
+because each account's own green component already carries the offset: zero green in June, then 100% of
+consumption from July, netting each account to about zero.
+
+That offset is invisible where it counts, so they are being built. **Decision, 09 Sep 26: build all
+seven.**
+
+### What the find established — 09 Sep 26
+
+**The green side has no account of its own, so nothing can be converted.** `Manage -> Accounts` with Show
+All on — 23,520 accounts — filtered on Data Type `Electricity - Green` returns **0 rows**. Filtering on
+just "Green" returns 34, all `Waste Recycled - Green Waste`. `Admin -> Data Configuration -> Data Types`
+has no green electricity entry.
+
+**It is a capture field on the account style**: `Admin -> Data Configuration -> Account Styles ->
+Bid-Electricity Large Market -> Fields`, field **"Retail green power/FiT kWh"**, code **C_7**, Column set
+to **"C_7 GREEN KWH ONLY"**. That flag is what makes Envizi emit the second derived monthly row with a
+mirrored negative factor. It is on the style, so it is **estate-wide** — there is no per-account switch,
+and `Actions -> Account Settings` turns out to be the Edit Account modal under another name, with no
+green or renewable percentage on it.
+
+**It is visible on screen, one horizontal scroll away.** `Review -> Monthly Data`, then drag the grid's
+horizontal scrollbar to the far right — Data Type is the last column, off-screen by default, and the
+mouse wheel will not move the grid sideways. Green rows read the same kWh as the electricity row with
+negative emissions and 0 GJ. Also worth knowing: `Account Styles` is under **Manage**, not Admin, and
+green is not in that classic list — the 40-field component list is the newer `Admin -> Data
+Configuration` screen.
+
+### What building leaves behind
+
+Because C_7 cannot be switched off for these accounts alone, **the green component keeps offsetting and
+the new certificate accounts offset again**. On the July and August figures, at the WA (SWIS) 26-27 LGC
+factor of −0.45, that is **−392.81 t counted twice across all seven** (PCEC −292.25 t of it). The
+dashboard volume will be right; the Envizi emissions for these seven will not be, until either Power BI
+reads `Electricity - Green [kWh]` as well or these accounts move onto a neutral factor. Known going in,
+and on the **Still open** list.
+
+Two things that apply to every one of the seven. All seven source accounts have recorded since **2020 or
+earlier**, so Effective From July 2026 is what keeps the certificate accounts off years of history — it
+matters more here than anywhere in section 2. And every one of the six locations has a **closed Alinta
+account on the same NMI** sitting next to the source, so the full account number is what to match on.
+
+None of the six locations has an `LGCS_` account or an existing certificate account as at the 05 Sep
+extract.
+
+```
+You're helping me set up renewable-certificate virtual accounts in IBM Envizi
+(au001.envizi.com). I'm logged in on the Envizi tab. There is a counting step
+first, then seven accounts across six locations, ONE AT A TIME, in order.
+
+THE ONE RULE THAT MATTERS
+An account can only be set up as a virtual account while it holds NO records.
+So the account is created first and saved empty, and only then linked. Never
+add data to it.
+
+IF ONE ALREADY EXISTS
+If my exact target account number is already there, do NOT touch it, do NOT
+edit or reuse it. Note it as already done and move to the next one. Only build
+what is missing.
+
+EVERY LOCATION HERE HAS A DECOY ON THE SAME NMI
+At each site a CLOSED Alinta account sits on the same NMI as the live one, and
+the numbers differ by a few digits. Match the FULL account number character for
+character, every time. The closed one is named on each card below.
+
+=== STEP 0 · Count what already exists, then tell me ===
+Read-only. Manage -> Accounts, turn Show All on, and filter Account Style on
+"Certificates - Location - kWh". Tell me how many rows come back, and split
+them by name: LGCS_ prefix, real _CERTS, "Copy of Eco_ICP_..." (the NZ ones),
+_CERT singular, and anything else.
+
+Counted 09 Sep 26: 163 rows - 69 LGCS_ · 69 real _CERTS · 22 Copy of Eco_ICP_*
+· 1 QTMP _CERT · 2 named (Calder Park, HCMT). That is the baseline. Report the
+number before you build anything, and if the real _CERTS count is under 69,
+stop and tell me, because something I think is built is not.
+
+Two account numbers each appear TWICE in that list, both known and both fine
+to leave: "Copy of Eco_ICP_0000024050WE5E2_CERTS" at Hastings Depot and at
+Asphalt Prod - Hamilton, and LGCS_4001287259 at NSW Spray Seal and at RPQ NSW
+Moree. Do not touch either. If you see a THIRD duplicate, tell me.
+
+=== STEP 1 · Find the location ===
+Top-right search, dropdown set to "Locations". Search the location name, open
+it. Confirm the Location Ref on the Summary page matches the ref on the card -
+several locations share a name and the ref is what disambiguates. If the ref
+doesn't match, stop.
+
+=== STEP 2 · Open the account list ===
+From the location Summary page: Quick links -> Accounts. Click "Show All
+Accounts". Before creating anything, filter the Account Number column on
+"CERT" - not "CERTS" - and confirm my exact target isn't there, then clear the
+filter. Use CERT because at least one existing account is named _CERT singular
+and a CERTS filter misses it. The filter sometimes renders as a search textbox
+and sometimes as a multi-select checkbox list. If my exact target already
+exists, skip this site per the rule above and tell me.
+
+=== STEP 3 · Create the account, empty ===
+Click the blue "Create New..." button and set:
+
+  Account style      Certificates - Location - kWh
+  Account number     as listed on the card
+  Account Ref        the NMI on the card - the NMI, NOT the account number
+  Supplier           LGC Virtual Account
+  Reader             leave blank
+  Opened On          2026-07-01   (field displays as 7/1/2026)
+
+Leave Reader, Linked Meter, Replaced On and Sub Type blank. Account Style is a
+jqx DIV, not a native select - form_input will fail on it. Click it open and
+type into its internal Search box, then click the filtered result. The Opened
+On calendar opens on the current month, so page back to July 2026 and click 1.
+Save. Do NOT add any records, monthly data or capture data.
+
+=== STEP 4 · Open Virtual Account Setup ===
+Back in the account list, tick the checkbox on the row for the account you just
+created, then click the blue "Actions" button and choose "Virtual Account
+Setup".
+
+That same Actions menu also holds "Delete Account(s)", "Close Account(s)" and
+"Move Account". Do not click any of those, ever. Screenshot the menu and
+confirm before clicking. If you're not certain, stop and show me.
+
+The grid sometimes shows a second row as pre-ticked - a display artifact.
+Confirm the breadcrumb on the Virtual Account Relationships page names my new
+_CERTS account and the grid reads 0 Row. If it names anything else, stop.
+
+=== STEP 5 · Create the relationship ===
+On "Virtual Account Relationships" click the blue "Create New...". A "Virtual
+relationship" dialog opens with three tabs. Fill all three BEFORE saving:
+
+- Select rule - Measure: Total Certificates. Data Rule: 100% Renewable Energy
+  Certificates (subtitle "Kilowatt hours*Value Variable"). The Measure dropdown
+  occasionally renders empty on first click; click it again.
+
+- Source data - Left pane "Available", right pane "Selected". Expand "Kilowatt
+  hours", then the location, then click the plus next to the SOURCE ACCOUNT on
+  the card. Zoom in and match the FULL account number character for character -
+  the closed Alinta account on the same NMI will be sitting right next to it in
+  the tree. Add that one account and nothing else. The Selected pane should
+  show Kilowatt hours -> the location -> the one account, then "*" and "Value
+  Variable" - leave those exactly as the rule sets them.
+
+- Condition (optional) - Effective From: July 2026 (the picker shows
+  "2026 July"). Effective To: leave blank. THIS MATTERS ON EVERY ONE OF THESE:
+  every source has recorded since 2020 or earlier, so without it the new
+  account reaches back years. It is not optional for us.
+
+Then SAVE. Confirm the grid reads 1 Row with Formula "Kilowatt hours*Value
+Va...", Effective From 7/1/2026, Effective To blank.
+
+=== STEP 6 · Check it ===
+Open the new account and confirm Opened On reads 7/1/2026, Account Ref reads
+the NMI, and there is exactly one relationship. Read the figures via Review ->
+Monthly Data in the account nav - the Summary chart tooltips don't render.
+
+On that grid, DRAG THE HORIZONTAL SCROLLBAR to the far right. Data Type is the
+last column and it sits off-screen by default, and the mouse wheel will not
+move the grid sideways. I need to see it, and I want it to read
+"Certificates - Location - kWh".
+
+Confirm Jul and Aug 2026 kWh match the "Expect" line and there is NO June 2026
+row and nothing before July 2026. If any earlier month has a value, Effective
+From didn't take - stop and tell me.
+
+============ THE SEVEN · all WA, all Alinta, seven accounts at six locations ============
+
+### LSE - Perth Convention & Exhibition Centre (WA) - Location Ref 9068   (2 accounts)
+    Leave alone here: 932806640, 414267220_8001905073, 80005748_80010005910_CLOSED,
+    80005748_80010005926, 80007482_CLOSED, 600751_80010005910, 600751_80010005926
+ 1. 80013757_8001000591_CERTS · ref 8001000591 · src 80013757_8001000591
+    Expect Jun none · Jul 174,253 · Aug 188,584
+    Closed decoy, SAME NMI, do NOT pick: 80005748_8001000591
+ 2. 80013758_8001000592_CERTS · ref 8001000592 · src 80013758_8001000592
+    Expect Jun none · Jul 143,301 · Aug 143,301
+    Closed decoy, SAME NMI, do NOT pick: 80007482_8001000592
+
+### Cannington Emulsion Plant - Location Ref 39   (register: Roads - Beckenham)
+ 3. 80013752_8001010840_CERTS · ref 8001010840 · src 80013752_8001010840
+    Expect Jun none · Jul 37,958 · Aug 37,525
+    Closed decoy, SAME NMI, do NOT pick: 80005436_8001010840
+
+### Maddington - BIT - Location Ref 171   (register: Roads - Maddington)
+    Careful: prompt 2 has an RPQ Spray Seal at ref 171230. This one is ref 171.
+ 4. 80013749_8001015167_CERTS · ref 8001015167 · src 80013749_8001015167
+    Expect Jun none · Jul 12,275 · Aug 12,360
+    Closed decoy, SAME NMI, do NOT pick: 80005437_8001015167
+
+### Asphalt Prod - Albany (601) - Location Ref 601   (register: Roads - Warrenup)
+ 5. 80013750_8001016501_CERTS · ref 8001016501 · src 80013750_8001016501
+    Expect Jun none · Jul 17,463 · Aug 16,858
+    Closed decoy, SAME NMI, do NOT pick: 80003702_8001016501
+
+### Asphalt Prod - Geraldton (602) - Location Ref 602   (register: Roads - Narngulu)
+    This location also has a LIVE small market account on a DIFFERENT NMI -
+    023384950_8002057153. It is not in the renewal. Do not pick it as a source.
+ 6. 80013754_8001356541_CERTS · ref 8001356541 · src 80013754_8001356541
+    Expect Jun none · Jul 1,525 · Aug 1,542   (much the smallest of the seven)
+    Closed decoy, SAME NMI, do NOT pick: 80005435_8001356541
+
+### Asphalt Prod - Hope Valley (628) - Location Ref 628   (register: Roads - Hope Valley)
+ 7. 80013755_8002193716_CERTS · ref 8002193716 · src 80013755_8002193716
+    Expect Jun none · Jul 43,313 · Aug 42,646
+    Closed decoy, SAME NMI, do NOT pick: 80010451_8002193716
+
+========================================================================================
+
+None of these six locations has an LGCS_ account. If you find one, leave it
+alone and tell me.
+
+Do step 0, then number 1, then stop and show me. Once I've confirmed the first
+one I'll tell you to run the rest without stopping.
+
+After each account, report: the account number created, Account Ref, Opened On,
+the exact source account you selected, Effective From, the Data Type shown on
+Monthly Data, the Jun/Jul/Aug figures against what I expected, and that nothing
+appears before July 2026.
+
+RULES
+- Never delete, close, move or edit a SOURCE account or any decoy.
+- Never open Edit Account on anything except the account you just created.
+- If my exact target already exists, skip it and tell me - never edit or reuse.
+- If a screen doesn't match what I've described, stop and describe what you see.
+- Never click Save or Delete on a form you're unsure about.
+
+WORKED EXAMPLE
+900018199_3120725958_CERTS at Asphalt Prod - Brendale (423) is done and correct
+- source 900018199_3120725958, measure Total Certificates, rule 100% Renewable
+Energy Certificates, Effective From July 2026.
+```
+
+Expected: seven `Certificates - Location - kWh` accounts across the six WA locations, each mirroring one
+Alinta account from July 2026 and nothing earlier, on the WA (SWIS) 26-27 LGC factor of −0.45. August is
+accrued on every one of them, so the figures move as the bills land — the test is that each new account
+equals its source, whatever the source reads.
+
+Coverage after this prompt: **68 of 78** green rows have a certificate account. Prompt 2 takes it to 77.
+Rail - Maryborough is the only one left and it is blocked in Envizi.
+
+Then the green component, still recording on the style field and not switchable per account, so these
+seven read about −393 t better than they should for July and August until the factor or the dashboard is
+dealt with. Known and accepted going in. Prompt 6 read against any of them will show the factor and the
+kWh side by side.
+
+---
+
+## 6 · Read-only check on a finished account
 
 For confirming any one account after a batch, or on a day I want to know an account is still right.
 
@@ -425,8 +716,145 @@ whether Reader is blank, Account Ref, Opened On, whether it's a virtual account
 and the source and percentage, Effective From on the relationship, its kWh for
 Jun/Jul/Aug 2026, and the emission factor name and value. Then tell me how you
 found it.
+
+Read the figures from Review -> Monthly Data, and DRAG THE HORIZONTAL SCROLLBAR
+to the far right - Data Type is the last column, off-screen by default, and the
+mouse wheel won't move the grid sideways. Tell me every Data Type you can see
+on the account, not just the first.
 ```
 
 Expected for a right account: `Certificates - Location - kWh` · `LGC Virtual Account` / Reader blank ·
 Account Ref = the NMI · Opened On 7/1/2026 · virtual, one source at 100% · Effective From 7/1/2026 ·
 **no June**, July and August equal to the source · the state's LGCs factor (25-26 once prompt 3 is in).
+
+---
+
+## 7 · Close the stale `LGCS_4001287259` at NSW Spray Seal
+
+Two accounts named `LGCS_4001287259` exist, one at **NSW Spray Seal** (loc ref 171210, account link
+6225063) and one at **RPQ NSW Moree** (loc ref L9.J.171220, link 6382817). Both live, neither with a
+Replaced On.
+
+**The NMI moved sites on 1 Jul 2020.** At NSW Spray Seal, `200034933644_4001287259` (Electricity Small
+Market) closed **30 Jun 2020**, and every other electricity account there closed in 2019–2020 too. At RPQ
+NSW Moree, `50002617997_4001287259` (Electricity Large Market) opened **1 Jul 2020** and is live — and it
+is the source for the new `50002617997_4001287259_CERTS`, opened 1 Jul 2026, built correctly.
+
+So Moree is where the NMI lives and its `LGCS_` is the real historical record. The Spray Seal one sits on
+a location with no live electricity account on that NMI, and both `LGCS_` accounts were created in the
+2024/2025 batches, years after the move — so it looks like a stale location mapping at creation.
+
+NSW Spray Seal itself is still an active location (live diesel, petrol, LPG and kerosene accounts), so
+this is about one certificate account, not the site.
+
+**Closing, not deleting** — same call as the Hastings duplicate in the NZ file: the history stays visible,
+and what happens to the records is a separate decision. The read step comes first because the Replaced On
+date depends on what the account actually holds: if it holds nothing, 30 Jun 2020 is the natural date; if
+it holds 2024–2025 LGC data, dating it before its own records is wrong and I want to see the months first.
+
+The other duplicate, `Copy of Eco_ICP_0000024050WE5E2_CERTS` at Hastings Depot, is **already written up** —
+prompt 3 of
+[`Claude_dispatch_prompts_-_NZ_certificates.md`](../../Envizi%20Data%20Quality/Claude_dispatch_prompts_-_NZ_certificates.md)
+closes it along with its source account. Use that, not this.
+
+```
+You're helping me close off one account in IBM Envizi (au001.envizi.com). I'm
+logged in on the Envizi tab. There is a read step first and you STOP after it.
+
+WHAT "CLOSE" MEANS HERE
+Set the account's Replaced On date. Nothing else. Do NOT delete, move or merge
+any account, and do NOT touch Opened On - it sits near Replaced On on the same
+form and must stay as it is.
+
+THE WHOLE POINT IS TELLING TWO IDENTICAL NAMES APART
+Two accounts are both named exactly LGCS_4001287259. The name cannot
+disambiguate them. Only the LOCATION can:
+
+  CLOSE this one:  LGCS_4001287259  at  NSW Spray Seal      (Location Ref 171210)
+  LEAVE this one:  LGCS_4001287259  at  RPQ NSW Moree       (Location Ref L9.J.171220)
+
+If the account id shows in the URL or on the page, NSW Spray Seal is 6225063
+and RPQ NSW Moree is 6382817 - use it as a second check. Before you change
+anything, "Relates to" MUST read NSW Spray Seal. If it reads RPQ NSW Moree,
+stop - that is the one that stays.
+
+WHY
+The NMI moved sites on 1 Jul 2020. At NSW Spray Seal the electricity account
+200034933644_4001287259 closed 30 Jun 2020; at RPQ NSW Moree the live account
+50002617997_4001287259 opened 1 Jul 2020 and still bills. Moree's LGCS_ is the
+real record. The Spray Seal one has no live electricity account on that NMI
+behind it.
+
+=== STEP A · Read both, then STOP ===
+Read-only. Change nothing.
+
+Top-right search, dropdown set to "Accounts", paste  LGCS_4001287259
+Two results should come back. Open EACH one and tell me, per account:
+
+  - the location under "Relates to", and the Location Ref on that location
+  - the account id, if it is visible in the URL or on the page
+  - Opened On and Replaced On from the left panel
+  - Supplier and Reader
+  - whether it is a virtual account, and if so the source account and the
+    Effective From on the relationship (Actions -> Virtual Account Setup,
+    READ ONLY - do not click Create New, Delete or Edit there)
+  - from Review -> Monthly Data: the FIRST and LAST months holding data, the
+    number of months with data, and whether those rows are actual or accrued.
+    Drag the grid's horizontal scrollbar to the far right so I can see the
+    Data Type column - it is the last column, off-screen by default, and the
+    mouse wheel will not move the grid sideways.
+
+Then stop and show me both. I will give you the Replaced On date for the NSW
+Spray Seal one. Do not guess it - if that account holds 2024 or 2025 data,
+the date I expect (30 Jun 2020) would sit before its own records and I need to
+choose something else.
+
+=== STEP 1 · Open the right one ===
+Only after I have given you a date. Open LGCS_4001287259 at NSW Spray Seal.
+Confirm on the Account Summary page that "Relates to" reads NSW Spray Seal and
+the left panel reads "Replaced On : -". If either disagrees, stop and show me.
+
+=== STEP 2 · Open the form ===
+Click the blue "Actions" button (top right). The menu has Capture Data, Edit
+Account and Account Settings. Choose "Edit Account". Do NOT choose Capture
+Data, and do NOT choose Delete Account(s) or Move Account if you see them.
+
+=== STEP 3 · Set Replaced On ===
+Find "Replaced On:" - a date field with a calendar icon. Click the calendar
+icon. It opens on the current month, so page back to the month I gave you and
+click the day. The field should then read the date in m/d/yyyy form (30 Jun
+2020 shows as 6/30/2020). If typing works better, type it and tab out, then
+read it back to check the month and day didn't swap.
+
+Leave "Opened On:" exactly as it was. Change nothing else on the form.
+Screenshot the completed form and show me BEFORE you save. Save when I say so.
+
+=== STEP 4 · Check it, and check the other one is untouched ===
+Back on the Account Summary page, confirm the left panel reads
+"Replaced On : <the date>" and Opened On is unchanged. Then Review -> Monthly
+Data: months after the date should no longer accrue. If accruals are still
+there straight after saving, note it - Envizi can take a refresh to drop them -
+and move on.
+
+Then open LGCS_4001287259 at RPQ NSW Moree and confirm it still reads
+"Replaced On : -" and is completely unchanged. Also open
+50002617997_4001287259_CERTS at RPQ NSW Moree and confirm it still reads
+Opened On 7/1/2026 with one relationship. Neither should have moved.
+
+=== REPORT ===
+Per account: the location, what Replaced On read before and after, that Opened
+On is unchanged, and the month range each holds. Plus confirmation that the
+Moree LGCS_ and the Moree _CERTS are untouched.
+
+RULES
+- Replaced On only, on the NSW Spray Seal account only.
+- Never delete, move or merge anything.
+- If "Relates to" does not read NSW Spray Seal, stop.
+- If the account already has a Replaced On, stop and show me.
+- If a screen doesn't match what I've described, stop and describe what you see.
+```
+
+Afterwards the certificate population should read 163 with one more closed row, and a filter on
+`LGCS_4001287259` should show one live account (Moree) and one closed (Spray Seal). Whether the Spray
+Seal account's records should also come out is a separate decision — closing it stops it going forward
+and leaves the history readable.
