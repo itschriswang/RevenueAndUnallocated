@@ -240,6 +240,13 @@ The location also holds eleven electricity accounts, nine of them closed or out 
 Alinta account sits on each of the two NMIs (`80005748_8001000591`, `80007482_8001000592`). There is no
 `LGCS_` account here. Prompt 5 lists all nine as decoys.
 
+**Where the green component sits.** Not a separate account, and not the interval meter feed. Each
+Alinta account carries a second data type on the account itself — `Electricity - Green [kWh]` beside the
+ordinary `Electricity [kWh]`, same `Item Number`, same `Electricity Large Market` style, `Item Type` =
+`Account`, same `Account_Meter_Link` (6181010 and 6181011). It shows in the electricity export as its own
+row per month; I have not found it on screen yet, so step A of prompt 5 is a hunt through Monthly Data,
+the Review nav, Account Settings and `Admin -> Account Styles`, and reports back where it lives.
+
 One more from the 06 Sep export: the green rows on both accounts still price on
 `81 - Electricity Green - 25-26 - Western Australia (SWIS)` for July and August 2026, so that factor set
 has not rolled to 26-27 any more than the LGC set had before the 08 Sep run.

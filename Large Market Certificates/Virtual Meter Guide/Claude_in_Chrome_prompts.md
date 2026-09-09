@@ -448,8 +448,17 @@ created. So one of two things has to be true before these numbers are reported:
 - the certificate accounts are a volume record only, and the factor on them is set so they do not
   offset a second time.
 
-That is a data-load and reporting call, not something the form below settles — which is why step A
-reads the green component back to me and stops.
+That is a data-load and reporting call, not something the form below settles — which is why step A goes
+and finds the green component before anything is created, and stops.
+
+**Where the green component actually is.** It is not a separate account and not the interval meter. Each
+Alinta account carries a second data type on the account itself — `Electricity - Green [kWh]` beside the
+ordinary `Electricity [kWh]`, same account number, same `Electricity Large Market` style, `Item Type` =
+Account. That is why it is easy to miss on screen: it is a component, not a row in the account list. I
+can see it in the export but not yet in the interface, so step A is a hunt — Monthly Data first (it may
+be a column, not a row), then the rest of the Review nav, then Account Settings, then
+`Admin -> Account Styles` to see whether the component is defined on the style at all. It reports where
+it found it, which is the answer I want as much as the numbers.
 
 Two other things about this pair. Both source accounts have recorded since **1 Feb 2020**, so
 Effective From July 2026 is what keeps the certificate accounts off six years of history — it matters
@@ -494,17 +503,68 @@ and my two differ from each other by one digit in two places.
 
 There is no LGCS_ account at this location. If you find one, stop and tell me.
 
-=== STEP A · Read both source accounts, then STOP ===
-Read-only. Change nothing. For each of my two source accounts: top-right
-search, dropdown set to "Accounts", paste the full account number, open it.
-Review -> Monthly Data. Tell me, for Jun, Jul and Aug 2026:
+=== STEP A · Find the green component and show it to me, then STOP ===
+Read-only for this whole step. Create, edit, save and delete nothing.
 
-  - the kWh on the Electricity component, and whether it is actual or accrued
-  - the kWh on the Electricity - Green component, same question
-  - the tCO2e shown against each, and the emission factor name on each
+I can see a green component on both accounts in the data export but I cannot
+find it on screen, so this step is a hunt. What I am looking for: each account
+carries a SECOND data type, "Electricity - Green [kWh]", alongside the ordinary
+"Electricity [kWh]". Same account number, same account style, Item Type
+"Account" - so it is a component of the account itself, not a separate account
+and not the interval meter. In July 2026 it reads 174,253 kWh on
+80013757_8001000591 and 143,300 kWh on 80013758_8001000592.
 
-Then stop and show me both. I will tell you whether to go on. Do NOT create
-anything yet.
+Start with 80013757_8001000591. Top-right search, dropdown set to "Accounts",
+paste the full account number, open it.
+
+--- A · on the account. Try these in order, stop at the first that shows it ---
+
+ A1. Review -> Monthly Data. The green figure may be a COLUMN rather than a
+     row, so scroll the grid sideways to the end. Look above the grid for a
+     data type / component selector or a second tab, and try every option in
+     it. Screenshot the grid with all columns visible.
+
+ A2. The rest of the account nav under Review - anything named Data, Detail,
+     Components, Consumption or similar. Screenshot what each one shows.
+
+ A3. Actions -> Account Settings. NOT Edit Account, NOT Capture Data. Read
+     what it says about components or data types, and tell me whether there is
+     a green, renewable or GreenPower percentage set anywhere on that screen.
+     Read only - back out without saving.
+
+Do NOT open Capture Data to go looking. It is a data entry form on a live
+account and I do not want it opened.
+
+--- B · on the account style. Do this one whether or not A worked ---
+
+ A4. Admin -> Account Styles. Find "Electricity Large Market" and list every
+     component it carries, with the exact component names. This is what tells
+     me whether the green component is defined on the style itself or only
+     arrives with the loaded data. Read only - do not edit the style.
+
+--- C · only if A1-A3 all came up empty ---
+
+ A5. Find where the electricity data export lives - the one that produces a
+     "Data Type" column with "Electricity - Green [kWh]" rows in it. Tell me
+     the menu path. Don't run a full export, just show me the screen.
+
+--- WHAT TO REPORT ---
+
+First: exactly where the green component turned up, click by click, or that it
+is not visible on screen at all and what each of A1-A5 showed instead. That is
+the part I actually need.
+
+Then, for BOTH accounts and for Jun, Jul and Aug 2026:
+
+  - Electricity kWh, and whether it is actual or accrued
+  - Electricity - Green kWh, same question
+  - the tCO2e against each, and the emission factor name on each
+
+If the green figures aren't reachable on screen, give me the Electricity ones
+and say the green side is export-only.
+
+Then stop and show me all of it. I'll tell you whether to go on to step 1.
+Do NOT create anything yet.
 
 === STEP 1 · Find the location ===
 Top-right search, dropdown set to "Locations". Search "Perth Convention" and
