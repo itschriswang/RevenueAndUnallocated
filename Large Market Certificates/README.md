@@ -252,12 +252,22 @@ green rows of 81 — the three NT rows are not green and are named exclusions an
 | The 60 permanent | 60 | built, verified 06 Sep 26 |
 | WA Alinta | 7 | **prompt 5** |
 | QLD, retailer not in Envizi yet | 9 | prompt 2, temporary, after prompt 1 |
-| QTMP Torbanlea `3053253239` | 1 | blocked — location `Torbanlea - QTMP` absent from the locations extract |
+| QTMP Torbanlea `3053253239` | 1 | built since the review — `900018201_3053253239_CERT` |
 | Rail - Maryborough `QGGG000320` | 1 | blocked — no active electricity account on the NMI |
 | | **78** | |
 
-Prompt 5 takes it to **69 of 78**, prompt 2 to **76**. The last two are blocked in Envizi rather than on
-the forms.
+Prompt 5 takes it to **68 of 78**, prompt 2 to **77**. Rail - Maryborough is the only one left and it is
+blocked in Envizi rather than on the form.
+
+**QTMP was built after the 05 Sep extract**, against the Engie account `900018201_3053253239` at
+`Torbanlea - QTMP` — style `Certificates - Location - kWh`, Account Ref 3053253239, supplier
+`LGC Virtual Account`, Opened On 7/1/2026, 418,557 kWh over two months. It was recorded here as a named
+exclusion because its location was missing from the 26 Aug **locations** extract; the location exists in
+Envizi and always did.
+
+It is named **`_CERT`, singular**, where the other 65 are `_CERTS`. Cosmetic, since the register matches
+on Account Ref, but **a filter on "CERTS" will not find it** — filter on `CERT`. Worth renaming for
+consistency some time.
 
 **Where the green component sits — checked in Envizi, 09 Sep 26.** It has no account of its own, so
 there was never anything to convert onto the certificate style:
@@ -404,9 +414,10 @@ reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS
   the green component keeps offsetting (C_7 is on the `Bid-Electricity Large Market` style, estate-wide,
   no per-account switch), so both records coexist and these seven read about −393 t light for Jul–Aug.
   Fix is either Power BI reading `Electricity - Green [kWh]` as well or a neutral factor on the seven.
-- Register coverage: prompt 5 takes it to 69 of the 78 green rows and prompt 2 to 76. The last two are
-  blocked in Envizi — QTMP Torbanlea `3053253239` needs its location to exist, Rail - Maryborough
-  `QGGG000320` needs something recording on the NMI.
+- Register coverage: prompt 5 takes it to 68 of the 78 green rows and prompt 2 to 77. Only Rail -
+  Maryborough `QGGG000320` is left, blocked until something records on the NMI.
+- Rename `900018201_3053253239_CERT` (QTMP) to `_CERTS` to match the other 65, so a "CERTS" filter finds
+  it. Cosmetic, no rush.
 - Kalgoorlie `80013748_8001011791`: live Alinta account, not in the Site Register or the budget workbook,
   no green kWh. Confirm with Category Management that it is meant to be outside the renewal.
 - Mogo: read the two certificate accounts (prompt 0b), link the empty 4204072845 one, remake 4001127731.

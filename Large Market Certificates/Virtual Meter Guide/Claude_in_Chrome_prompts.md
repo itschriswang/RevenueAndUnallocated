@@ -435,13 +435,23 @@ Where they stand:
 | The 60 permanent | 60 | **built** — verified 06 Sep 26 | section 2, done |
 | WA Alinta | **7** | **built by this prompt** | below |
 | QLD, retailer not in Envizi yet | 9 | temporary accounts | **prompt 2**, run after prompt 1 |
-| QTMP Torbanlea `3053253239` | 1 | cannot yet | its location `Torbanlea - QTMP` is absent from the locations extract |
+| QTMP Torbanlea `3053253239` | 1 | **built since the review** | `900018201_3053253239_CERT` — see the note below |
 | Rail - Maryborough `QGGG000320` | 1 | cannot yet | no active electricity account on the NMI, so nothing for a virtual account to follow |
 | | **78** | | |
 
-So this prompt plus prompt 2 takes it to **76 of 78**. The last two are blocked on Envizi, not on the
-form — QTMP needs its location to exist, Maryborough needs something recording on the NMI. Both are on
-the **Still open** list.
+So this prompt takes it to **68 of 78** and prompt 2 to **77**. Only Rail - Maryborough is left, and it is
+blocked on Envizi rather than on the form — it needs something recording on the NMI. It is on the
+**Still open** list.
+
+**QTMP is done.** `900018201_3053253239_CERT` exists at `Torbanlea - QTMP`, style
+`Certificates - Location - kWh`, Account Ref 3053253239, supplier `LGC Virtual Account`, Opened On
+7/1/2026, 418,557 kWh of certificates over two months — built against the Engie account
+`900018201_3053253239` some time after the 05 Sep extract. My earlier note that it was blocked was wrong:
+the location was missing from the 26 Aug **locations** extract, not from Envizi.
+
+It is named **`_CERT`, singular**, where the other 65 are `_CERTS`. Cosmetic — the register matches on
+Account Ref — but it means **a filter on "CERTS" will not find it**. Filter on `CERT` instead, which is
+what step 2 below now does. Worth renaming it to `_CERTS` some time for consistency.
 
 Step 0 below re-counts the certificate accounts before building anything, so the 60 are proved rather
 than assumed, and anything already built is skipped rather than duplicated.
@@ -518,8 +528,10 @@ character, every time. The closed one is named on each card below.
 === STEP 0 · Count what already exists, then tell me ===
 Read-only. Manage -> Accounts, turn Show All on, and filter Account Style on
 "Certificates - Location - kWh". Tell me how many rows come back and, if the
-grid will show it, list the account numbers. I am expecting about 60. Report
-the number before you build anything - if it is well under 60, stop and tell
+grid will show it, list the account numbers. As at the 05 Sep extract there
+were 136 - 69 old LGCS_ ones, 65 _CERTS, and two named ones - plus the QTMP
+_CERT account built since, so I am expecting about 137. Report the number
+before you build anything. If the _CERTS count is well under 66, stop and tell
 me, because something I think is built is not.
 
 === STEP 1 · Find the location ===
@@ -531,10 +543,11 @@ doesn't match, stop.
 === STEP 2 · Open the account list ===
 From the location Summary page: Quick links -> Accounts. Click "Show All
 Accounts". Before creating anything, filter the Account Number column on
-"CERTS" and confirm my exact target isn't there, then clear the filter. The
-filter sometimes renders as a search textbox and sometimes as a multi-select
-checkbox list. If my exact target already exists, skip this site per the rule
-above and tell me.
+"CERT" - not "CERTS" - and confirm my exact target isn't there, then clear the
+filter. Use CERT because at least one existing account is named _CERT singular
+and a CERTS filter misses it. The filter sometimes renders as a search textbox
+and sometimes as a multi-select checkbox list. If my exact target already
+exists, skip this site per the rule above and tell me.
 
 === STEP 3 · Create the account, empty ===
 Click the blue "Create New..." button and set:
@@ -674,8 +687,8 @@ Alinta account from July 2026 and nothing earlier, on the WA (SWIS) 26-27 LGC fa
 accrued on every one of them, so the figures move as the bills land — the test is that each new account
 equals its source, whatever the source reads.
 
-Coverage after this prompt: **69 of 78** green rows have a certificate account. Prompt 2 takes it to 76;
-QTMP and Maryborough are the two that cannot be built yet.
+Coverage after this prompt: **68 of 78** green rows have a certificate account. Prompt 2 takes it to 77.
+Rail - Maryborough is the only one left and it is blocked in Envizi.
 
 Then the green component, still recording on the style field and not switchable per account, so these
 seven read about −393 t better than they should for July and August until the factor or the dashboard is
