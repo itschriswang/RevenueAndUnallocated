@@ -448,6 +448,19 @@ LGC factor of −0.45 that is **−292.25 t across July and August**, and it sta
 relationship saves. So the site should end up with **one** mechanism, not two. Either the green side
 becomes the certificate record (5b), or it stops and the new accounts carry the claim (5c).
 
+**Why the data type has to change at all.** The Power BI dashboard picks the renewable claim up off the
+account style — it reads `Certificates - Location - kWh` and does not read `Electricity - Green [kWh]`.
+So the green component can be recording 100% green kWh in Envizi and still be invisible downstream,
+which is exactly what is happening at PCEC. That makes the style a hard requirement rather than a
+convention, and it is the reason 5b is worth trying before 5c: converting the green record moves it onto
+the data type the dashboard reads **and** leaves one record instead of two.
+
+If it has to be 5c, the question that follows is what factor the new accounts carry. The other 60 sites
+take the state LGC factor because nothing else is offsetting there. Here the green component already is,
+so an LGC factor on top double counts and a neutral one would make the accounts a volume record the
+dashboard can see without touching the emissions. That is a call for whoever owns the dashboard and the
+FY27 market-based number — worth settling before the accounts are relied on, not before they are built.
+
 ### What the extracts say about where the green component lives
 
 Not encouraging for the convert route, which is why 5a runs first.
@@ -568,6 +581,10 @@ Run this **only** if 5a came back with a green side that has its own account num
 the account list, and I've said go. If 5a says the green side is a component of the electricity account
 — which is what the export says — this form does not apply and 5c is the route.
 
+The point of the conversion is the account style: Power BI reads `Certificates - Location - kWh` and does
+not read `Electricity - Green [kWh]`, so this is what puts the PCEC renewable claim on the dashboard
+without adding a second record to double count against.
+
 **The dangerous confusion.** The green figure lives *on* `80013757_8001000591` and
 `80013758_8001000592`. Those two accounts hold the **consumption** and six years of history. Changing
 the Account Style on either of them would reinterpret all of it. The form says so three times because it
@@ -584,6 +601,12 @@ details. No records are added, nothing is deleted, no account is closed.
 
   Account Style   ->  Certificates - Location - kWh
   Supplier        ->  LGC Virtual Account
+
+WHY THE STYLE MATTERS
+Our Power BI dashboard reads the account style. It picks up
+"Certificates - Location - kWh" and it does not pick up
+"Electricity - Green [kWh]", so the green record is invisible downstream until
+the style changes. That is the whole purpose of this form.
 
 NEVER TOUCH THESE TWO
   80013757_8001000591
@@ -676,9 +699,11 @@ RULES
 ### 5c · Route 2 — build the two new certificate accounts
 
 The default, and what the export evidence points to: the green side is a component with no account of
-its own, so nothing can be converted and the two accounts get built the way the other 60 were. The green
-component then has to be stopped at the data-load end, or these two accounts stay out of the FY27
-market-based number.
+its own, so nothing can be converted and the two accounts get built the way the other 60 were. The style
+is what puts PCEC on the Power BI dashboard — it reads `Certificates - Location - kWh` and not
+`Electricity - Green [kWh]` — so this gets the claim visible downstream. It does not settle the double
+count: the green component still has to be stopped at the data-load end, or the new accounts carry a
+neutral factor and act as a volume record only.
 
 ```
 You're helping me set up two renewable-certificate virtual accounts in IBM

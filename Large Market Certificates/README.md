@@ -261,6 +261,19 @@ percentage or a component toggle on `Account Settings`. If one exists it is the 
 green side without touching any other account. That is what prompt 5a goes looking for, and it decides
 between 5b (convert) and 5c (build the two new accounts).
 
+**Why the style matters, beyond tidiness.** The Power BI dashboard reads the account style: it picks up
+`Certificates - Location - kWh` and does not pick up `Electricity - Green [kWh]`. So PCEC can be recording
+100% green kWh in Envizi and still show as unabated downstream, which is what is happening now. The style
+is a hard requirement, not a convention — and it is why converting the green record (5b) is worth trying
+before building alongside it (5c): the conversion moves the claim onto the data type the dashboard reads
+and leaves one record rather than two.
+
+If it ends up being 5c, what factor the new accounts carry is the open question. The other 60 take the
+state LGC factor because nothing else offsets at those sites; here the green component already does, so
+an LGC factor on top double counts and a neutral one would make the accounts a volume record the
+dashboard can see without moving the emissions. That is a call for whoever owns the dashboard and the
+FY27 market-based number.
+
 One more from the 06 Sep export: the green rows on both accounts still price on
 `81 - Electricity Green - 25-26 - Western Australia (SWIS)` for July and August 2026, so that factor set
 has not rolled to 26-27 any more than the LGC set had before the 08 Sep run.
