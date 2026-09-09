@@ -49,10 +49,10 @@ sit on a small-market-styled source for this reason.
 By state the 60 are: NSW 36, VIC 10, QLD 7, SA 4, TAS 2, ACT 1. The full list, with the source account
 and the field values for each, is on the guide page and on the workbook's `Manual Setup Checklist` tab.
 
-**Changed since the 05 Sep review.** The two Perth Convention & Exhibition Centre rows (register 159 and
-160) move from Exclude to Create, so it is 62 permanent and 5 green-component exclusions — see
-[PCEC](#pcec--the-two-wa-alinta-meters-flipped-to-create) below. The workbook, the guide page and the
-table above still read the 05 Sep decision; they pick the change up on the next rebuild.
+**Changed since the 05 Sep review.** All seven WA Alinta rows (register 159–165) move from Exclude to
+Create, so it is 67 permanent and no green-component exclusions — see
+[the seven WA Alinta meters](#the-seven-wa-alinta-meters-flipped-to-create) below. The workbook, the guide
+page and the table above still read the 05 Sep decision; they pick the change up on the next rebuild.
 
 ## How the sites were matched
 
@@ -208,32 +208,56 @@ In the workbook these rows carry the decision `Create - temporary, retailer's ac
 They are shaded amber on the Review tab and they are on the load tab and `Manual Setup Checklist` with
 the other 56, because they are being built.
 
-## PCEC — the two WA Alinta meters, flipped to Create
+## The seven WA Alinta meters, flipped to Create
 
-Perth Convention & Exhibition Centre is register rows 159 and 160 (review rows 75 and 76), NMIs
-8001000591 and 8001000592, both at `LSE - Perth Convention & Exhibition Centre (WA)`, Location Ref 9068.
-They were two of the seven WA Alinta rows excluded because the account's own green component already
-carries the offset. They are being built anyway; the other five stay excluded.
+All seven Alinta rows in the register are being flipped from Exclude to Create — register rows
+**159–165**, a contiguous block, all WA, all green-highlighted, all starting 1 Jul 2026, and priced in
+`Rates & Source Data` rows 1453–1461 at an all-in **$0.31176/kWh** for FY27 and FY28 with no separate LGC
+line. They were excluded because each account's own green component already carries the offset — zero
+green in June, then 100% of consumption from July, netting each account to about zero.
 
-| | Source account | Jul 26 kWh | Aug 26 kWh | Green Jul–Aug | New account |
-| --- | --- | ---: | ---: | ---: | --- |
-| 8001000591 | `80013757_8001000591` | 174,253 | 188,584 | 348,506 | `80013757_8001000591_CERTS` |
-| 8001000592 | `80013758_8001000592` | 143,301 | 143,301 | 286,600 | `80013758_8001000592_CERTS` |
+**The call, 09 Sep 26: build all seven.** Power BI reads the account style. It picks up
+`Certificates - Location - kWh` and does not pick up `Electricity - Green [kWh]`, so these sites are
+recording 100% green kWh in Envizi and still showing as unabated downstream. The claim has to sit on an
+account the dashboard can see.
+
+| Reg | Site / location | Ref | Source account | Jul 26 | Aug 26 | New account |
+| ---: | --- | ---: | --- | ---: | ---: | --- |
+| 159 | LSE - Perth Convention & Exhibition Centre (WA) | 9068 | `80013757_8001000591` | 174,253 | 188,584 | `80013757_8001000591_CERTS` |
+| 160 | LSE - Perth Convention & Exhibition Centre (WA) | 9068 | `80013758_8001000592` | 143,301 | 143,301 | `80013758_8001000592_CERTS` |
+| 161 | Cannington Emulsion Plant (Beckenham) | 39 | `80013752_8001010840` | 37,958 | 37,525 | `80013752_8001010840_CERTS` |
+| 162 | Maddington - BIT | 171 | `80013749_8001015167` | 12,275 | 12,360 | `80013749_8001015167_CERTS` |
+| 163 | Asphalt Prod - Albany (601) | 601 | `80013750_8001016501` | 17,463 | 16,858 | `80013750_8001016501_CERTS` |
+| 164 | Asphalt Prod - Geraldton (602) | 602 | `80013754_8001356541` | 1,525 | 1,542 | `80013754_8001356541_CERTS` |
+| 165 | Asphalt Prod - Hope Valley (628) | 628 | `80013755_8002193716` | 43,313 | 42,646 | `80013755_8002193716_CERTS` |
 
 Same fields as the other 60 — style `Certificates - Location - kWh`, Account Ref the NMI, supplier
 `LGC Virtual Account`, Reader blank, Opened On 1 Jul 2026, one source at 100%, Effective From July 2026.
-The form is **prompt 5** in the prompts file. The find that preceded it ran on 09 Sep 26 and is written
-up below; the find and conversion forms are in the git history.
+The form is **prompt 5**, which counts the existing certificate accounts first and skips anything already
+built. The find that preceded it ran on 09 Sep 26 and is written up below; the find and conversion forms
+are in the git history.
 
-Two things make this pair different from anything in section 2. **The offset is already there** — the
-Alinta bill books 100% green kWh on each account's own green component from July 2026, netting both to
-zero; that is the open item below. And **the sources have six years of history**: both have recorded
-since 1 Feb 2020, so Effective From July 2026 is doing real work here — without it the certificate
-accounts reach back to 2020.
+Every one of the seven sources has recorded since 2020 or earlier, so Effective From July 2026 is doing
+real work at all of them. Every one of the six locations carries a **closed Alinta account on the same
+NMI** next to the source, and none has an `LGCS_` or existing certificate account. Geraldton also has a
+live small-market account on a different NMI (`023384950_8002057153`) that is not in the renewal.
 
-The location also holds eleven electricity accounts, nine of them closed or out of scope, and a closed
-Alinta account sits on each of the two NMIs (`80005748_8001000591`, `80007482_8001000592`). There is no
-`LGCS_` account here. Prompt 5 lists all nine as decoys.
+### Coverage of the register
+
+The point of building these is that every green row ends up on a certificate account. The register has 78
+green rows of 81 — the three NT rows are not green and are named exclusions anyway.
+
+| | Green rows | Certificate account |
+| --- | ---: | --- |
+| The 60 permanent | 60 | built, verified 06 Sep 26 |
+| WA Alinta | 7 | **prompt 5** |
+| QLD, retailer not in Envizi yet | 9 | prompt 2, temporary, after prompt 1 |
+| QTMP Torbanlea `3053253239` | 1 | blocked — location `Torbanlea - QTMP` absent from the locations extract |
+| Rail - Maryborough `QGGG000320` | 1 | blocked — no active electricity account on the NMI |
+| | **78** | |
+
+Prompt 5 takes it to **69 of 78**, prompt 2 to **76**. The last two are blocked in Envizi rather than on
+the forms.
 
 **Where the green component sits — checked in Envizi, 09 Sep 26.** It has no account of its own, so
 there was never anything to convert onto the certificate style:
@@ -259,36 +283,15 @@ negative emissions and 0 GJ. Worth knowing: `Account Styles` is under **Manage**
 not in that classic list — the full 40-field component list is the newer `Admin -> Data Configuration`
 screen.
 
-**Why the style matters.** The Power BI dashboard reads the account style: it picks up
-`Certificates - Location - kWh` and does not pick up `Electricity - Green [kWh]`. So PCEC is recording
-100% green kWh in Envizi and still showing as unabated downstream.
+**What building leaves behind.** Because C_7 cannot be switched off for these accounts alone, the green
+component keeps offsetting and the new certificate accounts offset again. On the July and August figures
+at the WA (SWIS) 26-27 LGC factor of −0.45 that is **−392.81 t counted twice across the seven** — PCEC
+−292.25 t of it. The dashboard volume will be right; the Envizi emissions for these seven will not be,
+until either Power BI reads `Electricity - Green [kWh]` as well or the accounts move onto a neutral
+factor. Known going in, and listed under **Still open**.
 
-**The call, 09 Sep 26: build both.** The green side is not being read where it needs to be, so the claim
-has to sit on an account the dashboard can see. The tidier version is not available — no green account to
-convert, and no per-account switch, since the only control is C_7 on the style and that is estate-wide.
-
-What that leaves behind: **the green component keeps offsetting in Envizi and the new accounts offset
-again** — at the WA (SWIS) 26-27 LGC factor of −0.45, −292.25 t counted twice across July and August. The
-dashboard volume will be right; PCEC's Envizi emissions will not be, until either Power BI reads
-`Electricity - Green [kWh]` as well or these two accounts move onto a neutral factor. Known going in, and
-listed under **Still open**.
-
-**The other five Alinta sites.** All seven Alinta rows are on the agreement — register rows 159–165, a
-contiguous block, all WA, all green-highlighted, all starting 1 Jul 2026, and priced in
-`Rates & Source Data` rows 1453–1461 at an all-in $0.31176/kWh for FY27 and FY28 with no separate LGC
-line. The five besides PCEC behave identically in Envizi: zero green in June, 100% of consumption as
-green from July, netting to about zero.
-
-| Register | Site | Jul 26 kWh | Green Jul 26 | Net tCO2e Jul |
-| ---: | --- | ---: | ---: | ---: |
-| 161 | Cannington Emulsion Plant (Beckenham) | 37,958 | 37,958 | 0.00 |
-| 162 | Maddington - BIT | 12,275 | 12,275 | 0.00 |
-| 163 | Asphalt Prod - Albany (601) | 17,463 | 17,462 | 0.00 |
-| 164 | Asphalt Prod - Geraldton (602) | 1,525 | 1,525 | 0.00 |
-| 165 | Asphalt Prod - Hope Valley (628) | 43,313 | 43,313 | 0.00 |
-
-They are invisible to the dashboard for exactly the same reason as PCEC and are **not** being built — only
-PCEC is. About 112,500 kWh a month between them, against PCEC's 317,500.
+**All seven behave identically** in Envizi: zero green in June, 100% of consumption as green from July,
+netting to about zero. About 112,500 kWh a month across the five besides PCEC, against PCEC's 317,500.
 
 **One Alinta account is not on the agreement.** `80013748_8001011791` at Kalgoorlie is the eighth live
 Alinta electricity account in Envizi. It is absent from the Site Register, absent from the budget workbook
@@ -397,11 +400,13 @@ reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS
   SA −0.21, WA −0.45, Tas −0.23, NT −0.55). Left: delete the stray `( Copy of LGCs NSW 23-24 )` and set the
   Victoria 25-26 region to `Australia - Victoria` — prompt 3. Then check the next export shows 26-27 on the
   July rows and that the historical `LGCS_` accounts' FY25 / FY26 totals still look right.
-- PCEC: build the two accounts (prompt 5) — decided 09 Sep 26. Then the double count: the green component
-  keeps offsetting (C_7 is on the `Bid-Electricity Large Market` style, estate-wide, no per-account
-  switch), so both records coexist and PCEC's Envizi emissions read about −292 t light for Jul–Aug. Fix is
-  either Power BI reading `Electricity - Green [kWh]` as well — which would also cover the other five
-  Alinta sites — or a neutral factor on the two new accounts.
+- WA Alinta: build all seven certificate accounts (prompt 5) — decided 09 Sep 26. Then the double count:
+  the green component keeps offsetting (C_7 is on the `Bid-Electricity Large Market` style, estate-wide,
+  no per-account switch), so both records coexist and these seven read about −393 t light for Jul–Aug.
+  Fix is either Power BI reading `Electricity - Green [kWh]` as well or a neutral factor on the seven.
+- Register coverage: prompt 5 takes it to 69 of the 78 green rows and prompt 2 to 76. The last two are
+  blocked in Envizi — QTMP Torbanlea `3053253239` needs its location to exist, Rail - Maryborough
+  `QGGG000320` needs something recording on the NMI.
 - Kalgoorlie `80013748_8001011791`: live Alinta account, not in the Site Register or the budget workbook,
   no green kWh. Confirm with Category Management that it is meant to be outside the renewal.
 - Mogo: read the two certificate accounts (prompt 0b), link the empty 4204072845 one, remake 4001127731.

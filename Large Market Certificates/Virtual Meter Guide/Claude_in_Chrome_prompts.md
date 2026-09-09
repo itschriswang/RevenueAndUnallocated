@@ -8,10 +8,11 @@ Position as of the 06 Sep 26 exports: **all 60 permanent accounts are built** an
 source exactly in July and August with no June row. The 12 old Origin accounts read Replaced On 30 Jun
 2026 and no longer accrue. Mogo has both its accounts. The LGC factors are done as of 08 Sep 26 — 24-25
 closed 30 Jun 2025, the 25-26 set finished and closed 30 Jun 2026, the 26-27 set live from 1 Jul 2026.
-New since: the two Perth Convention & Exhibition Centre meters come off the exclusion list — prompt 5.
-The find ran on 09 Sep: the green component is a capture field on the account style, not an account, so
-there is nothing to convert and no per-account switch. Call made — build both, because the green side is
-not being read where it counts. The double count it leaves in Envizi is written up under prompt 5.
+New since: all seven WA Alinta meters come off the exclusion list — prompt 5. The find ran on 09 Sep:
+their green component is a capture field on the account style (C_7), not an account, so there is nothing
+to convert and no per-account switch — and Power BI does not read it. Call made: build all seven. That
+puts 69 of the 78 green register rows on a certificate account; prompt 2 takes it to 76, and QTMP and
+Maryborough are blocked in Envizi. The double count it leaves behind is written up under prompt 5.
 What remains, in the order I run it:
 
 | # | Prompt | What it does |
@@ -20,11 +21,11 @@ What remains, in the order I run it:
 | 2 | Build the 9 temporary accounts | Section 3 — the Queensland sites still on CS Energy with no Engie account. Run **after** prompt 1 |
 | 3 | LGC factors tidy-up | All four vintages are in (08 Sep 26). Delete the stray `( Copy of LGCs NSW 23-24 )` and fix the Victoria 25-26 region |
 | 4 | Fix two Account Refs | Bathurst and Mogo 4204072845 carry the account number where the NMI should be |
-| 5 | The two PCEC meters | Perth Convention & Exhibition Centre, flipped from Exclude to Create. The find is done (09 Sep) and the call is made — build both, the green side is not being read where it counts |
+| 5 | The seven WA Alinta meters | All seven flipped from Exclude to Create — PCEC ×2, Beckenham, Maddington, Albany, Geraldton, Hope Valley. Their green component is not read by Power BI. Takes coverage to 69 of the 78 green rows |
 | 6 | Read-only check | Confirm an account after it is built |
 
 Prompt 2 assumes prompt 1 has run, so the 5000021_ accounts at Gympie and Archerfield are closed but
-still listed. Prompt 5 stands on its own — nothing in 1–4 touches Perth. The earlier prompts (the 17 permanent accounts, the 12 Origin close-offs, the Mogo read)
+still listed. Prompt 5 stands on its own — nothing in 1–4 touches the WA sites. The earlier prompts (the 17 permanent accounts, the 12 Origin close-offs, the Mogo read)
 are done and have been taken out; they are in the git history if I ever need the form again.
 
 ---
@@ -419,145 +420,128 @@ RULES
 
 ---
 
-## 5 · The two PCEC meters — build the two certificate accounts
+## 5 · Certificate accounts for every green site — the seven WA Alinta meters
 
-Perth Convention & Exhibition Centre is register rows 159 and 160 (review rows 75 and 76) — two of the
-seven WA Alinta rows I excluded because the account's own green component already carries the offset.
-These two are being flipped to **Create**. Both meters sit at one location, `LSE - Perth Convention &
-Exhibition Centre (WA)`, Location Ref 9068.
+The goal is that **every green row in the contract register has a `Certificates - Location - kWh`
+account**, because that is the data type Power BI reads. It picks up `Certificates - Location - kWh` and
+it does not pick up `Electricity - Green [kWh]`, so a site can be recording 100% green kWh in Envizi and
+still show as unabated on the dashboard.
 
-I ran the find first (5a, 09 Sep 26). It came back clear enough to settle the route, so the build form
-below is the only one left. 5a and the conversion form 5b are out of this file and in the git history.
+The register has 78 green rows of 81 (the three NT rows are not green and are named exclusions anyway).
+Where they stand:
 
-### What the find turned up — 09 Sep 26
+| | Green rows | Certificate account | Where |
+| --- | ---: | --- | --- |
+| The 60 permanent | 60 | **built** — verified 06 Sep 26 | section 2, done |
+| WA Alinta | **7** | **built by this prompt** | below |
+| QLD, retailer not in Envizi yet | 9 | temporary accounts | **prompt 2**, run after prompt 1 |
+| QTMP Torbanlea `3053253239` | 1 | cannot yet | its location `Torbanlea - QTMP` is absent from the locations extract |
+| Rail - Maryborough `QGGG000320` | 1 | cannot yet | no active electricity account on the NMI, so nothing for a virtual account to follow |
+| | **78** | | |
 
-**The green side has no account of its own, so there is nothing to convert.** `Manage -> Accounts` with
-Show All on — 23,520 accounts — filtered on Data Type = `Electricity - Green` returns **0 rows**.
-Filtering on just "Green" returns 34, all `Waste Recycled - Green Waste`. No account style carries the
-green data type, and `Admin -> Data Configuration -> Data Types` has no green electricity entry either.
-The old green account at 9068, `932806640`, stops at Jun 2013 and holds nothing from 2020 on.
+So this prompt plus prompt 2 takes it to **76 of 78**. The last two are blocked on Envizi, not on the
+form — QTMP needs its location to exist, Maryborough needs something recording on the NMI. Both are on
+the **Still open** list.
 
-**It is a capture field on the account style.** `Admin -> Data Configuration -> Account Styles ->
-Bid-Electricity Large Market -> Fields` tab, field **"Retail green power/FiT kWh"**, code **C_7**, with
-Column set to **"C_7 GREEN KWH ONLY"**. That flag is what makes Envizi emit the second derived monthly
-row with a mirrored negative factor. Not an account, not the interval meter — a field on the style.
+Step 0 below re-counts the certificate accounts before building anything, so the 60 are proved rather
+than assumed, and anything already built is skipped rather than duplicated.
 
-**It was on screen the whole time, one horizontal scroll away.** Search dropdown `Accounts` → paste the
-number → open → `Review` → `Monthly Data` → **drag the grid's horizontal scrollbar to the far right**.
-Data Type is the last column and sits off-screen by default, and the mouse wheel will not move the grid
-sideways. Green rows are spottable before you scroll: same kWh as the electricity row, negative
-emissions, 0 GJ.
+### Why the seven Alinta sites were excluded, and why they are being built now
 
-**There is no per-account lever.** `Actions -> Account Settings` opens a modal actually titled "Edit
-account" — the same form as Edit Account — with no green or renewable percentage and no per-account
-component switch. `Review` offers only Records and Monthly Data, and Records lists only
-`Electricity [kWh]`. Account Styles is under **Manage**, not Admin; green is not in that classic list,
-and the real 40-field component list is the newer `Admin -> Data Configuration` screen.
+All seven are on the agreement — register rows **159–165**, a contiguous block, all WA, all
+green-highlighted, all starting 1 Jul 2026, priced in `Rates & Source Data` rows 1453–1461 at an all-in
+**$0.31176/kWh** for FY27 and FY28 with no separate LGC line. They were excluded from the original 60
+because each account's own green component already carries the offset: zero green in June, then 100% of
+consumption from July, netting each account to about zero.
 
-The figures tie out to the 06 Sep export exactly:
+That offset is invisible where it counts, so they are being built. **Decision, 09 Sep 26: build all
+seven.**
 
-| Account | | Jun 26 | Jul 26 | Aug 26 |
-| --- | --- | ---: | ---: | ---: |
-| `80013757_8001000591` | electricity kWh | 175,667 actual | 174,253 actual | 188,584.40 accrued |
-| | tCO2e | 87.8335 | 87.1265 | 94.2922 |
-| | green kWh | 0 actual | 174,253 actual | 174,252.9995 accrued |
-| | tCO2e | 0 | −87.1265 | −87.1265 |
-| `80013758_8001000592` | electricity kWh | 117,687 actual | 143,301 actual | 143,301.00 accrued |
-| | tCO2e | 58.8435 | 71.6505 | 71.6505 |
-| | green kWh | 0 actual | 143,300 actual | 143,299.9986 accrued |
-| | tCO2e | 0 | −71.65 | −71.65 |
+### What the find established — 09 Sep 26
 
-Factor names identical on both accounts every month: electricity
-`81 - Electricity - 25-26 - Western Australia (SWIS)` at 0.5, green
-`81 - Electricity Green - 25-26 - Western Australia (SWIS)` at −0.5. Both still on the **25-26** vintage
-in July and August 2026, so that factor set has not rolled to 26-27 any more than the LGC set had before
-the 08 Sep run.
+**The green side has no account of its own, so nothing can be converted.** `Manage -> Accounts` with Show
+All on — 23,520 accounts — filtered on Data Type `Electricity - Green` returns **0 rows**. Filtering on
+just "Green" returns 34, all `Waste Recycled - Green Waste`. `Admin -> Data Configuration -> Data Types`
+has no green electricity entry.
 
-Two quirks worth keeping in view. June's green is zero on both accounts while July and August are
-near-full offsets — the offset starts with the 1 Jul 26 contract. And August is accrued on both sides,
-but the green accrual carried July's volume across while the electricity side accrued to a different
-figure, which is why August on the 591 account nets to **+7.17 tCO2e** rather than roughly zero.
+**It is a capture field on the account style**: `Admin -> Data Configuration -> Account Styles ->
+Bid-Electricity Large Market -> Fields`, field **"Retail green power/FiT kWh"**, code **C_7**, Column set
+to **"C_7 GREEN KWH ONLY"**. That flag is what makes Envizi emit the second derived monthly row with a
+mirrored negative factor. It is on the style, so it is **estate-wide** — there is no per-account switch,
+and `Actions -> Account Settings` turns out to be the Edit Account modal under another name, with no
+green or renewable percentage on it.
 
-### The call — build them (09 Sep 26)
+**It is visible on screen, one horizontal scroll away.** `Review -> Monthly Data`, then drag the grid's
+horizontal scrollbar to the far right — Data Type is the last column, off-screen by default, and the
+mouse wheel will not move the grid sideways. Green rows read the same kWh as the electricity row with
+negative emissions and 0 GJ. Also worth knowing: `Account Styles` is under **Manage**, not Admin, and
+green is not in that classic list — the 40-field component list is the newer `Admin -> Data
+Configuration` screen.
 
-**Building both.** The green component is not being read where it needs to be, so leaving the claim
-sitting on it keeps PCEC showing as unabated, and a `Certificates - Location - kWh` account is what fixes
-that. Power BI reads the account style: it picks up `Certificates - Location - kWh` and does not pick up
-`Electricity - Green [kWh]`.
+### What building leaves behind
 
-The find ruled out the tidier version. There is no green account to convert onto the certificate style,
-and no per-account switch to turn the green side off — the only control is field C_7 on the
-`Bid-Electricity Large Market` style, which is estate-wide and would stop the green component on every
-account carrying that style. Not a PCEC change, and not in this file.
+Because C_7 cannot be switched off for these accounts alone, **the green component keeps offsetting and
+the new certificate accounts offset again**. On the July and August figures, at the WA (SWIS) 26-27 LGC
+factor of −0.45, that is **−392.81 t counted twice across all seven** (PCEC −292.25 t of it). The
+dashboard volume will be right; the Envizi emissions for these seven will not be, until either Power BI
+reads `Electricity - Green [kWh]` as well or these accounts move onto a neutral factor. Known going in,
+and on the **Still open** list.
 
-So, what building leaves behind, written down so it is not a surprise later: **the green component keeps
-offsetting in Envizi, and the new accounts offset again.** At the WA (SWIS) 26-27 LGC factor of −0.45
-that is **−292.25 t counted twice across July and August**. The dashboard volume will be right; Envizi's
-own emissions number for PCEC will not be, until either Power BI reads the green rows as well or these
-two accounts are moved onto a neutral factor. It is on the list under **Still open** in the README.
+Two things that apply to every one of the seven. All seven source accounts have recorded since **2020 or
+earlier**, so Effective From July 2026 is what keeps the certificate accounts off years of history — it
+matters more here than anywhere in section 2. And every one of the six locations has a **closed Alinta
+account on the same NMI** sitting next to the source, so the full account number is what to match on.
 
-The same sits behind the other five WA Alinta sites — register rows 161–165, all on the agreement from
-1 Jul 2026, all showing zero green in June and 100% from July, all netting to about zero. They are not
-being built; only PCEC is.
-
-Two other things about this pair. Both source accounts have recorded since **1 Feb 2020**, so Effective
-From July 2026 is what keeps the certificate accounts off six years of history — it matters more here
-than anywhere in section 2. And the location holds **eleven** electricity accounts, nine of them closed
-or out of scope, several sharing the NMI with the account I want; the account numbers differ by one digit
-in two places, so the full string is what to match on.
+None of the six locations has an `LGCS_` account or an existing certificate account as at the 05 Sep
+extract.
 
 ```
-You're helping me set up two renewable-certificate virtual accounts in IBM
-Envizi (au001.envizi.com). I'm logged in on the Envizi tab. Both accounts are
-at ONE location. Work them ONE AT A TIME, in order.
+You're helping me set up renewable-certificate virtual accounts in IBM Envizi
+(au001.envizi.com). I'm logged in on the Envizi tab. There is a counting step
+first, then seven accounts across six locations, ONE AT A TIME, in order.
 
 THE ONE RULE THAT MATTERS
 An account can only be set up as a virtual account while it holds NO records.
 So the account is created first and saved empty, and only then linked. Never
 add data to it.
 
-THIS LOCATION IS FULL OF DECOYS
-There are eleven electricity accounts here. Only two are mine and they are the
-only two still open on the large market style. Match the FULL account number
-character for character - the live account and a closed one share the same NMI,
-and my two differ from each other by one digit in two places.
+IF ONE ALREADY EXISTS
+If my exact target account number is already there, do NOT touch it, do NOT
+edit or reuse it. Note it as already done and move to the next one. Only build
+what is missing.
 
-  MINE, the sources:   80013757_8001000591   and   80013758_8001000592
-                       (Alinta, Electricity Large Market, Opened 2/1/2020,
-                        Replaced On blank)
+EVERY LOCATION HERE HAS A DECOY ON THE SAME NMI
+At each site a CLOSED Alinta account sits on the same NMI as the live one, and
+the numbers differ by a few digits. Match the FULL account number character for
+character, every time. The closed one is named on each card below.
 
-  NOT mine - do not open Edit Account, do not pick as a source:
-    80005748_8001000591            Alinta, closed 31 Jan 2020, SAME NMI as mine
-    80007482_8001000592            Alinta, closed 31 Jan 2020, SAME NMI as mine
-    932806640                      Electricity Green, closed 30 Jun 2013
-    414267220_8001905073           Synergy, Small Market, a different NMI
-    80005748_80010005910_CLOSED    Electricity Simple, closed
-    80005748_80010005926           Electricity Simple, closed
-    80007482_CLOSED                Electricity Simple, closed
-    600751_80010005910             Electricity Simple, closed
-    600751_80010005926             Electricity Simple, closed
-
-There is no LGCS_ account at this location. If you find one, stop and tell me.
+=== STEP 0 · Count what already exists, then tell me ===
+Read-only. Manage -> Accounts, turn Show All on, and filter Account Style on
+"Certificates - Location - kWh". Tell me how many rows come back and, if the
+grid will show it, list the account numbers. I am expecting about 60. Report
+the number before you build anything - if it is well under 60, stop and tell
+me, because something I think is built is not.
 
 === STEP 1 · Find the location ===
-Top-right search, dropdown set to "Locations". Search "Perth Convention" and
-open it. Confirm the Location Ref on the Summary page reads 9068. If it does
-not, stop.
+Top-right search, dropdown set to "Locations". Search the location name, open
+it. Confirm the Location Ref on the Summary page matches the ref on the card -
+several locations share a name and the ref is what disambiguates. If the ref
+doesn't match, stop.
 
 === STEP 2 · Open the account list ===
 From the location Summary page: Quick links -> Accounts. Click "Show All
 Accounts". Before creating anything, filter the Account Number column on
-"CERTS" and confirm there is nothing there, then clear the filter. The filter
-sometimes renders as a search textbox and sometimes as a multi-select checkbox
-list. If either of my target numbers already exists, stop and tell me - do not
-edit or reuse it.
+"CERTS" and confirm my exact target isn't there, then clear the filter. The
+filter sometimes renders as a search textbox and sometimes as a multi-select
+checkbox list. If my exact target already exists, skip this site per the rule
+above and tell me.
 
 === STEP 3 · Create the account, empty ===
 Click the blue "Create New..." button and set:
 
   Account style      Certificates - Location - kWh
-  Account number     as listed below
-  Account Ref        the NMI as listed below - the NMI, NOT the account number
+  Account number     as listed on the card
+  Account Ref        the NMI on the card - the NMI, NOT the account number
   Supplier           LGC Virtual Account
   Reader             leave blank
   Opened On          2026-07-01   (field displays as 7/1/2026)
@@ -590,17 +574,17 @@ relationship" dialog opens with three tabs. Fill all three BEFORE saving:
   occasionally renders empty on first click; click it again.
 
 - Source data - Left pane "Available", right pane "Selected". Expand "Kilowatt
-  hours", then the location, then click the plus next to the SOURCE ACCOUNT I
-  name. Zoom in and match the FULL account number character for character -
-  this location has a closed account on the same NMI and it will be sitting
-  right next to mine in the tree. Add that one account and nothing else. The
-  Selected pane should show Kilowatt hours -> the location -> the one account,
-  then "*" and "Value Variable" - leave those exactly as the rule sets them.
+  hours", then the location, then click the plus next to the SOURCE ACCOUNT on
+  the card. Zoom in and match the FULL account number character for character -
+  the closed Alinta account on the same NMI will be sitting right next to it in
+  the tree. Add that one account and nothing else. The Selected pane should
+  show Kilowatt hours -> the location -> the one account, then "*" and "Value
+  Variable" - leave those exactly as the rule sets them.
 
 - Condition (optional) - Effective From: July 2026 (the picker shows
-  "2026 July"). Effective To: leave blank. THIS ONE MATTERS MORE THAN USUAL:
-  the source has recorded since February 2020, so without it the new account
-  reaches back six years. It is not optional for us.
+  "2026 July"). Effective To: leave blank. THIS MATTERS ON EVERY ONE OF THESE:
+  every source has recorded since 2020 or earlier, so without it the new
+  account reaches back years. It is not optional for us.
 
 Then SAVE. Confirm the grid reads 1 Row with Formula "Kilowatt hours*Value
 Va...", Effective From 7/1/2026, Effective To blank.
@@ -612,35 +596,70 @@ Monthly Data in the account nav - the Summary chart tooltips don't render.
 
 On that grid, DRAG THE HORIZONTAL SCROLLBAR to the far right. Data Type is the
 last column and it sits off-screen by default, and the mouse wheel will not
-move the grid sideways. I need to see it.
+move the grid sideways. I need to see it, and I want it to read
+"Certificates - Location - kWh".
 
 Confirm Jul and Aug 2026 kWh match the "Expect" line and there is NO June 2026
-row and nothing in 2020-2025. If any month before July 2026 has a value,
-Effective From didn't take - stop and tell me.
+row and nothing before July 2026. If any earlier month has a value, Effective
+From didn't take - stop and tell me.
 
-========================= THE TWO · both at Location Ref 9068 =========================
+============ THE SEVEN · all WA, all Alinta, seven accounts at six locations ============
 
+### LSE - Perth Convention & Exhibition Centre (WA) - Location Ref 9068   (2 accounts)
+    Leave alone here: 932806640, 414267220_8001905073, 80005748_80010005910_CLOSED,
+    80005748_80010005926, 80007482_CLOSED, 600751_80010005910, 600751_80010005926
  1. 80013757_8001000591_CERTS · ref 8001000591 · src 80013757_8001000591
-    Expect Jun none · Jul 174,253 · Aug 188,584 · nothing before Jul 26
-    Closed decoy on this same NMI, do NOT pick: 80005748_8001000591
-
+    Expect Jun none · Jul 174,253 · Aug 188,584
+    Closed decoy, SAME NMI, do NOT pick: 80005748_8001000591
  2. 80013758_8001000592_CERTS · ref 8001000592 · src 80013758_8001000592
-    Expect Jun none · Jul 143,301 · Aug 143,301 · nothing before Jul 26
-    Closed decoy on this same NMI, do NOT pick: 80007482_8001000592
+    Expect Jun none · Jul 143,301 · Aug 143,301
+    Closed decoy, SAME NMI, do NOT pick: 80007482_8001000592
 
-======================================================================================
+### Cannington Emulsion Plant - Location Ref 39   (register: Roads - Beckenham)
+ 3. 80013752_8001010840_CERTS · ref 8001010840 · src 80013752_8001010840
+    Expect Jun none · Jul 37,958 · Aug 37,525
+    Closed decoy, SAME NMI, do NOT pick: 80005436_8001010840
 
-Do number 1, then stop and show me before starting number 2.
+### Maddington - BIT - Location Ref 171   (register: Roads - Maddington)
+    Careful: prompt 2 has an RPQ Spray Seal at ref 171230. This one is ref 171.
+ 4. 80013749_8001015167_CERTS · ref 8001015167 · src 80013749_8001015167
+    Expect Jun none · Jul 12,275 · Aug 12,360
+    Closed decoy, SAME NMI, do NOT pick: 80005437_8001015167
+
+### Asphalt Prod - Albany (601) - Location Ref 601   (register: Roads - Warrenup)
+ 5. 80013750_8001016501_CERTS · ref 8001016501 · src 80013750_8001016501
+    Expect Jun none · Jul 17,463 · Aug 16,858
+    Closed decoy, SAME NMI, do NOT pick: 80003702_8001016501
+
+### Asphalt Prod - Geraldton (602) - Location Ref 602   (register: Roads - Narngulu)
+    This location also has a LIVE small market account on a DIFFERENT NMI -
+    023384950_8002057153. It is not in the renewal. Do not pick it as a source.
+ 6. 80013754_8001356541_CERTS · ref 8001356541 · src 80013754_8001356541
+    Expect Jun none · Jul 1,525 · Aug 1,542   (much the smallest of the seven)
+    Closed decoy, SAME NMI, do NOT pick: 80005435_8001356541
+
+### Asphalt Prod - Hope Valley (628) - Location Ref 628   (register: Roads - Hope Valley)
+ 7. 80013755_8002193716_CERTS · ref 8002193716 · src 80013755_8002193716
+    Expect Jun none · Jul 43,313 · Aug 42,646
+    Closed decoy, SAME NMI, do NOT pick: 80010451_8002193716
+
+========================================================================================
+
+None of these six locations has an LGCS_ account. If you find one, leave it
+alone and tell me.
+
+Do step 0, then number 1, then stop and show me. Once I've confirmed the first
+one I'll tell you to run the rest without stopping.
 
 After each account, report: the account number created, Account Ref, Opened On,
-the exact source account you selected, Effective From, the Jun/Jul/Aug figures
-against what I expected, that nothing appears before July 2026, and the
-emission factor name and value on the July row.
+the exact source account you selected, Effective From, the Data Type shown on
+Monthly Data, the Jun/Jul/Aug figures against what I expected, and that nothing
+appears before July 2026.
 
 RULES
-- Never delete, close, move or edit the SOURCE accounts or any decoy.
+- Never delete, close, move or edit a SOURCE account or any decoy.
 - Never open Edit Account on anything except the account you just created.
-- If my exact target account number already exists, stop and tell me.
+- If my exact target already exists, skip it and tell me - never edit or reuse.
 - If a screen doesn't match what I've described, stop and describe what you see.
 - Never click Save or Delete on a form you're unsure about.
 
@@ -650,15 +669,18 @@ WORKED EXAMPLE
 Energy Certificates, Effective From July 2026.
 ```
 
-Expected: two `Certificates - Location - kWh` accounts at 9068, each mirroring one Alinta account from
-July 2026 and nothing earlier, on the WA (SWIS) 26-27 LGC factor of −0.45. The July and August kWh will
-move as the Alinta bills land — the test is that each new account equals its source, whatever the source
-reads.
+Expected: seven `Certificates - Location - kWh` accounts across the six WA locations, each mirroring one
+Alinta account from July 2026 and nothing earlier, on the WA (SWIS) 26-27 LGC factor of −0.45. August is
+accrued on every one of them, so the figures move as the bills land — the test is that each new account
+equals its source, whatever the source reads.
 
-Then the green component, still recording on the style field and not switchable per account, so PCEC's
-Envizi emissions read about −292 t better than they should for July and August until the factor or the
-dashboard is dealt with. Known and accepted going in. Prompt 6 read against either account will show the
-factor and the kWh side by side.
+Coverage after this prompt: **69 of 78** green rows have a certificate account. Prompt 2 takes it to 76;
+QTMP and Maryborough are the two that cannot be built yet.
+
+Then the green component, still recording on the style field and not switchable per account, so these
+seven read about −393 t better than they should for July and August until the factor or the dashboard is
+dealt with. Known and accepted going in. Prompt 6 read against any of them will show the factor and the
+kWh side by side.
 
 ---
 
