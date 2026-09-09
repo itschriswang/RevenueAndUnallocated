@@ -222,61 +222,72 @@ carries the offset. They are being built anyway; the other five stay excluded.
 
 Same fields as the other 60 — style `Certificates - Location - kWh`, Account Ref the NMI, supplier
 `LGC Virtual Account`, Reader blank, Opened On 1 Jul 2026, one source at 100%, Effective From July 2026.
-The forms are **prompt 5** in the prompts file — 5a finds the green component and stops, then 5b
-converts it or 5c builds the two new accounts.
+The form is **prompt 5** in the prompts file. The find that preceded it ran on 09 Sep 26 and is written
+up below; the find and conversion forms are in the git history.
 
-Two things make this pair different from anything in section 2:
-
-- **The offset is already there.** The Alinta bill books 100% green kWh on each account's own green
-  component from July 2026, netting both accounts to zero. A certificate account on the same kWh credits
-  it a second time — at the WA (SWIS) 26-27 factor of −0.45 that is −292.25 t across July and August.
-  Either the green component stops recording from 1 Jul 2026 and the certificate accounts carry the
-  claim the way the other sites do, or the certificate accounts are a volume record only and their
-  factor treatment is set so they do not offset twice. That is a data-load and reporting call and it is
-  open. Until it is settled these two accounts should not go into an FY27 market-based number.
-- **The sources have six years of history.** Both have recorded since 1 Feb 2020, so Effective From
-  July 2026 is doing real work here — without it the certificate accounts reach back to 2020.
+Two things make this pair different from anything in section 2. **The offset is already there** — the
+Alinta bill books 100% green kWh on each account's own green component from July 2026, netting both to
+zero; that is the open item below. And **the sources have six years of history**: both have recorded
+since 1 Feb 2020, so Effective From July 2026 is doing real work here — without it the certificate
+accounts reach back to 2020.
 
 The location also holds eleven electricity accounts, nine of them closed or out of scope, and a closed
 Alinta account sits on each of the two NMIs (`80005748_8001000591`, `80007482_8001000592`). There is no
 `LGCS_` account here. Prompt 5 lists all nine as decoys.
 
-**Where the green component sits, and why it cannot simply be converted.** The tidy answer would be to
-turn the green record itself into the certificate account — one mechanism instead of two, no double
-count. Three things from the extracts say that is not available here:
+**Where the green component sits — checked in Envizi, 09 Sep 26.** It has no account of its own, so
+there was never anything to convert onto the certificate style:
 
-- It is **not a separate account**. Both Alinta accounts carry two Data Type rows in the electricity
-  export — `Electricity [kWh]` and `Electricity - Green [kWh]` — under the same `Item Number`, the same
-  `Electricity Large Market` style, `Item Type` = `Account`, the same `Account_Meter_Link` (6181010 and
-  6181011). It is a component of the account, so it has no account number of its own to convert, and
-  changing the style of the account it sits on would take the consumption and six years of history with
-  it.
-- The one green *account* at 9068 is `932806640`, style `Electricity Green`, Account Ref 8001000592 —
-  **closed 30 Jun 2013**, nothing in the current period, and no equivalent exists for 8001000591.
-- `Electricity Green` is a **retired pattern estate-wide**: 189 accounts carry that style and every one
-  is closed, 129 of them in 2017. Downer moved off separate green accounts long ago.
+- `Manage -> Accounts` with Show All on — 23,520 accounts — filtered on Data Type `Electricity - Green`
+  returns **0 rows**. Filtering on just "Green" returns 34, all `Waste Recycled - Green Waste`. No
+  account style carries the green data type, and `Admin -> Data Configuration -> Data Types` has no green
+  electricity entry.
+- It is a **capture field on the account style**: `Admin -> Data Configuration -> Account Styles ->
+  Bid-Electricity Large Market -> Fields`, field **"Retail green power/FiT kWh"**, code **C_7**, Column
+  set to **"C_7 GREEN KWH ONLY"**. That flag makes Envizi emit the second derived monthly row with a
+  mirrored negative factor.
+- **There is no per-account lever.** `Actions -> Account Settings` opens a modal titled "Edit account" —
+  the same form as Edit Account — with no green or renewable percentage and no component switch. `Review`
+  offers only Records and Monthly Data, and Records lists `Electricity [kWh]` alone.
+- The old green account here, `932806640`, stops at Jun 2013 and holds nothing from 2020 on. Estate-wide
+  `Electricity Green` is a retired style: 189 accounts carry it and every one is closed, 129 in 2017.
 
-What the extracts cannot show is a **per-account component setting** — a green / renewable / GreenPower
-percentage or a component toggle on `Account Settings`. If one exists it is the lever that stops the
-green side without touching any other account. That is what prompt 5a goes looking for, and it decides
-between 5b (convert) and 5c (build the two new accounts).
+**It is visible on screen, one horizontal scroll away.** `Review -> Monthly Data`, then drag the grid's
+horizontal scrollbar to the far right — Data Type is the last column, off-screen by default, and the
+mouse wheel will not move the grid sideways. Green rows read the same kWh as the electricity row with
+negative emissions and 0 GJ. Worth knowing: `Account Styles` is under **Manage**, not Admin, and green is
+not in that classic list — the full 40-field component list is the newer `Admin -> Data Configuration`
+screen.
 
-**Why the style matters, beyond tidiness.** The Power BI dashboard reads the account style: it picks up
-`Certificates - Location - kWh` and does not pick up `Electricity - Green [kWh]`. So PCEC can be recording
-100% green kWh in Envizi and still show as unabated downstream, which is what is happening now. The style
-is a hard requirement, not a convention — and it is why converting the green record (5b) is worth trying
-before building alongside it (5c): the conversion moves the claim onto the data type the dashboard reads
-and leaves one record rather than two.
+**Why the style matters.** The Power BI dashboard reads the account style: it picks up
+`Certificates - Location - kWh` and does not pick up `Electricity - Green [kWh]`. So PCEC is recording
+100% green kWh in Envizi and still showing as unabated downstream. The certificate accounts are what fix
+that, and building them is safe now.
 
-If it ends up being 5c, what factor the new accounts carry is the open question. The other 60 take the
-state LGC factor because nothing else offsets at those sites; here the green component already does, so
-an LGC factor on top double counts and a neutral one would make the accounts a volume record the
-dashboard can see without moving the emissions. That is a call for whoever owns the dashboard and the
-FY27 market-based number.
+**What is still open is the double count.** The only control over the green side is field C_7 on the
+`Bid-Electricity Large Market` style, and that is estate-wide — it would stop the green component on every
+account carrying that style. So both records will coexist, and at the WA (SWIS) 26-27 LGC factor of −0.45
+the new accounts add −292.25 t across July and August on top of a green component already offsetting −0.5
+per kWh. Four ways out, in the order I would look at them:
 
-One more from the 06 Sep export: the green rows on both accounts still price on
-`81 - Electricity Green - 25-26 - Western Australia (SWIS)` for July and August 2026, so that factor set
-has not rolled to 26-27 any more than the LGC set had before the 08 Sep run.
+1. **Have Power BI read `Electricity - Green [kWh]` too.** No Envizi change, no second record to
+   reconcile, and the green rows already carry the right volume and the right negative emissions.
+2. **Build the accounts on a neutral factor** so they are a volume record the dashboard sees without
+   moving the emissions — needs a way to scope a zero-value factor to just these two, since factors map by
+   style and region and every other WA certificate account should keep −0.45.
+3. **Build on the LGC factor and net PCEC out in reporting** while both records exist.
+4. Change C_7 on the style — estate-wide, so no.
+
+Until one of those is settled the two accounts should not go into an FY27 market-based number.
+
+**It is not only PCEC.** C_7 is on the style, so the same green component is what excluded all seven WA
+Alinta rows. Option 1 would make the renewable claim visible at all seven without building anything;
+options 2 and 3 fix PCEC alone and leave the other five where they are.
+
+One more, confirmed on screen as well as in the 06 Sep export: the green rows on both accounts still
+price on `81 - Electricity Green - 25-26 - Western Australia (SWIS)` at −0.5 for July and August 2026,
+and the electricity rows on `81 - Electricity - 25-26 - Western Australia (SWIS)` at 0.5. Neither has
+rolled to 26-27, any more than the LGC set had before the 08 Sep run.
 
 ## The EnergyAction rows are meters, not accounts
 
@@ -374,10 +385,10 @@ reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS
   SA −0.21, WA −0.45, Tas −0.23, NT −0.55). Left: delete the stray `( Copy of LGCs NSW 23-24 )` and set the
   Victoria 25-26 region to `Australia - Victoria` — prompt 3. Then check the next export shows 26-27 on the
   July rows and that the historical `LGCS_` accounts' FY25 / FY26 totals still look right.
-- PCEC: run prompt 5a to find the green component, then 5b or 5c. On the extract evidence it is a
-  component with no account of its own, so 5c builds the two accounts and the green side still has to
-  be stopped at the data-load end — as it stands the site would be credited the same renewable kWh
-  twice.
+- PCEC: build the two accounts (prompt 5), then settle the double count. The find on 09 Sep 26 showed the
+  green side is field C_7 on the `Bid-Electricity Large Market` style — estate-wide, no per-account
+  switch — so both records will coexist. Preferred fix is Power BI reading `Electricity - Green [kWh]`
+  as well; failing that, a neutral factor on the two new accounts or a net-out in reporting.
 - Mogo: read the two certificate accounts (prompt 0b), link the empty 4204072845 one, remake 4001127731.
 - Section 2: the last 17 permanent accounts.
 - Section 1: close the 14 old accounts (Traralgon's Replaced On back from 30 Oct to 30 Jun 26), and
