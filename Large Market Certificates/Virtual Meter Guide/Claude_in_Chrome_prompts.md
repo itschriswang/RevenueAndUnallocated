@@ -527,12 +527,19 @@ character, every time. The closed one is named on each card below.
 
 === STEP 0 · Count what already exists, then tell me ===
 Read-only. Manage -> Accounts, turn Show All on, and filter Account Style on
-"Certificates - Location - kWh". Tell me how many rows come back and, if the
-grid will show it, list the account numbers. As at the 05 Sep extract there
-were 136 - 69 old LGCS_ ones, 65 _CERTS, and two named ones - plus the QTMP
-_CERT account built since, so I am expecting about 137. Report the number
-before you build anything. If the _CERTS count is well under 66, stop and tell
-me, because something I think is built is not.
+"Certificates - Location - kWh". Tell me how many rows come back, and split
+them by name: LGCS_ prefix, real _CERTS, "Copy of Eco_ICP_..." (the NZ ones),
+_CERT singular, and anything else.
+
+Counted 09 Sep 26: 163 rows - 69 LGCS_ · 69 real _CERTS · 22 Copy of Eco_ICP_*
+· 1 QTMP _CERT · 2 named (Calder Park, HCMT). That is the baseline. Report the
+number before you build anything, and if the real _CERTS count is under 69,
+stop and tell me, because something I think is built is not.
+
+Two account numbers each appear TWICE in that list, both known and both fine
+to leave: "Copy of Eco_ICP_0000024050WE5E2_CERTS" at Hastings Depot and at
+Asphalt Prod - Hamilton, and LGCS_4001287259 at NSW Spray Seal and at RPQ NSW
+Moree. Do not touch either. If you see a THIRD duplicate, tell me.
 
 === STEP 1 · Find the location ===
 Top-right search, dropdown set to "Locations". Search the location name, open

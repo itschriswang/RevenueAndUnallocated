@@ -242,6 +242,37 @@ real work at all of them. Every one of the six locations carries a **closed Alin
 NMI** next to the source, and none has an `LGCS_` or existing certificate account. Geraldton also has a
 live small-market account on a different NMI (`023384950_8002057153`) that is not in the renewal.
 
+### The certificate account population — counted 09 Sep 26
+
+163 accounts on `Certificates - Location - kWh` in Envizi, which is the number to reconcile against, not
+the register:
+
+| | Count | |
+| --- | ---: | --- |
+| `LGCS_<NMI>` | 69 | the historical AU accounts, 2025 and earlier — leave them |
+| real `_CERTS` | 69 | the new virtual accounts |
+| `Copy of Eco_ICP_*_CERTS` | 22 | the NZ Ecotricity copies |
+| `_CERT` singular | 1 | QTMP, the naming outlier |
+| named deductions | 2 | Calder Park 100% Renewable Electricity, HCMT 100% Renewable Deduction |
+| | **163** | |
+
+The 05 Sep extract held 136 of these — 69 LGCS_, **43** real `_CERTS`, 22 NZ copies and the 2 named — so
+26 have been built since. Note the trap: a crude "ends in `_CERTS`" count folds the 22 NZ copies in with
+the real ones and reads 65 where the truth was 43. Split the NZ copies out before comparing anything.
+
+**Two account numbers each exist twice**, both already in the 05 Sep extract with different Account
+Links, so both predate this work:
+
+- `Copy of Eco_ICP_0000024050WE5E2_CERTS` at **Hastings Depot** (loc ref 55582) and **Asphalt Prod -
+  Hamilton** (3504). Known — it is row 15 of
+  [`Claude_dispatch_prompts_-_NZ_certificates.md`](../Envizi%20Data%20Quality/Claude_dispatch_prompts_-_NZ_certificates.md),
+  where prompt 3 closes the Hastings one.
+- `LGCS_4001287259` at **NSW Spray Seal** (171210) and **RPQ NSW Moree** (L9.J.171220). The NMI moved
+  sites: the NSW Spray Seal electricity account `200034933644_4001287259` closed 30 Jun 2020 and the live
+  one, `50002617997_4001287259`, sits at Moree, where the new `50002617997_4001287259_CERTS` was correctly
+  built. So the NSW Spray Seal `LGCS_` is the stale copy, on a location with no live electricity account.
+  Not urgent and nothing to touch mid-build, but it is a tidy-up.
+
 ### Coverage of the register
 
 The point of building these is that every green row ends up on a certificate account. The register has 78
@@ -416,8 +447,11 @@ reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS
   Fix is either Power BI reading `Electricity - Green [kWh]` as well or a neutral factor on the seven.
 - Register coverage: prompt 5 takes it to 68 of the 78 green rows and prompt 2 to 77. Only Rail -
   Maryborough `QGGG000320` is left, blocked until something records on the NMI.
-- Rename `900018201_3053253239_CERT` (QTMP) to `_CERTS` to match the other 65, so a "CERTS" filter finds
+- Rename `900018201_3053253239_CERT` (QTMP) to `_CERTS` to match the other 69, so a "CERTS" filter finds
   it. Cosmetic, no rush.
+- `LGCS_4001287259` exists at both NSW Spray Seal and RPQ NSW Moree. The Spray Seal one is stale — that
+  location's electricity account closed 30 Jun 2020 and the NMI now sits at Moree. Decide whether to
+  close it.
 - Kalgoorlie `80013748_8001011791`: live Alinta account, not in the Site Register or the budget workbook,
   no green kWh. Confirm with Category Management that it is meant to be outside the renewal.
 - Mogo: read the two certificate accounts (prompt 0b), link the empty 4204072845 one, remake 4001127731.
