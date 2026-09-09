@@ -57,6 +57,9 @@ own green component), and a `Certificates - Location - kWh` virtual account is s
 of each **large market** electricity account — modelled on the Ecotricity `_CERTS` accounts. Sites whose
 Envizi account is styled small market are not under the renewal and are out of scope. The existing
 `LGCS_` accounts hold 2025-and-earlier data, so they stay as history and the new accounts sit beside them.
-The working guide is **`Large Market Certificates/Virtual Meter Guide/Large_Market_Virtual_Meters.html`**;
-the review workbook and write-up are in **`Large Market Certificates/`** — see
+The file to keep in the work folder is **`Large Market Certificates/LGC_Account_Creation_FY27.xlsx`** —
+the contract spreadsheet cut down to the 69 accounts to create, the 14 to close off and the 12 rows with
+no action, with dropdown status columns to work through. The working guide is
+**`Large Market Certificates/Virtual Meter Guide/Large_Market_Virtual_Meters.html`**; the review workbook
+and write-up are in **`Large Market Certificates/`** — see
 [`Large Market Certificates/README.md`](Large%20Market%20Certificates/README.md).
