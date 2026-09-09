@@ -8,8 +8,9 @@ Position as of the 06 Sep 26 exports: **all 60 permanent accounts are built** an
 source exactly in July and August with no June row. The 12 old Origin accounts read Replaced On 30 Jun
 2026 and no longer accrue. Mogo has both its accounts. The LGC factors are done as of 08 Sep 26 — 24-25
 closed 30 Jun 2025, the 25-26 set finished and closed 30 Jun 2026, the 26-27 set live from 1 Jul 2026.
-New since: the two Perth Convention & Exhibition Centre meters come off the exclusion list and get
-certificate accounts after all — prompt 5, and read the green-component note above it first.
+New since: the two Perth Convention & Exhibition Centre meters come off the exclusion list — prompt 5,
+which is a find-then-decide rather than a straight build. The green component there already carries the
+offset, so the site ends up with one mechanism, not two.
 What remains, in the order I run it:
 
 | # | Prompt | What it does |
@@ -18,13 +19,13 @@ What remains, in the order I run it:
 | 2 | Build the 9 temporary accounts | Section 3 — the Queensland sites still on CS Energy with no Engie account. Run **after** prompt 1 |
 | 3 | LGC factors tidy-up | All four vintages are in (08 Sep 26). Delete the stray `( Copy of LGCs NSW 23-24 )` and fix the Victoria 25-26 region |
 | 4 | Fix two Account Refs | Bathurst and Mogo 4204072845 carry the account number where the NMI should be |
-| 5 | Build the two PCEC accounts | Perth Convention & Exhibition Centre — the two WA Alinta meters, flipped from Exclude to Create. Step A reads the green component and stops |
+| 5 | The two PCEC meters | Perth Convention & Exhibition Centre, flipped from Exclude to Create. Three forms: **5a** finds the green component and stops, then **5b** converts it or **5c** builds the two new accounts |
 | 6 | Read-only check | Confirm an account after it is built |
 
 Prompt 2 assumes prompt 1 has run, so the 5000021_ accounts at Gympie and Archerfield are closed but
-still listed. Prompt 5 stands on its own — nothing in 1–4 touches Perth. The earlier prompts (the 17
-permanent accounts, the 12 Origin close-offs, the Mogo read) are done and have been taken out; they are
-in the git history if I ever need the form again.
+still listed. Prompt 5 stands on its own — nothing in 1–4 touches Perth, and 5b and 5c are alternatives,
+not a sequence. The earlier prompts (the 17 permanent accounts, the 12 Origin close-offs, the Mogo read)
+are done and have been taken out; they are in the git history if I ever need the form again.
 
 ---
 
@@ -418,16 +419,20 @@ RULES
 
 ---
 
-## 5 · Build the two PCEC certificate accounts
+## 5 · The two PCEC meters — find the green component, then convert or build
 
 Perth Convention & Exhibition Centre is register rows 159 and 160 (review rows 75 and 76) — two of the
 seven WA Alinta rows I excluded because the account's own green component already carries the offset.
 These two are being flipped to **Create**. Both meters sit at one location, `LSE - Perth Convention &
 Exhibition Centre (WA)`, Location Ref 9068.
 
-**Read this before running it.** The Alinta bill books 100% green kWh on each account's own green
-component from July 2026, which already nets both accounts to zero. A certificate account mirroring the
-same kWh offsets it a second time:
+Three forms, run in order, with me approving between each: **5a** finds the green component and stops,
+then either **5b** converts it or **5c** builds the two new accounts.
+
+### Why there is a decision here at all
+
+The Alinta bill books 100% green kWh on each account's own green component from July 2026, which already
+nets both accounts to zero:
 
 | | Jun 26 | Jul 26 | Aug 26 |
 | --- | ---: | ---: | ---: |
@@ -438,42 +443,247 @@ same kWh offsets it a second time:
 | …its green component kWh | 0 | 143,300 actual | 143,300 accrued |
 | …net tCO2e today | +58.84 | 0.00 | 0.00 |
 
-At the WA (SWIS) 26-27 LGC factor of −0.45 the new accounts add −78.41 and −84.86 t on 8001000591 and
-−64.49 t in each month on 8001000592 — **−292.25 t across July and August that the site would be credited
-twice**. The double count starts the moment the relationship saves in step 5, not when the accounts are
-created. So one of two things has to be true before these numbers are reported:
+Build a certificate account on top of that and the same kWh is credited twice — at the WA (SWIS) 26-27
+LGC factor of −0.45 that is **−292.25 t across July and August**, and it starts the moment the
+relationship saves. So the site should end up with **one** mechanism, not two. Either the green side
+becomes the certificate record (5b), or it stops and the new accounts carry the claim (5c).
 
-- the green component stops recording on the two Alinta accounts from 1 Jul 2026, and the certificate
-  accounts carry the claim the way the other 60 sites do; or
-- the certificate accounts are a volume record only, and the factor on them is set so they do not
-  offset a second time.
+### What the extracts say about where the green component lives
 
-That is a data-load and reporting call, not something the form below settles — which is why step A goes
-and finds the green component before anything is created, and stops.
+Not encouraging for the convert route, which is why 5a runs first.
 
-**Where the green component actually is.** It is not a separate account and not the interval meter. Each
-Alinta account carries a second data type on the account itself — `Electricity - Green [kWh]` beside the
-ordinary `Electricity [kWh]`, same account number, same `Electricity Large Market` style, `Item Type` =
-Account. That is why it is easy to miss on screen: it is a component, not a row in the account list. I
-can see it in the export but not yet in the interface, so step A is a hunt — Monthly Data first (it may
-be a column, not a row), then the rest of the Review nav, then Account Settings, then
-`Admin -> Account Styles` to see whether the component is defined on the style at all. It reports where
-it found it, which is the answer I want as much as the numbers.
+- It is **not a separate account**. In the electricity export both accounts carry two Data Type rows —
+  `Electricity [kWh]` and `Electricity - Green [kWh]` — under the *same* `Item Number`, the same
+  `Electricity Large Market` style, `Item Type` = `Account`, the same `Account_Meter_Link` (6181010 and
+  6181011). It is a **component of the account**, so it has no account number of its own to convert.
+- The one green *account* at 9068 is `932806640`, style `Electricity Green`, Account Ref 8001000592 —
+  **closed 30 Jun 2013**, no data in the current period, and there is no equivalent for 8001000591 at
+  all. Converting it would convert thirteen-year-old history for one of the two meters.
+- `Electricity Green` looks like a **retired pattern estate-wide**: 189 accounts carry that style and
+  **every one of them is closed**, 129 of them in 2017. Downer moved off separate green accounts and
+  onto the green component years ago.
 
-Two other things about this pair. Both source accounts have recorded since **1 Feb 2020**, so
-Effective From July 2026 is what keeps the certificate accounts off six years of history — it matters
-more here than anywhere in section 2. And the location holds **eleven** electricity accounts, nine of
-them closed or out of scope, several sharing the NMI with the account I want. The account numbers differ
-by one digit in two places, so the full string is what to match on.
+So on the evidence, 5c is the likely route and the green component has to be stopped at the data-load
+end. What 5a might still turn up, and the extracts cannot show, is a **per-account component setting** —
+a green / renewable / GreenPower percentage or a component toggle on `Account Settings`. If that exists,
+it is the lever that stops the green side without touching any other account, and 5b becomes possible.
+
+Two other things about this pair, whichever route wins. Both source accounts have recorded since
+**1 Feb 2020**, so Effective From July 2026 is what keeps a certificate account off six years of history
+— it matters more here than anywhere in section 2. And the location holds **eleven** electricity
+accounts, nine of them closed or out of scope, several sharing the NMI with the account I want; the
+account numbers differ by one digit in two places, so the full string is what to match on.
 
 Also worth noting from the 06 Sep export: the green rows still price on
 `81 - Electricity Green - 25-26 - Western Australia (SWIS)` in July and August 2026, so that factor set
 has not rolled to 26-27 either.
 
+---
+
+### 5a · Find the green component and show me — read-only
+
+```
+You're helping me find something in IBM Envizi (au001.envizi.com). I'm logged
+in on the Envizi tab. This whole form is READ-ONLY. Create, edit, save and
+delete nothing. There is no step after it until I say so.
+
+WHAT I'M LOOKING FOR
+Two accounts at Perth Convention & Exhibition Centre carry a SECOND data type,
+"Electricity - Green [kWh]", alongside the ordinary "Electricity [kWh]". Same
+account number, same account style, Item Type "Account" - so it is a component
+of the account itself, not a separate account and not the interval meter. In
+July 2026 it reads 174,253 kWh on 80013757_8001000591 and 143,300 kWh on
+80013758_8001000592. I can see it in the data export but not on screen. Find
+where it lives in the interface and show me.
+
+Start with 80013757_8001000591. Top-right search, dropdown set to "Accounts",
+paste the full account number, open it.
+
+--- A · on the account. Try these in order, stop at the first that shows it ---
+
+ A1. Review -> Monthly Data. The green figure may be a COLUMN rather than a
+     row, so scroll the grid sideways to the end. Look above the grid for a
+     data type / component selector or a second tab, and try every option in
+     it. Screenshot the grid with all columns visible.
+
+ A2. The rest of the account nav under Review - anything named Data, Detail,
+     Components, Consumption or similar. Screenshot what each one shows.
+
+ A3. Actions -> Account Settings. NOT Edit Account, NOT Capture Data. Read
+     what it says about components or data types, and tell me whether there is
+     a green, renewable or GreenPower percentage set anywhere on that screen,
+     and whether any component can be switched off per account. Read only -
+     back out without saving.
+
+Do NOT open Capture Data to go looking. It is a data entry form on a live
+account and I do not want it opened.
+
+--- B · on the account style. Do this one whether or not A worked ---
+
+ A4. Admin -> Account Styles. Find "Electricity Large Market" and list every
+     component it carries, with the exact component names, and say whether the
+     green component is defined there. Read only - do not edit the style.
+
+--- C · the question that decides what I do next ---
+
+ A5. Does the green side have an ACCOUNT NUMBER of its own, or is it only ever
+     a component of 80013757_8001000591 and 80013758_8001000592? Answer this
+     one explicitly - it is the whole point of the exercise.
+
+     While you're deciding: at this location there is an old account
+     932806640, style "Electricity Green", Account Ref 8001000592, Replaced On
+     30 Jun 2013. Open it read-only and tell me its latest month of data and
+     whether it holds anything from 2025 or 2026. Do not edit it.
+
+--- D · only if A1-A3 all came up empty ---
+
+ A6. Find where the electricity data export lives - the one that produces a
+     "Data Type" column with "Electricity - Green [kWh]" rows in it. Tell me
+     the menu path. Don't run a full export, just show me the screen.
+
+--- WHAT TO REPORT ---
+
+First, and most important: does the green side have its own account number
+(A5), and exactly where in the interface the green figure is visible, click by
+click - or that it is not visible on screen at all and what each screen showed
+instead.
+
+Then, for BOTH accounts and for Jun, Jul and Aug 2026:
+
+  - Electricity kWh, and whether it is actual or accrued
+  - Electricity - Green kWh, same question
+  - the tCO2e against each, and the emission factor name on each
+
+If the green figures aren't reachable on screen, give me the Electricity ones
+and say the green side is export-only.
+
+Then stop and show me all of it. Nothing else happens until I've read it.
+```
+
+---
+
+### 5b · Route 1 — convert the green account · **only if 5a finds one**
+
+Run this **only** if 5a came back with a green side that has its own account number and its own row in
+the account list, and I've said go. If 5a says the green side is a component of the electricity account
+— which is what the export says — this form does not apply and 5c is the route.
+
+**The dangerous confusion.** The green figure lives *on* `80013757_8001000591` and
+`80013758_8001000592`. Those two accounts hold the **consumption** and six years of history. Changing
+the Account Style on either of them would reinterpret all of it. The form says so three times because it
+is the one way this goes badly wrong.
+
+```
+You're helping me convert an account in IBM Envizi (au001.envizi.com). I'm
+logged in on the Envizi tab. ONE account at a time. I will give you the exact
+account number - only ever the one I name.
+
+WHAT CHANGES
+Account Style, Supplier, and nothing else. Then a read of the virtual account
+details. No records are added, nothing is deleted, no account is closed.
+
+  Account Style   ->  Certificates - Location - kWh
+  Supplier        ->  LGC Virtual Account
+
+NEVER TOUCH THESE TWO
+  80013757_8001000591
+  80013758_8001000592
+They are the live Alinta electricity accounts and they hold the site's
+consumption back to February 2020. Do NOT open Edit Account on either of them.
+Do NOT change the Account Style on either of them. If the account number I
+give you is one of these two, STOP and tell me I've made a mistake - I have.
+
+=== STEP 1 · Find it and record what it looks like now ===
+Top-right search, dropdown "Accounts", paste the full account number, open it.
+Confirm the account number in the header is exactly mine and "Relates to" is
+LSE - Perth Convention & Exhibition Centre (WA). If not, stop.
+
+Before changing anything, screenshot the Account Summary page and Review ->
+Monthly Data, and tell me: current Account Style, Supplier, Account Ref,
+Reader, Opened On, Replaced On, the earliest and latest month holding data,
+and the kWh and tCO2e for the latest three months. I need this to compare
+against afterwards.
+
+=== STEP 2 · Check whether the style is even changeable ===
+Blue "Actions" button -> "Edit Account". Not Capture Data.
+Find the Account Style field. Before touching it, tell me whether it is
+editable or greyed out, and screenshot the whole form.
+
+If it is greyed out, or if Envizi warns that the account holds records, STOP
+and show me the message. Do not accept, dismiss or work around a warning. That
+answer is what I need, not a saved change.
+
+=== STEP 3 · Set the two fields ===
+Only if step 2 came back clean and I've said go.
+
+Account Style is a jqx DIV, not a native select - form_input will fail on it.
+Click it open, type "Certificates" into its internal Search box, and click
+"Certificates - Location - kWh".
+
+Supplier: replace whatever is there with  LGC Virtual Account
+
+Leave everything else exactly as it is - Account Number, Account Ref, Reader,
+Opened On, Replaced On, Sub Type. Do not reopen a closed account.
+
+Screenshot the completed form and show me BEFORE you save. Save only when I
+say so.
+
+=== STEP 4 · Check what the change did to the history ===
+Back on the Account Summary page, confirm Account Style and Supplier read the
+new values and that Opened On and Replaced On are unchanged.
+
+Then Review -> Monthly Data again, and compare against your step 1 reading.
+Tell me for the same three months: the kWh, the tCO2e, and the emission factor
+name. I am specifically looking for whether the historical months have been
+re-priced or flipped sign now the style is different. If they have, say so
+loudly - that is a problem and I need to know immediately.
+
+=== STEP 5 · Check the virtual account details ===
+Go to the location: top-right search, dropdown "Locations", "Perth
+Convention", confirm Location Ref 9068. Quick links -> Accounts -> "Show All
+Accounts". Tick the checkbox on the row for the converted account, click the
+blue "Actions" button and choose "Virtual Account Setup".
+
+That same Actions menu also holds "Delete Account(s)", "Close Account(s)" and
+"Move Account". Do not click any of those, ever. Screenshot the menu and
+confirm before clicking. If you're not certain, stop and show me.
+
+READ ONLY on this screen. Tell me: how many rows the grid holds, and for each
+one the Formula, the source account, the percentage, Effective From and
+Effective To. Do NOT click "Create New...". Do NOT edit or delete a row.
+
+If the grid reads 0 Row, say so - that is expected and it is not a problem to
+fix here. An account that already holds records cannot be made a virtual
+account anyway, which is exactly why we are converting this one instead of
+linking it.
+
+=== REPORT ===
+Per account: what Account Style and Supplier read before and after, that
+Opened On and Replaced On are unchanged, the three-month kWh / tCO2e / factor
+before and after, and the full contents of the Virtual Account Setup grid.
+
+RULES
+- Only the account number I name. Never 80013757_8001000591 or
+  80013758_8001000592.
+- Account Style and Supplier only. Nothing else on the form.
+- Never delete, close, move or reopen an account.
+- Any warning about existing records: stop, screenshot, do not proceed.
+- If a screen doesn't match what I've described, stop and describe what you see.
+```
+
+---
+
+### 5c · Route 2 — build the two new certificate accounts
+
+The default, and what the export evidence points to: the green side is a component with no account of
+its own, so nothing can be converted and the two accounts get built the way the other 60 were. The green
+component then has to be stopped at the data-load end, or these two accounts stay out of the FY27
+market-based number.
+
 ```
 You're helping me set up two renewable-certificate virtual accounts in IBM
 Envizi (au001.envizi.com). I'm logged in on the Envizi tab. Both accounts are
-at ONE location. There is a read step first, and you STOP after it.
+at ONE location. Work them ONE AT A TIME, in order.
 
 THE ONE RULE THAT MATTERS
 An account can only be set up as a virtual account while it holds NO records.
@@ -502,69 +712,6 @@ and my two differ from each other by one digit in two places.
     600751_80010005926             Electricity Simple, closed
 
 There is no LGCS_ account at this location. If you find one, stop and tell me.
-
-=== STEP A · Find the green component and show it to me, then STOP ===
-Read-only for this whole step. Create, edit, save and delete nothing.
-
-I can see a green component on both accounts in the data export but I cannot
-find it on screen, so this step is a hunt. What I am looking for: each account
-carries a SECOND data type, "Electricity - Green [kWh]", alongside the ordinary
-"Electricity [kWh]". Same account number, same account style, Item Type
-"Account" - so it is a component of the account itself, not a separate account
-and not the interval meter. In July 2026 it reads 174,253 kWh on
-80013757_8001000591 and 143,300 kWh on 80013758_8001000592.
-
-Start with 80013757_8001000591. Top-right search, dropdown set to "Accounts",
-paste the full account number, open it.
-
---- A · on the account. Try these in order, stop at the first that shows it ---
-
- A1. Review -> Monthly Data. The green figure may be a COLUMN rather than a
-     row, so scroll the grid sideways to the end. Look above the grid for a
-     data type / component selector or a second tab, and try every option in
-     it. Screenshot the grid with all columns visible.
-
- A2. The rest of the account nav under Review - anything named Data, Detail,
-     Components, Consumption or similar. Screenshot what each one shows.
-
- A3. Actions -> Account Settings. NOT Edit Account, NOT Capture Data. Read
-     what it says about components or data types, and tell me whether there is
-     a green, renewable or GreenPower percentage set anywhere on that screen.
-     Read only - back out without saving.
-
-Do NOT open Capture Data to go looking. It is a data entry form on a live
-account and I do not want it opened.
-
---- B · on the account style. Do this one whether or not A worked ---
-
- A4. Admin -> Account Styles. Find "Electricity Large Market" and list every
-     component it carries, with the exact component names. This is what tells
-     me whether the green component is defined on the style itself or only
-     arrives with the loaded data. Read only - do not edit the style.
-
---- C · only if A1-A3 all came up empty ---
-
- A5. Find where the electricity data export lives - the one that produces a
-     "Data Type" column with "Electricity - Green [kWh]" rows in it. Tell me
-     the menu path. Don't run a full export, just show me the screen.
-
---- WHAT TO REPORT ---
-
-First: exactly where the green component turned up, click by click, or that it
-is not visible on screen at all and what each of A1-A5 showed instead. That is
-the part I actually need.
-
-Then, for BOTH accounts and for Jun, Jul and Aug 2026:
-
-  - Electricity kWh, and whether it is actual or accrued
-  - Electricity - Green kWh, same question
-  - the tCO2e against each, and the emission factor name on each
-
-If the green figures aren't reachable on screen, give me the Electricity ones
-and say the green side is export-only.
-
-Then stop and show me all of it. I'll tell you whether to go on to step 1.
-Do NOT create anything yet.
 
 === STEP 1 · Find the location ===
 Top-right search, dropdown set to "Locations". Search "Perth Convention" and
@@ -672,14 +819,14 @@ WORKED EXAMPLE
 Energy Certificates, Effective From July 2026.
 ```
 
-Expected afterwards: two `Certificates - Location - kWh` accounts at 9068, each mirroring one Alinta
+Expected after 5c: two `Certificates - Location - kWh` accounts at 9068, each mirroring one Alinta
 account from July 2026 and nothing earlier, on the WA (SWIS) 26-27 LGC factor of −0.45. The July and
 August kWh will move as the Alinta bills land — the test is that each new account equals its source,
 whatever the source reads.
 
-Then the green component. Until it is settled, PCEC reads about −292 t better than it should for July
-and August, and the two accounts should not go into an FY27 market-based number. Prompt 6 read against
-either account will show the factor and the kWh side by side.
+Then the green component, still. Until it is settled, PCEC reads about −292 t better than it should for
+July and August, and the two accounts should not go into an FY27 market-based number. Prompt 6 read
+against either account will show the factor and the kWh side by side.
 
 ---
 

@@ -222,7 +222,8 @@ carries the offset. They are being built anyway; the other five stay excluded.
 
 Same fields as the other 60 — style `Certificates - Location - kWh`, Account Ref the NMI, supplier
 `LGC Virtual Account`, Reader blank, Opened On 1 Jul 2026, one source at 100%, Effective From July 2026.
-The form is **prompt 5** in the prompts file.
+The forms are **prompt 5** in the prompts file — 5a finds the green component and stops, then 5b
+converts it or 5c builds the two new accounts.
 
 Two things make this pair different from anything in section 2:
 
@@ -240,12 +241,25 @@ The location also holds eleven electricity accounts, nine of them closed or out 
 Alinta account sits on each of the two NMIs (`80005748_8001000591`, `80007482_8001000592`). There is no
 `LGCS_` account here. Prompt 5 lists all nine as decoys.
 
-**Where the green component sits.** Not a separate account, and not the interval meter feed. Each
-Alinta account carries a second data type on the account itself — `Electricity - Green [kWh]` beside the
-ordinary `Electricity [kWh]`, same `Item Number`, same `Electricity Large Market` style, `Item Type` =
-`Account`, same `Account_Meter_Link` (6181010 and 6181011). It shows in the electricity export as its own
-row per month; I have not found it on screen yet, so step A of prompt 5 is a hunt through Monthly Data,
-the Review nav, Account Settings and `Admin -> Account Styles`, and reports back where it lives.
+**Where the green component sits, and why it cannot simply be converted.** The tidy answer would be to
+turn the green record itself into the certificate account — one mechanism instead of two, no double
+count. Three things from the extracts say that is not available here:
+
+- It is **not a separate account**. Both Alinta accounts carry two Data Type rows in the electricity
+  export — `Electricity [kWh]` and `Electricity - Green [kWh]` — under the same `Item Number`, the same
+  `Electricity Large Market` style, `Item Type` = `Account`, the same `Account_Meter_Link` (6181010 and
+  6181011). It is a component of the account, so it has no account number of its own to convert, and
+  changing the style of the account it sits on would take the consumption and six years of history with
+  it.
+- The one green *account* at 9068 is `932806640`, style `Electricity Green`, Account Ref 8001000592 —
+  **closed 30 Jun 2013**, nothing in the current period, and no equivalent exists for 8001000591.
+- `Electricity Green` is a **retired pattern estate-wide**: 189 accounts carry that style and every one
+  is closed, 129 of them in 2017. Downer moved off separate green accounts long ago.
+
+What the extracts cannot show is a **per-account component setting** — a green / renewable / GreenPower
+percentage or a component toggle on `Account Settings`. If one exists it is the lever that stops the
+green side without touching any other account. That is what prompt 5a goes looking for, and it decides
+between 5b (convert) and 5c (build the two new accounts).
 
 One more from the 06 Sep export: the green rows on both accounts still price on
 `81 - Electricity Green - 25-26 - Western Australia (SWIS)` for July and August 2026, so that factor set
@@ -347,8 +361,10 @@ reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS
   SA −0.21, WA −0.45, Tas −0.23, NT −0.55). Left: delete the stray `( Copy of LGCs NSW 23-24 )` and set the
   Victoria 25-26 region to `Australia - Victoria` — prompt 3. Then check the next export shows 26-27 on the
   July rows and that the historical `LGCS_` accounts' FY25 / FY26 totals still look right.
-- PCEC: build the two accounts (prompt 5), then settle the green component — as it stands the site would
-  be credited the same renewable kWh twice.
+- PCEC: run prompt 5a to find the green component, then 5b or 5c. On the extract evidence it is a
+  component with no account of its own, so 5c builds the two accounts and the green side still has to
+  be stopped at the data-load end — as it stands the site would be credited the same renewable kWh
+  twice.
 - Mogo: read the two certificate accounts (prompt 0b), link the empty 4204072845 one, remake 4001127731.
 - Section 2: the last 17 permanent accounts.
 - Section 1: close the 14 old accounts (Traralgon's Replaced On back from 30 Oct to 30 Jun 26), and
