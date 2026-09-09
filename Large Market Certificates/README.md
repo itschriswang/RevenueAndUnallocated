@@ -7,6 +7,7 @@ FY26–28 renewal agreements, and everything behind them.
 
 | File | What it is |
 | --- | --- |
+| `LGC_Account_Creation_FY27.xlsx` | **The file I keep in my work folder.** The contract spreadsheet cut down to the account creation: `Create accounts` (69 rows, one per account, only the fields I key into Envizi plus the columns I tick off), `Close off` (the 14 duplicates), `No action` (the other 12 register rows, with the reason) and a `Read me`. Status columns are dropdowns and colour themselves; nothing links back to the review workbook, so it travels on its own. |
 | `Virtual Meter Guide/Large_Market_Virtual_Meters.html` | **Start here.** Four sections in the order I work them: **1** accounts to close, **2** virtual accounts to make, **3** sites on hold because the contracted retailer has no account yet, **4** everything with no action. Ticks and notes save in the browser. Open it by double-clicking. |
 | `Account_Setup_and_Data_Load_-_PM&C_LMCERTSJUL26_Setup.xlsx` | The review workbook: all 81 register rows with live formulas, the 69 accounts on `Prep` and the load tab (kept as the record of what each account looks like — **not uploaded**, see below), plus the `Manual Setup Checklist` and `LGCS Accounts to Check` tabs. The `Account_Setup_and_Data_Load_-_PM&C_` prefix is what Envizi processes on if a load is ever needed. |
 | `Downer_Energy_Contracting_and_Budget_Summary_FY26-28.xlsx` | The renewal agreement site register (scope, retailers, contract dates) and the rate schedules with the LGC lines. |
@@ -46,8 +47,10 @@ sit on a small-market-styled source for this reason.
 | Exclude — named site (NT ×3, QTMP) | 4 |
 | Total register rows reviewed | 81 |
 
-By state the 60 are: NSW 36, VIC 10, QLD 7, SA 4, TAS 2, ACT 1. The full list, with the source account
-and the field values for each, is on the guide page and on the workbook's `Manual Setup Checklist` tab.
+By state the 60 are: NSW 36, VIC 10, QLD 6, SA 4, TAS 3, ACT 1 — Mowbray (360) moved from the parked
+Queensland group to TAS when its Shell account was allocated. The full list, with the source account and
+the field values for each, is on the guide page, on the workbook's `Manual Setup Checklist` tab, and on
+the `Create accounts` tab of `LGC_Account_Creation_FY27.xlsx`.
 
 ## How the sites were matched
 

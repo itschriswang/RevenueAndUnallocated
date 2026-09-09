@@ -8,10 +8,11 @@ The generators behind everything in the folder above. Run them from anywhere; pa
 | `build_guide_data.py` | The workbook above, the Jun–Aug 26 energy export taken after the first Claude in Chrome batches (`Electricity download after the first Claude in Chrome batches.xlsx`, repo root), the accounts extract | `guide_data.json` |
 | `build_register_map.py` | The pristine budget summary, the accounts extract, `guide_data.json` | `..._with_Envizi_accounts.xlsx` |
 | `build_rts_check.py` | `Electricity Data as of 060926.xlsx` (repo root) | `RTS_Market_Based_Check_Jul26.xlsx` — standalone; recalc after building |
+| `build_lgc_creation_file.py` | The review workbook's `Manual Setup Checklist`, `guide_data.json` | `LGC_Account_Creation_FY27.xlsx` — the cut-down working file; run it last, after `build_guide_data.py` |
 | `guide_template.html` + `guide_data.json` | — | `Virtual Meter Guide/Large_Market_Virtual_Meters.html` (replace `/*__DATA__*/null` with the JSON) |
 
 Order: `build_lmcerts.py` → recalc the workbook (LibreOffice, `recalc.py` from the xlsx skill) →
-`build_guide_data.py` → build the page → `build_register_map.py`.
+`build_guide_data.py` → build the page → `build_register_map.py` → `build_lgc_creation_file.py`.
 
 **On a new accounts extract:** drop it in `FY27/`, change the filename and `EXTRACT_DAY` in all three
 scripts, and rerun the chain. The page reads "built" from the extract, so accounts created in Envizi
