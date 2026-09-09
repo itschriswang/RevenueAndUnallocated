@@ -49,6 +49,11 @@ sit on a small-market-styled source for this reason.
 By state the 60 are: NSW 36, VIC 10, QLD 7, SA 4, TAS 2, ACT 1. The full list, with the source account
 and the field values for each, is on the guide page and on the workbook's `Manual Setup Checklist` tab.
 
+**Changed since the 05 Sep review.** The two Perth Convention & Exhibition Centre rows (register 159 and
+160) move from Exclude to Create, so it is 62 permanent and 5 green-component exclusions — see
+[PCEC](#pcec--the-two-wa-alinta-meters-flipped-to-create) below. The workbook, the guide page and the
+table above still read the 05 Sep decision; they pick the change up on the next rebuild.
+
 ## How the sites were matched
 
 On the connection ID, not the region. The NMI is the text after the last underscore in an Envizi account
@@ -203,6 +208,42 @@ In the workbook these rows carry the decision `Create - temporary, retailer's ac
 They are shaded amber on the Review tab and they are on the load tab and `Manual Setup Checklist` with
 the other 56, because they are being built.
 
+## PCEC — the two WA Alinta meters, flipped to Create
+
+Perth Convention & Exhibition Centre is register rows 159 and 160 (review rows 75 and 76), NMIs
+8001000591 and 8001000592, both at `LSE - Perth Convention & Exhibition Centre (WA)`, Location Ref 9068.
+They were two of the seven WA Alinta rows excluded because the account's own green component already
+carries the offset. They are being built anyway; the other five stay excluded.
+
+| | Source account | Jul 26 kWh | Aug 26 kWh | Green Jul–Aug | New account |
+| --- | --- | ---: | ---: | ---: | --- |
+| 8001000591 | `80013757_8001000591` | 174,253 | 188,584 | 348,506 | `80013757_8001000591_CERTS` |
+| 8001000592 | `80013758_8001000592` | 143,301 | 143,301 | 286,600 | `80013758_8001000592_CERTS` |
+
+Same fields as the other 60 — style `Certificates - Location - kWh`, Account Ref the NMI, supplier
+`LGC Virtual Account`, Reader blank, Opened On 1 Jul 2026, one source at 100%, Effective From July 2026.
+The form is **prompt 5** in the prompts file.
+
+Two things make this pair different from anything in section 2:
+
+- **The offset is already there.** The Alinta bill books 100% green kWh on each account's own green
+  component from July 2026, netting both accounts to zero. A certificate account on the same kWh credits
+  it a second time — at the WA (SWIS) 26-27 factor of −0.45 that is −292.25 t across July and August.
+  Either the green component stops recording from 1 Jul 2026 and the certificate accounts carry the
+  claim the way the other sites do, or the certificate accounts are a volume record only and their
+  factor treatment is set so they do not offset twice. That is a data-load and reporting call and it is
+  open. Until it is settled these two accounts should not go into an FY27 market-based number.
+- **The sources have six years of history.** Both have recorded since 1 Feb 2020, so Effective From
+  July 2026 is doing real work here — without it the certificate accounts reach back to 2020.
+
+The location also holds eleven electricity accounts, nine of them closed or out of scope, and a closed
+Alinta account sits on each of the two NMIs (`80005748_8001000591`, `80007482_8001000592`). There is no
+`LGCS_` account here. Prompt 5 lists all nine as decoys.
+
+One more from the 06 Sep export: the green rows on both accounts still price on
+`81 - Electricity Green - 25-26 - Western Australia (SWIS)` for July and August 2026, so that factor set
+has not rolled to 26-27 any more than the LGC set had before the 08 Sep run.
+
 ## The EnergyAction rows are meters, not accounts
 
 The Jun–Aug 26 energy export carries bare-NMI rows with supplier `EnergyAction` that never appear in
@@ -299,6 +340,8 @@ reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS
   SA −0.21, WA −0.45, Tas −0.23, NT −0.55). Left: delete the stray `( Copy of LGCs NSW 23-24 )` and set the
   Victoria 25-26 region to `Australia - Victoria` — prompt 3. Then check the next export shows 26-27 on the
   July rows and that the historical `LGCS_` accounts' FY25 / FY26 totals still look right.
+- PCEC: build the two accounts (prompt 5), then settle the green component — as it stands the site would
+  be credited the same renewable kWh twice.
 - Mogo: read the two certificate accounts (prompt 0b), link the empty 4204072845 one, remake 4001127731.
 - Section 2: the last 17 permanent accounts.
 - Section 1: close the 14 old accounts (Traralgon's Replaced On back from 30 Oct to 30 Jun 26), and
