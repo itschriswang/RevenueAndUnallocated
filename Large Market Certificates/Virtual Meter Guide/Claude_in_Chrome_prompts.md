@@ -9,9 +9,9 @@ source exactly in July and August with no June row. The 12 old Origin accounts r
 2026 and no longer accrue. Mogo has both its accounts. The LGC factors are done as of 08 Sep 26 — 24-25
 closed 30 Jun 2025, the 25-26 set finished and closed 30 Jun 2026, the 26-27 set live from 1 Jul 2026.
 New since: the two Perth Convention & Exhibition Centre meters come off the exclusion list — prompt 5.
-The find ran on 09 Sep and settled it: the green component is a capture field on the account style, not
-an account, so there is nothing to convert and no per-account switch. The accounts get built; what to do
-about the green side offsetting the same kWh is written up under prompt 5 and still open.
+The find ran on 09 Sep: the green component is a capture field on the account style, not an account, so
+there is nothing to convert and no per-account switch. Call made — build both, because the green side is
+not being read where it counts. The double count it leaves in Envizi is written up under prompt 5.
 What remains, in the order I run it:
 
 | # | Prompt | What it does |
@@ -20,7 +20,7 @@ What remains, in the order I run it:
 | 2 | Build the 9 temporary accounts | Section 3 — the Queensland sites still on CS Energy with no Engie account. Run **after** prompt 1 |
 | 3 | LGC factors tidy-up | All four vintages are in (08 Sep 26). Delete the stray `( Copy of LGCs NSW 23-24 )` and fix the Victoria 25-26 region |
 | 4 | Fix two Account Refs | Bathurst and Mogo 4204072845 carry the account number where the NMI should be |
-| 5 | The two PCEC meters | Perth Convention & Exhibition Centre, flipped from Exclude to Create. The find is done (09 Sep) — the green side is a field on the account style, so there is nothing to convert and this builds the two accounts |
+| 5 | The two PCEC meters | Perth Convention & Exhibition Centre, flipped from Exclude to Create. The find is done (09 Sep) and the call is made — build both, the green side is not being read where it counts |
 | 6 | Read-only check | Confirm an account after it is built |
 
 Prompt 2 assumes prompt 1 has run, so the 5000021_ accounts at Gympie and Archerfield are closed but
@@ -478,36 +478,27 @@ near-full offsets — the offset starts with the 1 Jul 26 contract. And August i
 but the green accrual carried July's volume across while the electricity side accrued to a different
 figure, which is why August on the 591 account nets to **+7.17 tCO2e** rather than roughly zero.
 
-### What that means for the build
+### The call — build them (09 Sep 26)
 
-The Power BI dashboard reads the account style — it picks up `Certificates - Location - kWh` and does not
-pick up `Electricity - Green [kWh]` — so PCEC is recording 100% green kWh in Envizi and still showing as
-unabated downstream. The two certificate accounts are what fix that, and the form below builds them the
-same way as the other 60.
+**Building both.** The green component is not being read where it needs to be, so leaving the claim
+sitting on it keeps PCEC showing as unabated, and a `Certificates - Location - kWh` account is what fixes
+that. Power BI reads the account style: it picks up `Certificates - Location - kWh` and does not pick up
+`Electricity - Green [kWh]`.
 
-What the find rules out is the tidy version. There is no green account to convert onto the certificate
-style, and no per-account switch to turn the green side off. **The only control is field C_7 on the
-`Bid-Electricity Large Market` style, and that is estate-wide** — changing it would stop the green
-component on every account carrying that style, not just these two. That is not a PCEC change and it is
-not in this file.
+The find ruled out the tidier version. There is no green account to convert onto the certificate style,
+and no per-account switch to turn the green side off — the only control is field C_7 on the
+`Bid-Electricity Large Market` style, which is estate-wide and would stop the green component on every
+account carrying that style. Not a PCEC change, and not in this file.
 
-So the green component stays, and the double count is now a live question rather than a theoretical one:
-at the WA (SWIS) 26-27 LGC factor of −0.45 the two new accounts add **−292.25 t across July and August**
-on top of a green component already offsetting −0.5 per kWh. Four ways out, in the order I would look at
-them:
+So, what building leaves behind, written down so it is not a surprise later: **the green component keeps
+offsetting in Envizi, and the new accounts offset again.** At the WA (SWIS) 26-27 LGC factor of −0.45
+that is **−292.25 t counted twice across July and August**. The dashboard volume will be right; Envizi's
+own emissions number for PCEC will not be, until either Power BI reads the green rows as well or these
+two accounts are moved onto a neutral factor. It is on the list under **Still open** in the README.
 
-1. **Have Power BI read `Electricity - Green [kWh]` as well.** No Envizi change at all, no second record
-   to reconcile, and the green rows already carry the right volume and the right negative emissions.
-   Cleanest, if the dashboard is ours to change.
-2. **Build the accounts and give them a neutral factor**, so they are a volume record the dashboard sees
-   without moving the emissions. Needs a way to scope a zero-value factor to just these two — worth
-   asking whoever owns the custom factors whether that is targetable, because factors map by style and
-   region and every other WA certificate account should keep −0.45.
-3. **Build them on the LGC factor and net PCEC out in reporting** for as long as both records exist.
-4. Change C_7 on the style — estate-wide, so no.
-
-Until one of those is settled, the two accounts should not go into an FY27 market-based number. The build
-itself is safe to do now: it makes the volume visible, and nothing about it forecloses options 1 to 3.
+The same sits behind the other five WA Alinta sites — register rows 161–165, all on the agreement from
+1 Jul 2026, all showing zero green in June and 100% from July, all netting to about zero. They are not
+being built; only PCEC is.
 
 Two other things about this pair. Both source accounts have recorded since **1 Feb 2020**, so Effective
 From July 2026 is what keeps the certificate accounts off six years of history — it matters more here
@@ -664,10 +655,10 @@ July 2026 and nothing earlier, on the WA (SWIS) 26-27 LGC factor of −0.45. The
 move as the Alinta bills land — the test is that each new account equals its source, whatever the source
 reads.
 
-Then the green component, still recording on the style field and not switchable per account. Until one of
-the four options above is settled, PCEC reads about −292 t better than it should for July and August, and
-the two accounts should not go into an FY27 market-based number. Prompt 6 read against either account
-will show the factor and the kWh side by side.
+Then the green component, still recording on the style field and not switchable per account, so PCEC's
+Envizi emissions read about −292 t better than they should for July and August until the factor or the
+dashboard is dealt with. Known and accepted going in. Prompt 6 read against either account will show the
+factor and the kWh side by side.
 
 ---
 

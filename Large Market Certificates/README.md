@@ -261,28 +261,40 @@ screen.
 
 **Why the style matters.** The Power BI dashboard reads the account style: it picks up
 `Certificates - Location - kWh` and does not pick up `Electricity - Green [kWh]`. So PCEC is recording
-100% green kWh in Envizi and still showing as unabated downstream. The certificate accounts are what fix
-that, and building them is safe now.
+100% green kWh in Envizi and still showing as unabated downstream.
 
-**What is still open is the double count.** The only control over the green side is field C_7 on the
-`Bid-Electricity Large Market` style, and that is estate-wide — it would stop the green component on every
-account carrying that style. So both records will coexist, and at the WA (SWIS) 26-27 LGC factor of −0.45
-the new accounts add −292.25 t across July and August on top of a green component already offsetting −0.5
-per kWh. Four ways out, in the order I would look at them:
+**The call, 09 Sep 26: build both.** The green side is not being read where it needs to be, so the claim
+has to sit on an account the dashboard can see. The tidier version is not available — no green account to
+convert, and no per-account switch, since the only control is C_7 on the style and that is estate-wide.
 
-1. **Have Power BI read `Electricity - Green [kWh]` too.** No Envizi change, no second record to
-   reconcile, and the green rows already carry the right volume and the right negative emissions.
-2. **Build the accounts on a neutral factor** so they are a volume record the dashboard sees without
-   moving the emissions — needs a way to scope a zero-value factor to just these two, since factors map by
-   style and region and every other WA certificate account should keep −0.45.
-3. **Build on the LGC factor and net PCEC out in reporting** while both records exist.
-4. Change C_7 on the style — estate-wide, so no.
+What that leaves behind: **the green component keeps offsetting in Envizi and the new accounts offset
+again** — at the WA (SWIS) 26-27 LGC factor of −0.45, −292.25 t counted twice across July and August. The
+dashboard volume will be right; PCEC's Envizi emissions will not be, until either Power BI reads
+`Electricity - Green [kWh]` as well or these two accounts move onto a neutral factor. Known going in, and
+listed under **Still open**.
 
-Until one of those is settled the two accounts should not go into an FY27 market-based number.
+**The other five Alinta sites.** All seven Alinta rows are on the agreement — register rows 159–165, a
+contiguous block, all WA, all green-highlighted, all starting 1 Jul 2026, and priced in
+`Rates & Source Data` rows 1453–1461 at an all-in $0.31176/kWh for FY27 and FY28 with no separate LGC
+line. The five besides PCEC behave identically in Envizi: zero green in June, 100% of consumption as
+green from July, netting to about zero.
 
-**It is not only PCEC.** C_7 is on the style, so the same green component is what excluded all seven WA
-Alinta rows. Option 1 would make the renewable claim visible at all seven without building anything;
-options 2 and 3 fix PCEC alone and leave the other five where they are.
+| Register | Site | Jul 26 kWh | Green Jul 26 | Net tCO2e Jul |
+| ---: | --- | ---: | ---: | ---: |
+| 161 | Cannington Emulsion Plant (Beckenham) | 37,958 | 37,958 | 0.00 |
+| 162 | Maddington - BIT | 12,275 | 12,275 | 0.00 |
+| 163 | Asphalt Prod - Albany (601) | 17,463 | 17,462 | 0.00 |
+| 164 | Asphalt Prod - Geraldton (602) | 1,525 | 1,525 | 0.00 |
+| 165 | Asphalt Prod - Hope Valley (628) | 43,313 | 43,313 | 0.00 |
+
+They are invisible to the dashboard for exactly the same reason as PCEC and are **not** being built — only
+PCEC is. About 112,500 kWh a month between them, against PCEC's 317,500.
+
+**One Alinta account is not on the agreement.** `80013748_8001011791` at Kalgoorlie is the eighth live
+Alinta electricity account in Envizi. It is absent from the Site Register, absent from the budget workbook
+entirely, and records **zero green kWh** in June, July and August (2,038 kWh in July, +1.02 t) — so it
+reads as genuine non-renewable supply rather than a gap. Worth a glance from Category Management if
+Kalgoorlie was expected to be in the tender.
 
 One more, confirmed on screen as well as in the 06 Sep export: the green rows on both accounts still
 price on `81 - Electricity Green - 25-26 - Western Australia (SWIS)` at −0.5 for July and August 2026,
@@ -385,10 +397,13 @@ reads 786 t against 558 t. Checked against the 6 Sep 26 electricity export (`RTS
   SA −0.21, WA −0.45, Tas −0.23, NT −0.55). Left: delete the stray `( Copy of LGCs NSW 23-24 )` and set the
   Victoria 25-26 region to `Australia - Victoria` — prompt 3. Then check the next export shows 26-27 on the
   July rows and that the historical `LGCS_` accounts' FY25 / FY26 totals still look right.
-- PCEC: build the two accounts (prompt 5), then settle the double count. The find on 09 Sep 26 showed the
-  green side is field C_7 on the `Bid-Electricity Large Market` style — estate-wide, no per-account
-  switch — so both records will coexist. Preferred fix is Power BI reading `Electricity - Green [kWh]`
-  as well; failing that, a neutral factor on the two new accounts or a net-out in reporting.
+- PCEC: build the two accounts (prompt 5) — decided 09 Sep 26. Then the double count: the green component
+  keeps offsetting (C_7 is on the `Bid-Electricity Large Market` style, estate-wide, no per-account
+  switch), so both records coexist and PCEC's Envizi emissions read about −292 t light for Jul–Aug. Fix is
+  either Power BI reading `Electricity - Green [kWh]` as well — which would also cover the other five
+  Alinta sites — or a neutral factor on the two new accounts.
+- Kalgoorlie `80013748_8001011791`: live Alinta account, not in the Site Register or the budget workbook,
+  no green kWh. Confirm with Category Management that it is meant to be outside the renewal.
 - Mogo: read the two certificate accounts (prompt 0b), link the empty 4204072845 one, remake 4001127731.
 - Section 2: the last 17 permanent accounts.
 - Section 1: close the 14 old accounts (Traralgon's Replaced On back from 30 Oct to 30 Jun 26), and
