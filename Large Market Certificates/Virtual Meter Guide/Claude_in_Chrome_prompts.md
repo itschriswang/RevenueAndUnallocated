@@ -23,6 +23,7 @@ What remains, in the order I run it:
 | 4 | Fix two Account Refs | Bathurst and Mogo 4204072845 carry the account number where the NMI should be |
 | 5 | The seven WA Alinta meters | All seven flipped from Exclude to Create — PCEC ×2, Beckenham, Maddington, Albany, Geraldton, Hope Valley. Their green component is not read by Power BI. Takes coverage to 69 of the 78 green rows |
 | 6 | Read-only check | Confirm an account after it is built |
+| 7 | Close the stale `LGCS_4001287259` | Two accounts share that name; the NSW Spray Seal one sits on a NMI that moved to RPQ NSW Moree in 2020 |
 
 Prompt 2 assumes prompt 1 has run, so the 5000021_ accounts at Gympie and Archerfield are closed but
 still listed. Prompt 5 stands on its own — nothing in 1–4 touches the WA sites. The earlier prompts (the 17 permanent accounts, the 12 Origin close-offs, the Mogo read)
@@ -725,3 +726,135 @@ on the account, not just the first.
 Expected for a right account: `Certificates - Location - kWh` · `LGC Virtual Account` / Reader blank ·
 Account Ref = the NMI · Opened On 7/1/2026 · virtual, one source at 100% · Effective From 7/1/2026 ·
 **no June**, July and August equal to the source · the state's LGCs factor (25-26 once prompt 3 is in).
+
+---
+
+## 7 · Close the stale `LGCS_4001287259` at NSW Spray Seal
+
+Two accounts named `LGCS_4001287259` exist, one at **NSW Spray Seal** (loc ref 171210, account link
+6225063) and one at **RPQ NSW Moree** (loc ref L9.J.171220, link 6382817). Both live, neither with a
+Replaced On.
+
+**The NMI moved sites on 1 Jul 2020.** At NSW Spray Seal, `200034933644_4001287259` (Electricity Small
+Market) closed **30 Jun 2020**, and every other electricity account there closed in 2019–2020 too. At RPQ
+NSW Moree, `50002617997_4001287259` (Electricity Large Market) opened **1 Jul 2020** and is live — and it
+is the source for the new `50002617997_4001287259_CERTS`, opened 1 Jul 2026, built correctly.
+
+So Moree is where the NMI lives and its `LGCS_` is the real historical record. The Spray Seal one sits on
+a location with no live electricity account on that NMI, and both `LGCS_` accounts were created in the
+2024/2025 batches, years after the move — so it looks like a stale location mapping at creation.
+
+NSW Spray Seal itself is still an active location (live diesel, petrol, LPG and kerosene accounts), so
+this is about one certificate account, not the site.
+
+**Closing, not deleting** — same call as the Hastings duplicate in the NZ file: the history stays visible,
+and what happens to the records is a separate decision. The read step comes first because the Replaced On
+date depends on what the account actually holds: if it holds nothing, 30 Jun 2020 is the natural date; if
+it holds 2024–2025 LGC data, dating it before its own records is wrong and I want to see the months first.
+
+The other duplicate, `Copy of Eco_ICP_0000024050WE5E2_CERTS` at Hastings Depot, is **already written up** —
+prompt 3 of
+[`Claude_dispatch_prompts_-_NZ_certificates.md`](../../Envizi%20Data%20Quality/Claude_dispatch_prompts_-_NZ_certificates.md)
+closes it along with its source account. Use that, not this.
+
+```
+You're helping me close off one account in IBM Envizi (au001.envizi.com). I'm
+logged in on the Envizi tab. There is a read step first and you STOP after it.
+
+WHAT "CLOSE" MEANS HERE
+Set the account's Replaced On date. Nothing else. Do NOT delete, move or merge
+any account, and do NOT touch Opened On - it sits near Replaced On on the same
+form and must stay as it is.
+
+THE WHOLE POINT IS TELLING TWO IDENTICAL NAMES APART
+Two accounts are both named exactly LGCS_4001287259. The name cannot
+disambiguate them. Only the LOCATION can:
+
+  CLOSE this one:  LGCS_4001287259  at  NSW Spray Seal      (Location Ref 171210)
+  LEAVE this one:  LGCS_4001287259  at  RPQ NSW Moree       (Location Ref L9.J.171220)
+
+If the account id shows in the URL or on the page, NSW Spray Seal is 6225063
+and RPQ NSW Moree is 6382817 - use it as a second check. Before you change
+anything, "Relates to" MUST read NSW Spray Seal. If it reads RPQ NSW Moree,
+stop - that is the one that stays.
+
+WHY
+The NMI moved sites on 1 Jul 2020. At NSW Spray Seal the electricity account
+200034933644_4001287259 closed 30 Jun 2020; at RPQ NSW Moree the live account
+50002617997_4001287259 opened 1 Jul 2020 and still bills. Moree's LGCS_ is the
+real record. The Spray Seal one has no live electricity account on that NMI
+behind it.
+
+=== STEP A · Read both, then STOP ===
+Read-only. Change nothing.
+
+Top-right search, dropdown set to "Accounts", paste  LGCS_4001287259
+Two results should come back. Open EACH one and tell me, per account:
+
+  - the location under "Relates to", and the Location Ref on that location
+  - the account id, if it is visible in the URL or on the page
+  - Opened On and Replaced On from the left panel
+  - Supplier and Reader
+  - whether it is a virtual account, and if so the source account and the
+    Effective From on the relationship (Actions -> Virtual Account Setup,
+    READ ONLY - do not click Create New, Delete or Edit there)
+  - from Review -> Monthly Data: the FIRST and LAST months holding data, the
+    number of months with data, and whether those rows are actual or accrued.
+    Drag the grid's horizontal scrollbar to the far right so I can see the
+    Data Type column - it is the last column, off-screen by default, and the
+    mouse wheel will not move the grid sideways.
+
+Then stop and show me both. I will give you the Replaced On date for the NSW
+Spray Seal one. Do not guess it - if that account holds 2024 or 2025 data,
+the date I expect (30 Jun 2020) would sit before its own records and I need to
+choose something else.
+
+=== STEP 1 · Open the right one ===
+Only after I have given you a date. Open LGCS_4001287259 at NSW Spray Seal.
+Confirm on the Account Summary page that "Relates to" reads NSW Spray Seal and
+the left panel reads "Replaced On : -". If either disagrees, stop and show me.
+
+=== STEP 2 · Open the form ===
+Click the blue "Actions" button (top right). The menu has Capture Data, Edit
+Account and Account Settings. Choose "Edit Account". Do NOT choose Capture
+Data, and do NOT choose Delete Account(s) or Move Account if you see them.
+
+=== STEP 3 · Set Replaced On ===
+Find "Replaced On:" - a date field with a calendar icon. Click the calendar
+icon. It opens on the current month, so page back to the month I gave you and
+click the day. The field should then read the date in m/d/yyyy form (30 Jun
+2020 shows as 6/30/2020). If typing works better, type it and tab out, then
+read it back to check the month and day didn't swap.
+
+Leave "Opened On:" exactly as it was. Change nothing else on the form.
+Screenshot the completed form and show me BEFORE you save. Save when I say so.
+
+=== STEP 4 · Check it, and check the other one is untouched ===
+Back on the Account Summary page, confirm the left panel reads
+"Replaced On : <the date>" and Opened On is unchanged. Then Review -> Monthly
+Data: months after the date should no longer accrue. If accruals are still
+there straight after saving, note it - Envizi can take a refresh to drop them -
+and move on.
+
+Then open LGCS_4001287259 at RPQ NSW Moree and confirm it still reads
+"Replaced On : -" and is completely unchanged. Also open
+50002617997_4001287259_CERTS at RPQ NSW Moree and confirm it still reads
+Opened On 7/1/2026 with one relationship. Neither should have moved.
+
+=== REPORT ===
+Per account: the location, what Replaced On read before and after, that Opened
+On is unchanged, and the month range each holds. Plus confirmation that the
+Moree LGCS_ and the Moree _CERTS are untouched.
+
+RULES
+- Replaced On only, on the NSW Spray Seal account only.
+- Never delete, move or merge anything.
+- If "Relates to" does not read NSW Spray Seal, stop.
+- If the account already has a Replaced On, stop and show me.
+- If a screen doesn't match what I've described, stop and describe what you see.
+```
+
+Afterwards the certificate population should read 163 with one more closed row, and a filter on
+`LGCS_4001287259` should show one live account (Moree) and one closed (Spray Seal). Whether the Spray
+Seal account's records should also come out is a separate decision — closing it stops it going forward
+and leaves the history readable.
