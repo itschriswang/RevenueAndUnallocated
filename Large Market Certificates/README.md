@@ -54,8 +54,12 @@ the `Create accounts` tab of `LGC_Account_Creation_FY27.xlsx`.
 
 **Changed since the 05 Sep review.** All seven WA Alinta rows (register 159–165) move from Exclude to
 Create, so it is 67 permanent and no green-component exclusions — see
-[the seven WA Alinta meters](#the-seven-wa-alinta-meters-flipped-to-create) below. The workbook, the guide
-page and the table above still read the 05 Sep decision; they pick the change up on the next rebuild.
+[the seven WA Alinta meters](#the-seven-wa-alinta-meters-flipped-to-create) below.
+
+Nothing generated has caught up with that yet. The table above, the review workbook and the guide page
+still read the 05 Sep decision, and so does `LGC_Account_Creation_FY27.xlsx` — its `Create accounts` tab
+holds 69 rows and `No action` 12, where the flip makes it **76 and 5**. All of them pick the change up on
+the next rebuild; until then the seven Alinta accounts are in prompt 5 and nowhere else.
 
 ## How the sites were matched
 
