@@ -4,9 +4,10 @@ What I paste into Claude (browser dispatch) with Envizi (`au001.envizi.com`) ope
 work the 7 EngieAU electricity accounts sitting at `Unallocated Accounts` in
 `grid_data_2026Sep16_16h5m10s.csv`. Run in order: a **read-only survey** (done, 16 Sep 26 - see "Survey
 results" below), then **1** allocate each account and close the CS Energy meter it supersedes, site by
-site (done, 18 Sep 26 - see "Run record"); **2b** delete two duplicated May records the survey turned up;
-and **3** retire the 7 Section 3 temporary certificate accounts the survey found and rebuild them against
-the Engie source. Keep Envizi in front while it works - it only sees the active tab.
+site (done, 18 Sep 26 - see "Run record"); **1b** verify those closes, read-only; **2b** delete two
+duplicated May records the survey turned up; and **3** retire the 7 Section 3 temporary certificate
+accounts the survey found and rebuild them against the Engie source. Keep Envizi in front while it works -
+it only sees the active tab.
 
 **Both remaining passes delete things, and the 18 Sep run showed this platform firing writes nobody
 clicked** - a frozen dialog replayed a postback and closed an account fourteen seconds after a click aimed
@@ -546,6 +547,136 @@ Expected afterwards: each of the seven NMIs has exactly one live electricity acc
 its real location, with the CS Energy account beside it reading Replaced On 30 Jun 2026 and the July and
 August accruals it was carrying no longer live. The `_CERTS` accounts are still there, still named after
 the CS Energy account, still holding nothing - prompt 3 deals with those.
+
+---
+
+## 1b · Verify the seven closes (read-only)
+
+Run this before 2b or 3. Two jobs:
+
+1. **Confirm the 18 Sep run did what it should and nothing more.** Two accounts have a specific reason to
+   be checked: `1003072_3051770385`, closed by a replayed postback rather than by anyone filling in a
+   form, and `1003070_3120014382`, whose Edit Account form loaded carrying a stale Supplier of `EngieAU`
+   before it was cancelled. If either shows a changed Supplier, the same bleed could have reached the
+   other five, which is why all seven are read.
+2. **Confirm the double count is actually gone.** The whole point of closing these was to stop July and
+   August accruing against the Engie account's actuals for the same months. Across the seven that is
+   **491,106 kWh / 329.0 tCO2e** of accrual that should now have dropped out. This pass is what proves it
+   did, and it is the number behind any claim that July reporting improved at these sites.
+
+It is read-only, so it is safe to run even while the platform is misbehaving - which also makes it a
+useful canary. If this pass cannot complete cleanly, do not start 2b or 3.
+
+Expected figures, from the 6 Sep 26 electricity export (i.e. before the closes). June is the last actual
+month on every one of the seven and must survive. July and August were **100% accrued, no actual
+component**, and should now be gone:
+
+| CS Energy account | Location | Jun 2026 actual (keep) | Jul accrued (gone) | Aug accrued (gone) |
+| --- | --- | ---: | ---: | ---: |
+| `1003072_3051770385` | RPQ Spray Seal | 15,213 | 15,721 | 17,432 |
+| `1003070_3120014382` | RPQ Spray Seal | 26,368 | 29,259 | 30,991 |
+| `1003071_3120070486` | RPQ Swanbank | 21,320 | 22,030 | 31,514 |
+| `1003085_3120129028` | Gympie | 13,700 | 14,156 | 14,156 |
+| `1003079_3120103988` | Bli Bli (408) | 61,380 | 63,426 | 63,426 |
+| `1003081_QB05383854` | Archerfield (406) | 73,121 | 75,559 | 75,559 |
+| `1003075_3120143385` | SCUH | 17,758 | 18,686 | 19,189 |
+
+```
+You're helping me verify seven electricity accounts in IBM Envizi
+(au001.envizi.com) after a batch of close-offs. I'm logged in on the Envizi
+tab. THIS PASS IS READ-ONLY. Do not click Edit, Save, Move, Close, Delete,
+or Virtual Account Setup on anything. If you land on a form that can save,
+cancel out of it and tell me.
+
+WHY
+These seven were closed on 18 Sep 2026 with Replaced On 30 June 2026. That
+run had two problems worth checking behind: one account was closed by a
+dialog replaying itself rather than by anyone filling in a form, and on
+another the Edit Account form loaded showing the WRONG Supplier (EngieAU on
+a CS Energy account) before it was cancelled. So I want to know that on all
+seven the ONLY thing that changed is Replaced On.
+
+Read the two accounts in PART A first and show me those before going on.
+
+=== PART A · The two with a reason to be checked ===
+For each, top-right search, dropdown "Accounts", paste the number, open it.
+From the account Summary / left panel record ALL of:
+  - Account Number, exactly as shown
+  - Supplier          (MUST read CSEnergy - if it reads EngieAU or anything
+                       else, stop and tell me immediately)
+  - Account Reference
+  - Opened On         (blank is expected on 1003072; the Envizi null date
+                       30 Dec 1899 reads as blank)
+  - Replaced On       (expect 30 Jun 2026)
+  - Account Style / Data Type
+Then Review -> Monthly Data (the Summary chart tooltips don't render) and
+record every month from March 2026 on, with its kWh and whether it is
+Actual or Accrued.
+
+  A1. 1003072_3051770385   at RPQ Spray Seal
+      This is the one closed by the replayed dialog.
+      Expect: Mar 11,479 · Apr 18,467 · May 15,461 · Jun 15,213, all Actual.
+      Expect NO July and NO August row at all.
+  A2. 1003070_3120014382   at RPQ Spray Seal
+      This is the one whose form showed Supplier EngieAU.
+      Expect Jun 26,368 Actual, and no July or August row.
+
+STOP after those two and show me everything you recorded.
+
+=== PART B · The other five ===
+Same reading for each. For these I mainly want three things: Supplier still
+reads CSEnergy, Replaced On reads 30 Jun 2026, and the July and August rows
+are gone while June survives at the figure I give.
+
+  B1. 1003071_3120070486  RPQ Swanbank              Jun 21,320 · Jul/Aug should be gone
+  B2. 1003085_3120129028  Gympie                    Jun 13,700 · Jul/Aug should be gone
+      (this one legitimately has Opened On 4 Jan 2026 - it should still)
+  B3. 1003079_3120103988  Asphalt Prod - Bli Bli     Jun 61,380 · Jul/Aug should be gone
+  B4. 1003081_QB05383854  Asphalt Prod - Archerfield Jun 73,121 · Jul/Aug should be gone
+      (this one legitimately has Opened On 4 Jan 2026 - it should still)
+  B5. 1003075_3120143385  PPP - Sunshine Coast Univ Hospital
+                                                     Jun 17,758 · Jul/Aug should be gone
+
+=== PART C · The Engie side, one line each ===
+For each of the seven EngieAU accounts below, confirm only: it is at the
+location named, and its Replaced On is BLANK. I am checking none of them was
+closed by accident. Do not open any form.
+  900018189_3051770385  RPQ Spray Seal (171230)
+  900018190_3120014382  RPQ Spray Seal (171230)
+  900018191_3120070486  RPQ Swanbank (171505)
+  900018195_3120129028  Gympie (142)
+  900018196_3120103988  Asphalt Prod - Bli Bli (408)
+  900018197_QB05383854  Asphalt Prod - Archerfield (406)
+  900018203_3120143385  PPP - Sunshine Coast Univ Hospital (9078)
+
+=== OUTPUT ===
+One table for the seven CS Energy accounts: account | Supplier | Account Ref
+| Opened On | Replaced On | Jun 2026 kWh | any Jul 2026 row? | any Aug 2026
+row? | anything else that differs from what I said to expect.
+Then one line per EngieAU account: number, location, Replaced On.
+
+RULES
+- Read-only throughout. No edits, on any account, for any reason.
+- Report what the screen says, not what it ought to say. If a figure differs
+  from my expected number, give me the figure - don't round it to mine.
+- Use search rather than the per-location account grids where you can. Those
+  grids under-render (one showed 3 of 31 rows, another 6 of 29) and go stale
+  after a change.
+- If a screen doesn't match what I've described, stop and describe what you see.
+```
+
+What the answers mean:
+
+- **Supplier anything but `CSEnergy` on any of the seven** - the stale-form bleed reached a save. Tell me
+  which, and stop; that is a field that needs putting back before anything else runs.
+- **A July or August row still present** - that close didn't take, or the accrual has been regenerated.
+  The account is still double counting against the Engie account and needs re-closing.
+- **June missing or changed** - the close removed more than it should have. That would be the first real
+  data loss in this whole run, and nothing else should run until it is understood.
+- **Any EngieAU account carrying a Replaced On** - something closed the wrong side of a handover. Stop.
+- **All seven clean** - the 491,106 kWh / 329.0 tCO2e of July/August double count is gone, prompt 1 is
+  confirmed sound, and the platform was writing accurately when it mattered. 2b and 3 can proceed when the
+  maintenance banner is clear.
 
 ---
 
