@@ -28,7 +28,7 @@ Ranked by what it does to the reported number.
 | 2 | **NZ certificates are undated and have stopped.** 22 `Copy of …_CERTS` accounts credit all history and produce nothing from July. | 22 | –395.8 t credited Mar – Jun (≈ –99 t/month, back to whenever the sources start); ~203 t of FY27 credit missing for Jul – Aug | Set Effective From 2026-07-01, rename, and find out why no Jul/Aug rows exist |
 | 3 | **19 AU certificate accounts have nothing to mirror.** Their source accounts hold zero rows for all six months — 18 PPP sites on Origin/CS Energy plus Tamworth. | 19 | FY27 renewable claim for PPP Schools 2, SICEEP, HQJOC, Southbank TAFE and SCUH is currently zero, and so is their electricity | Chase the feeds; these are dead supplier accounts, not certificate faults |
 | 4 | **Bitumen – Taranaki gas is double-covered.** 62 days recorded in 31-day months for 11 straight months. | 1 (+62 smaller) | ≈ 237 t overstated over five export months; 63 accounts in total, ≈ 299 t | Delete the overlapping gas records; fix the recurring NZ depot electricity overlaps |
-| 5 | **Mackay's live account is marked replaced.** `A-11525536_3053135053` has Replaced On 1 Apr 26 and is the only Ergon account still recording. | 8 | 128 t of Apr – Aug electricity sits on a "closed" account; 50 t at Archerfield and Gympie is a genuine May double count | Clear Mackay's Replaced On; delete the May records on the two `5000021_` accounts |
+| 5 | **Mackay's live account is marked replaced.** `A-11525536_3053135053` has Replaced On 1 Apr 26 and is the only Ergon account still recording. | 8 | 128 t of Apr – Aug electricity sits on a "closed" account; 50 t at Archerfield and Gympie is a genuine May double count | Clear Mackay's Replaced On. The two `5000021_` May records were **deleted 18 Sep 26** — 50.55 t removed |
 | 6 | **Closed CS Energy accounts still carry overlapping data.** Setting Replaced On did not remove the Apr – Jun records at five QLD sites. | 5 NMIs, 10 accounts | 83.7 t double counted in FY26 (Apr – Jun) | Delete the overlap months on the closed accounts |
 | 7 | **Same ICP at two NZ locations.** `Eco_ICP_0000024050WE5E2` is a live account at both Hamilton and Hastings, each with its own certificate account. | 2 (+3 other pairs) | 237,174 kWh / 24 t double counted Mar – Jul; net of certificates ≈ 4.6 t, but from July the Hastings copy is uncredited | Close the Hastings copy and its certificate account |
 | 8 | **194 t at unallocated locations.** 1,698 accounts sit at six "Unallocated" locations; 1,587 are Cleanaway waste. | 1,698 | 82 t (BOC/Viva at Unallocated Accounts) + 113 t (E&U fuel) in the export are in no division's number | Allocate the 111 non-Cleanaway accounts; the Cleanaway ones report zero anyway until #1 is fixed |
@@ -157,15 +157,25 @@ estimate-then-actual pattern and set them to replace rather than append. Detail:
 | Account | Replaced On | Data after | Qty | tCO2e | Reading |
 | --- | --- | --- | --- | --- | --- |
 | Asphalt Prod – Mackay `A-11525536_3053135053` | 1 Apr 26 | May – Aug 26 | 191,183 kWh | 128.1 | The **only** Ergon account still recording at Mackay (the other two were replaced Jun 24 and Jan 26). The Replaced On is wrong, not the data. |
-| Archerfield `5000021_QB05383854` | 31 Mar 26 | May 26 | 64,727 kWh | 43.4 | Alongside `1003081_QB05383854` — a genuine May double count |
-| Gympie `5000021_3120129028` | 31 Mar 26 | May 26 | 10,718 kWh | 7.2 | Same pattern |
+| Archerfield `5000021_QB05383854` | 31 Mar 26 | May 26 | 64,727 kWh | 43.4 | Alongside `1003081_QB05383854` — a genuine May double count. **Resolved 18 Sep 26** — record deleted |
+| Gympie `5000021_3120129028` | 31 Mar 26 | May 26 | 10,718 kWh | 7.2 | Same pattern. **Resolved 18 Sep 26** — record deleted |
 | Five closed-project fuel / Porirua rows | Dec 25 – Mar 26 | | | 2.9 | Trailing transactions |
 
 **Assumption.** The data export includes these records, so I have assumed Envizi's reports do too; if a
 report *does* honour Replaced On, Mackay's 128 t is currently dropping out of the inventory instead.
 
 **Action.** Clear Mackay's Replaced On (or set it to the date the replacement actually starts recording);
-delete the May records on the two `5000021_` accounts. Detail: `csv/08_data_after_replaced_on.csv`.
+~~delete the May records on the two `5000021_` accounts~~ — **done 18 Sep 26**. Detail:
+`csv/08_data_after_replaced_on.csv`, which now carries a `status` column.
+
+**The two `5000021_` rows are closed out.** Both May records were deleted on 18 Sep 26 after confirming on
+screen that each was identical to the May record on the live account at the same site — 64,727.16 kWh
+(ref BE8734997, alongside the surviving BE8742184) at Archerfield and 10,717.9 kWh (BE8734996, alongside
+BE8742177) at Gympie. Each account's own March reading, its Jan–Feb history and its 31 Mar 2026 Replaced On
+are untouched, and both live accounts still hold their May record. Archerfield's account total fell
+483,163 → 418,436 kWh, exactly the deleted figure. **50.55 tCO2e of double count removed**; Mackay's 128 t
+is what remains in this finding, and it needs the opposite fix — its Replaced On is wrong, not its data.
+The work is written up in `../Unallocated Accounts/Claude_dispatch_prompts_-_EngieAU_Sep16.md` (prompt 2b).
 
 ## 6. Duplicate NMIs and ICPs
 

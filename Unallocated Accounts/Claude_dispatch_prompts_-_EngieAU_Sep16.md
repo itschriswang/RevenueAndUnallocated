@@ -12,8 +12,8 @@ it only sees the active tab.
 **Both remaining passes delete things, and the 18 Sep run showed this platform firing writes nobody
 clicked** - a frozen dialog replayed a postback and closed an account fourteen seconds after a click aimed
 somewhere else, and search has opened a different account than the one searched for. Read "Operating
-notes" before running either. The 1b pass afterwards ran clean with no session timeouts, so the platform
-looks settled; run 2b first as the smaller write, and let it stand as the check on that before 3.
+notes" before running either. Since then 1b ran clean and 2b's two deletions landed exactly on target with
+no session trouble, so the platform has settled and **3 is the only pass still outstanding**.
 
 ## Where these came from
 
@@ -725,7 +725,38 @@ What the answers mean:
 
 ---
 
-## 2b · Delete the duplicated May records on the two `5000021_` accounts
+## 2b · Delete the duplicated May records - RUN, 18 Sep 26 · DONE
+
+Both records deleted, one each, nothing else touched. The read step confirmed each duplicate against its
+live twin before anything was removed, and the delete was targeted by reference number rather than period.
+
+| | Gympie `5000021_3120129028` | Archerfield `5000021_QB05383854` |
+| --- | --- | --- |
+| Deleted | May 2026, 10,717.9 kWh, ref BE8734996 | May 2026, 64,727.16 kWh, ref BE8734997 |
+| Months before / after | Jan, Feb, Mar, **May** / Jan, Feb, Mar | Jan, Feb, Mar, **May** / Jan, Feb, Mar |
+| March, unchanged | 15,268.8 (BE8673510) | 65,241.67 (BE8673514) |
+| Replaced On | 31 Mar 2026, unchanged | 31 Mar 2026, unchanged |
+| Live twin, untouched | 10,717.9 (BE8742177) | 64,727.16 (BE8742184) |
+
+**50.55 tCO2e of double count removed.** Archerfield gives the cleanest independent check: its account
+total fell 483,163 -> 418,436 kWh, exactly the 64,727 deleted, and its live account still totals 204,417
+kWh across April, May and June. No confirmation dialog ever named a live record, none offered more than
+one row, and neither live account was opened for editing.
+
+Two details worth keeping. The duplicate and its twin carried **different reference numbers** - the closed
+accounts' refs (BE87349xx) run together and the live accounts' (BE87421xx) run together, which reads as two
+separate load batches of the same May bills rather than one record written twice. And at Archerfield the
+two covered slightly different windows, 2-31 May against 1-31 May, while carrying identical kWh to the
+cent: genuinely different periods would not produce identical figures, so that strengthened the duplicate
+reading rather than undermining it.
+
+`../Envizi Data Quality/findings.md` §5 and `csv/08_data_after_replaced_on.csv` are updated - those two
+rows now read resolved, leaving Mackay `A-11525536_3053135053` as the finding's only open item, and it
+needs the opposite fix: its Replaced On is wrong, not its data.
+
+---
+
+## 2b · The prompt
 
 **Rewritten.** The first draft moved Replaced On from 31 Mar to 31 May 2026 to match the sibling
 convention. Checking the 6 Sep 26 export showed that would have been the wrong fix: the May record on each
