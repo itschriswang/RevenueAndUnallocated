@@ -4,9 +4,14 @@ What I paste into Claude (browser dispatch) with Envizi (`au001.envizi.com`) ope
 work the 7 EngieAU electricity accounts sitting at `Unallocated Accounts` in
 `grid_data_2026Sep16_16h5m10s.csv`. Run in order: a **read-only survey** (done, 16 Sep 26 - see "Survey
 results" below), then **1** allocate each account and close the CS Energy meter it supersedes, site by
-site; **2b** delete two duplicated May records the survey turned up; and **3** retire the 7 Section 3
-temporary certificate accounts the survey found and rebuild them against the Engie source. Keep Envizi in
-front while it works - it only sees the active tab.
+site (done, 18 Sep 26 - see "Run record"); **2b** delete two duplicated May records the survey turned up;
+and **3** retire the 7 Section 3 temporary certificate accounts the survey found and rebuild them against
+the Engie source. Keep Envizi in front while it works - it only sees the active tab.
+
+**Both remaining passes delete things, and the 18 Sep run showed this platform firing writes nobody
+clicked** - a frozen dialog replayed a postback and closed an account fourteen seconds after a click aimed
+somewhere else. Read "Operating notes" before running either. Neither should run until sessions stop
+expiring.
 
 ## Where these came from
 
@@ -183,6 +188,104 @@ the rest of this work without cross-checking org-wide.
 
 ---
 
+## Run record - prompt 1, 18 Sep 26
+
+**Prompt 1 is done. All 7 accounts are allocated and all 7 CS Energy meters are closed at 30 Jun 2026.**
+It took two sessions, and they overlapped, which is worth reading before the remaining passes are run.
+
+| Card | Moved to | CS Energy closed |
+| --- | --- | --- |
+| 1 | `900018189_3051770385` -> RPQ Spray Seal (171230) | `1003072_3051770385` 30 Jun 2026 |
+| 2 | `900018190_3120014382` -> RPQ Spray Seal (171230) | `1003070_3120014382` 30 Jun 2026 |
+| 3 | `900018191_3120070486` -> RPQ Swanbank (171505) | `1003071_3120070486` 30 Jun 2026 |
+| 4 | `900018195_3120129028` -> Gympie (142) | `1003085_3120129028` 30 Jun 2026 |
+| 5 | `900018196_3120103988` -> Asphalt Prod - Bli Bli (408) | `1003079_3120103988` 30 Jun 2026 |
+| 6 | `900018197_QB05383854` -> Asphalt Prod - Archerfield (406) | `1003081_QB05383854` 30 Jun 2026 |
+| 7 | `900018203_3120143385` -> PPP - Sunshine Coast Univ Hospital (9078) | `1003075_3120143385` 30 Jun 2026 |
+
+Unallocated Accounts holds no `900018…` accounts. All three `5000021_` accounts still carry their own
+31 Mar 2026, verified individually. Every `LGCS_` and `_CERTS` account is present and unchanged. Opened On
+was never altered - `1003085_3120129028` and `1003081_QB05383854` both still read 4 Jan 2026.
+
+### The two sessions overlapped - that explains the "pre-existing" moves
+
+Session one ran inside the maintenance window and got cards 1, 2 and 3 moved before it hung. Session two
+started fresh afterwards, found cards 1 and 3 already at their target locations, and correctly flagged
+that it had not made those moves. Nothing else has been touching this handover - it is the first session's
+work seen from the second. Both reached the same end state, and the second verified every card.
+
+### The unintended close on `1003072_3051770385` - no rollback needed
+
+During session one, while a Move dialog was open on a different account, a JS `SyntaxError` fired and
+fourteen seconds later `1003072_3051770385` was closed with Replaced On 30 Jun 2026 (audit stamp Chris
+Wang, 18/09/2026 21:50:35). Close Account(s) was never opened. The likeliest reading is a postback replayed
+against stale server state as the session expired.
+
+That session was running the old move-only prompt, where the CS Energy accounts were explicitly
+do-not-touch, so it correctly reported it as damage. **Against the merged prompt it is not**: closing
+`1003072_3051770385` at 30 Jun 2026 is exactly what card 1 prescribes. The write was uncontrolled; the
+value it landed on was the intended one.
+
+The data it removed is also exactly right, checked against the 6 Sep 26 electricity export:
+
+| `1003072_3051770385` | Actual | Accrued |
+| --- | --- | --- |
+| Mar-Jun 2026 | 11,479 / 18,467 / 15,461 / 15,213 | 0 |
+| Jul 2026 | 0 | 15,721 |
+| Aug 2026 | 0 | 17,432 |
+
+15,721 + 17,432 = **33,153 kWh**, and the account's 12-month total moved 200,469 -> 167,316, a drop of
+33,153. So what disappeared was the July and August **accruals** and nothing else - no actual reading was
+lost, which is why Actual% went 83.46 -> 100. Removing those accruals is the point of the close: they were
+double counting against the Engie account's July and August actuals. **Do not reopen it.**
+
+One thing it does leave open. The write did not come from a form anyone filled in, and in the same run a
+stale `Supplier` value bled into an Edit Account form on a different account (below), so it is worth
+confirming that nothing except Replaced On changed on `1003072_3051770385` - Supplier should still read
+`CSEnergy`, Opened On should still be blank, Account Ref unchanged. That is a read, not a fix.
+
+---
+
+## Operating notes - how Envizi behaved on 18 Sep 26
+
+Learned the hard way across the two prompt 1 sessions. These apply to every remaining pass and are the
+reason prompt 3 is held (see below).
+
+**A hung dialog can still write.** This is the one that matters. Sessions expired roughly four times in an
+hour, and the failure mode is not a clean error - it is a frozen dialog whose postback may still land,
+against stale server state, seconds later. That is how `1003072_3051770385` was closed by a click aimed at
+a different account. Retrying inside a frozen dialog never worked; only a full page reload and redo did.
+
+**So: no deletes while the platform is doing this.** A replayed close happened to land on the value we
+wanted. A replayed *delete* has no such luck available. Prompt 3 deletes accounts and prompt 2b deletes
+records; both wait for a session that is not expiring. Check the maintenance banner before starting.
+
+**The maintenance window ate writes.** *Scheduled Platform Maintenance, Fri 8:00PM Sep 18 - Sat 4:00AM
+Sep 19 EDT.* Inside it, every first save failed - frozen dialogs with disabled buttons, one explicit
+`Error: No Data to extract metadata`, one full session timeout. After it closed, every save landed first
+try. Do not run these passes inside a maintenance window.
+
+**The Edit Account form carries stale state between accounts.** On one attempt the form for CS Energy
+account `1003070_3120014382` loaded with Supplier reading **EngieAU** - bled in from the account viewed
+just before. It was cancelled rather than saved, which was the right call: saving would have changed a
+field other than Replaced On. **Reload the page before every Edit Account, and read Supplier back before
+saving.** On a CS Energy account it must say `CSEnergy`.
+
+**The Move dialog lies.** It showed a red *"The given key was not present in the dictionary"* and blanked
+the location field on a move that had already succeeded. Never judge a move from the dialog - verify on
+the account's own Summary page.
+
+**The grids serve stale and partial data.** Gympie rendered 3 of 31 rows with Show All on; RPQ Spray Seal
+reported "29 Rows" and rendered 6; the org-wide grid did not list a just-moved account until re-queried.
+So the under-render is not a Gympie quirk, it is general. Verify through the org-wide Accounts grid, and
+treat search as more current than any grid. A short list is never evidence of absence.
+
+**`getselectedrowindexes` returns a self-referencing array** - it reports 2 selections when there is 1.
+Count checked checkboxes in the DOM instead. This matters most where a pass acts on a selection, which is
+every delete in prompt 3.
+
+---
+
 ## 0 · Survey (read-only) - RUN, 16 Sep 26
 
 Nothing changes in this pass. It produced the readings above. Kept here for the record and in case any
@@ -275,7 +378,7 @@ written against - see that section before running any of the action passes.
 
 ---
 
-## 1 · Allocate and close, site by site
+## 1 · Allocate and close, site by site - RUN, 18 Sep 26
 
 **Merged from what were prompts 1 and 2.** They were originally two passes, with the close waiting on the
 move. They don't actually depend on each other - they act on different accounts, and the CS Energy account
@@ -456,9 +559,11 @@ the figures. This is `../Envizi Data Quality/findings.md` §5's own prescribed a
 delete the May records, leave Replaced On at 31 Mar 2026.
 
 Worth **75,445 kWh / 50.55 tCO2e** of double-counted May electricity across the two. Independent of
-prompts 1, 2 and 3 - it can run before or after them, and nothing in this dispatch depends on it.
+prompts 1 and 3 - it can run before or after them, and nothing in this dispatch depends on it.
 
-This one deletes records rather than editing a field, so it wants a careful read step first.
+This one deletes records rather than editing a field, so it wants a careful read step first. **Do not run
+it during a maintenance window or in a session that has been expiring** - see "Operating notes". A
+replayed write on a delete has no safe value to land on.
 
 ```
 You're helping me remove two duplicated monthly records in IBM Envizi
@@ -546,8 +651,14 @@ rebuild against the Engie source - see "Survey results" above for the quote and 
 follows that, and the rebuild half deliberately mirrors the field-by-field form in prompt 2 of
 `../Large Market Certificates/Virtual Meter Guide/Claude_in_Chrome_prompts.md`, which is the proven one.
 
-Only run this after prompt 1 has confirmed all 7 EngieAU accounts are allocated and their CS Energy meters
-closed. It does not depend on prompt 2b.
+Prompt 1 is done (18 Sep 26), so its precondition is met. It does not depend on prompt 2b.
+
+**Hold this pass until the platform is stable.** It is the heaviest in the dispatch - it deletes seven
+accounts and creates seven more - and the 18 Sep run showed frozen dialogs replaying writes against stale
+state, a selection API that miscounts, grids that under-render, and stale field values bleeding between
+Edit Account forms. A replayed close landed on the right value by luck; a replayed delete has no such luck
+available. Before starting: check the maintenance banner, and reload the page between every account. Read
+"Operating notes" first.
 
 **Delete - decided.** The guide's route, and every one of the 7 holds zero records, so deletion loses no
 history and leaves the account list clean rather than carrying seven dead `1003xxx_<NMI>_CERTS` rows
@@ -590,10 +701,20 @@ STEP 1 · READ FIRST, read-only
             with history is not one I want deleted.
 
 STEP 2 · Delete the temporary account
+        Reload the page first. This platform bleeds stale state between
+        forms and has replayed a postback from a frozen dialog against the
+        wrong account, so start this step on a freshly loaded page.
         In the location's account list, tick the checkbox on the TEMPORARY
-        account's row ONLY. Screenshot the ticked row and the Actions menu
+        account's row ONLY. Do NOT trust getselectedrowindexes - it returns
+        a self-referencing array and reports 2 selections where there is 1.
+        Count the checked checkboxes in the DOM instead, and confirm the
+        count is exactly 1. Screenshot the ticked row and the Actions menu
         and confirm the selection names the temporary account and nothing
         else BEFORE clicking. Then Actions -> "Delete Account(s)".
+        If the dialog freezes or errors, do NOT retry inside it - retrying
+        in a frozen dialog never works and the original click may still
+        land. Reload the page, re-read the account list, and tell me what
+        state you find before touching anything again.
         This is the one pass in this dispatch where Delete is intended. It
         is intended for exactly the account named on the card and nothing
         else. If the confirmation dialog names any other account, or more
