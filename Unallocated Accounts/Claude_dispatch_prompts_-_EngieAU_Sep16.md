@@ -303,11 +303,17 @@ the account Summary, "Relates to" should now read the target location.
 
 === STEP 3 · Check it ===
 Open the target location's account list. Confirm my account is listed there
-exactly once, and that the CS Energy account(s) on the same NMI I name are
-still there too - I am not touching those in this prompt.
+exactly once, and that the CS Energy account named on its row below is still
+there and unedited - I am not touching those in this prompt.
+
+A caution on that list: at Gympie the per-location account grid rendered only
+3 of its 31 accounts last time, even with "Show All Accounts" on, and left
+out an account that is definitely there. If the list looks short, don't
+conclude anything from it - cross-check through the org-wide Accounts grid
+(Manage -> Accounts, Show All on, filter the Account Number) and tell me.
 
 Report, per account: the number, the location it now relates to and its ref,
-and confirmation the matching CS Energy account(s) are still present and
+and confirmation the matching CS Energy account is still present and
 unedited.
 
 Do the first account, then stop and show me. Once I've confirmed it, run the
@@ -316,19 +322,34 @@ rest without stopping.
 RULES
 - Never delete anything. Never use Close Account(s) or Virtual Account Setup
   in this pass.
-- Never edit, move or close any account I have not named.
+- Never edit, move or close any account I have not named. In particular the
+  CS Energy accounts below are named only so you can confirm they are still
+  there - they get closed in the next pass, not this one.
 - If my exact target account isn't found, or the location ref doesn't match,
   stop and tell me.
 - If a screen doesn't match what I've described, stop and describe what you see.
 
 ================================ THE 7 ACCOUNTS ================================
-900018189_3051770385   -> RPQ Spray Seal  (171230)
-900018190_3120014382   -> RPQ Spray Seal  (171230)
-900018191_3120070486   -> RPQ Swanbank  (171505)
-900018195_3120129028   -> Gympie  (142)
-900018196_3120103988   -> Asphalt Prod - Bli Bli (408)  (408)
-900018197_QB05383854   -> Asphalt Prod - Archerfield (406)  (406)
-900018203_3120143385   -> PPP - Sunshine Coast University Hospital  (9078)
+Format: account to move -> target location (Location Ref) · CS Energy account
+that should still be sitting there afterwards, untouched.
+
+900018189_3051770385 -> RPQ Spray Seal (171230)
+                        leave in place: 1003072_3051770385
+900018190_3120014382 -> RPQ Spray Seal (171230)
+                        leave in place: 1003070_3120014382
+900018191_3120070486 -> RPQ Swanbank (171505)
+                        leave in place: 1003071_3120070486
+900018195_3120129028 -> Gympie (142)
+                        leave in place: 1003085_3120129028
+                        (also here, closed, leave alone: 5000021_3120129028)
+900018196_3120103988 -> Asphalt Prod - Bli Bli (408) (408)
+                        leave in place: 1003079_3120103988
+                        (also here, closed, leave alone: 5000021_3120103988)
+900018197_QB05383854 -> Asphalt Prod - Archerfield (406) (406)
+                        leave in place: 1003081_QB05383854
+                        (also here, closed, leave alone: 5000021_QB05383854)
+900018203_3120143385 -> PPP - Sunshine Coast University Hospital (9078)
+                        leave in place: 1003075_3120143385
 ==================================================================================
 ```
 
