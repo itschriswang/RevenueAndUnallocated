@@ -3,10 +3,10 @@
 What I paste into Claude (browser dispatch) with Envizi (`au001.envizi.com`) open in the active tab, to
 work the 7 EngieAU electricity accounts sitting at `Unallocated Accounts` in
 `grid_data_2026Sep16_16h5m10s.csv`. Run in order: a **read-only survey** (done, 16 Sep 26 - see "Survey
-results" below), then **1** allocate, **2** close the superseded CS Energy meters, **2b** delete two
-duplicated May records the survey turned up, and **3** retire the 7 Section 3 temporary certificate
-accounts the survey found and rebuild them against the Engie source. Keep Envizi in front while it works -
-it only sees the active tab.
+results" below), then **1** allocate each account and close the CS Energy meter it supersedes, site by
+site; **2b** delete two duplicated May records the survey turned up; and **3** retire the 7 Section 3
+temporary certificate accounts the survey found and rebuild them against the Engie source. Keep Envizi in
+front while it works - it only sees the active tab.
 
 ## Where these came from
 
@@ -29,7 +29,7 @@ Three of the assumptions above turned out wrong: a `_CERTS` account already exis
 locations - they are the Section 3 **temporary** accounts built against the CS Energy source while the
 Engie account was awaited, and the documented route is to delete and rebuild them; the new EngieAU
 accounts already hold actual July/August data rather than starting empty; and the two `5000021_`
-duplicates at Gympie and Archerfield are already closed. Prompts 2 and 3 below are rewritten to match
+duplicates at Gympie and Archerfield are already closed. The action passes below are rewritten to match
 what the survey actually found; the "Survey results" section is the record of what changed and why.
 
 ## The 7 accounts
@@ -56,7 +56,7 @@ closed, not be guessed.
 ## Survey results - 16 Sep 26 run
 
 Prompt 0 was run read-only against all 7 cards. Nothing was changed. Three findings overturn assumptions
-this dispatch was built on, and prompts 2 and 3 below are rewritten around them.
+this dispatch was built on, and the action passes below are rewritten around them.
 
 **1. A real `_CERTS` account already exists at every one of the 7 locations - none is missing.** They are
 named after the OLD (CS Energy) account, not the new EngieAU one:
@@ -109,7 +109,7 @@ but it means the "new accounts start empty" assumption in the original prompt 3 
 bearing on the move in prompt 1.
 
 **3. Cards 4 and 6's `5000021_` accounts are already Closed, not open.** Both carry Replaced On 31 Mar
-2026. All 11 `5000021_` accounts org-wide are Closed - full table below. This removes both from prompt 2's
+2026. All 11 `5000021_` accounts org-wide are Closed - full table below. This removes both from prompt 1's
 close list, but the dates on exactly these two look wrong against how their nine siblings were dated (see
 "Sibling dating" below) - flagged as a decision, not auto-corrected.
 
@@ -128,7 +128,7 @@ close list, but the dates on exactly these two look wrong against how their nine
 "Relates to" confirmed on-screen for every account. Account numbers matched character for character. On
 every old CS Energy account, Jul-26+ means accrued only - the last **actual** reading on all seven is June
 2026, which is exactly the handover pattern the earlier Engie batches showed and confirms 30 Jun 2026 as
-the right close date for the seven main CS Energy accounts (prompt 2, unchanged).
+the right close date for the seven main CS Energy accounts (prompt 1, unchanged).
 
 ### Sibling dating for the `5000021_` accounts
 
@@ -271,19 +271,62 @@ Card 7 - Location: PPP - Sunshine Coast University Hospital (Ref 9078)
 ```
 
 What was actually found is in "Survey results" above, not the expectations this prompt was originally
-written against - see that section before running prompts 2 or 3.
+written against - see that section before running any of the action passes.
 
 ---
 
-## 1 · Allocate the 7 accounts to their locations
+## 1 · Allocate and close, site by site
+
+**Merged from what were prompts 1 and 2.** They were originally two passes, with the close waiting on the
+move. They don't actually depend on each other - they act on different accounts, and the CS Energy account
+is already sitting at the target location whether or not the Engie account has arrived. The only thing the
+old prompt 2 needed from prompt 1 was its final check ("is the Engie account now the live one here"), and
+doing both at one site in one visit makes that check better, not worse: the account list is read once, with
+both accounts in their final state.
+
+Two reasons to prefer it merged:
+
+- **One visit per location instead of two.** RPQ Spray Seal carries two of the seven, so it is six
+  locations, not fourteen visits.
+- **It shortens the double count.** Right now each of these NMIs has the Engie account holding July and
+  August actuals while the CS Energy account accrues the same two months. Closing at 30 Jun 2026 in the
+  same breath as the move closes that overlap per site rather than leaving all seven overlapping until a
+  second pass runs.
+
+The close date is 30 June 2026 for all seven - the last month each CS Energy account shows an **actual**
+reading before July and August turn accrued-only, and the same date the LMC review used for the other
+Engie retailer-switch close-outs. **The `5000021_` accounts are not touched here**: all three are already
+closed and correctly dated 31 Mar 2026. Gympie's and Archerfield's carry a duplicated May record past
+that, which is prompt 2b's job, not this one's.
+
+What stays separate, and why: **2b** deletes records rather than editing a field, on accounts this pass
+never opens. **3** deletes and rebuilds the certificate accounts, and its safety rests on an unhurried
+zero-records check per account - folding account deletion into the same pass as account moves invites
+exactly the confusion the card format is there to prevent. Run those on their own.
 
 ```
-You're helping me move 7 electricity accounts onto their correct locations
-in IBM Envizi (au001.envizi.com). I'm logged in on the Envizi tab. Work
-through the list below ONE AT A TIME, in order.
+You're helping me hand seven electricity meters over from CS Energy to
+EngieAU in IBM Envizi (au001.envizi.com). I'm logged in on the Envizi tab.
+Work through the cards below ONE CARD AT A TIME, in order.
 
-=== STEP 1 · Find the account ===
-Top-right search, dropdown "Accounts". Paste the account number exactly.
+Each card is one NMI at one location and has TWO accounts, each with its own
+action. They are easy to tell apart - the one being MOVED starts "900018",
+the one being CLOSED starts "1003". Read both numbers off the card before
+touching anything.
+
+  MOVE  the EngieAU account (900018...) from Unallocated Accounts to the
+        location on the card. Nothing else about it changes - no dates, no
+        fields.
+  CLOSE the CS Energy account (1003...) that is already at that location, by
+        setting Replaced On to 30 June 2026. Nothing else about it changes.
+
+WHAT "CLOSE" MEANS HERE
+Set Replaced On on the Edit Account form - the way the electricity close-offs
+are always done in this workbook. NOT the Actions -> Close Account(s) menu
+item, and NEVER Delete.
+
+=== STEP 1 · Find the account to move ===
+Top-right search, dropdown "Accounts". Paste the 900018... number exactly.
 Open it. Confirm the header shows exactly that number and "Relates to" reads
 Unallocated Accounts. If it already relates to some other location, stop and
 tell me - someone has moved it since the survey.
@@ -291,20 +334,39 @@ tell me - someone has moved it since the survey.
 === STEP 2 · Move it ===
 Go to the Unallocated Accounts location (it is the "Relates to" link), Quick
 links -> Accounts -> "Show All Accounts". Tick the checkbox on the row for MY
-account only. Blue "Actions" button -> "Move Account". That same Actions
-menu holds "Delete Account(s)", "Close Account(s)" and "Virtual Account
-Setup" - do not click any of those in this pass, ever. Screenshot the menu
-and confirm before clicking.
+900018... account only. Blue "Actions" button -> "Move Account". That same
+Actions menu holds "Delete Account(s)", "Close Account(s)" and "Virtual
+Account Setup" - do not click any of those in this pass, ever. Screenshot the
+menu and confirm before clicking.
 
-In the move dialog, find the target location by the name I give you and
-confirm its Location Ref matches the ref I give you before selecting it -
+In the move dialog, find the target location by the name on the card and
+confirm its Location Ref matches the ref on the card before selecting it -
 several locations share a name, the ref is what disambiguates. Save. Back on
 the account Summary, "Relates to" should now read the target location.
 
-=== STEP 3 · Check it ===
-Open the target location's account list. Confirm my account is listed there
-exactly once, and that the CS Energy account named on its row below is still
-there and unedited - I am not touching those in this prompt.
+=== STEP 3 · Open the account to close ===
+Top-right search, dropdown "Accounts". Paste the 1003... number from the same
+card exactly. Open it. Before changing anything, confirm all three:
+  - the header shows exactly that number, character for character
+  - "Relates to" reads the same location you just moved the other account to
+  - Replaced On is blank (it may display as the Envizi null date 30 Dec 1899
+    - read that as blank)
+If it already carries a real Replaced On, STOP on this card and show me
+rather than overwriting it.
+
+=== STEP 4 · Close it ===
+Blue "Actions" (top right) -> "Edit Account". Not Capture Data. Set
+"Replaced On" to 30 June 2026. The field shows m/d/yyyy, so read it back as
+6/30/2026, not 30/6/2026. Change nothing else on the form. Save. Back on the
+Summary the left panel should read "Replaced On : 30 Jun 2026".
+
+=== STEP 5 · Check the site ===
+Open the location's account list and confirm, for this NMI:
+  - the 900018... account is there exactly once, with no Replaced On
+  - the 1003... account is there with Replaced On 30 Jun 2026
+  - where the card names a closed 5000021... account, it is still listed and
+    still carries its own original Replaced On - untouched by you
+  - any LGCS_ or _CERTS accounts at the location are untouched
 
 A caution on that list: at Gympie the per-location account grid rendered only
 3 of its 31 accounts last time, even with "Show All Accounts" on, and left
@@ -312,113 +374,75 @@ out an account that is definitely there. If the list looks short, don't
 conclude anything from it - cross-check through the org-wide Accounts grid
 (Manage -> Accounts, Show All on, filter the Account Number) and tell me.
 
-Report, per account: the number, the location it now relates to and its ref,
-and confirmation the matching CS Energy account is still present and
-unedited.
+Report, per card: the account moved and where it now relates to (with ref),
+the account closed and its Replaced On read back, and confirmation the
+5000021... account and any LGCS_ / _CERTS accounts at that location are
+unchanged.
 
-Do the first account, then stop and show me. Once I've confirmed it, run the
-rest without stopping.
+Do CARD 1 completely - move AND close - then stop and show me. Once I've
+confirmed it, run the rest without stopping.
 
 RULES
-- Never delete anything. Never use Close Account(s) or Virtual Account Setup
-  in this pass.
-- Never edit, move or close any account I have not named. In particular the
-  CS Energy accounts below are named only so you can confirm they are still
-  there - they get closed in the next pass, not this one.
+- Never move the 1003... account and never close the 900018... account. One
+  is moved, the other is closed, and they are not interchangeable.
+- The only field that changes anywhere in this pass is Replaced On, on the
+  1003... accounts only. Opened On is never touched.
+- Never delete anything. Never use Close Account(s) or Virtual Account Setup.
+- Never edit, move or close a 5000021... account, an LGCS_ account, a _CERTS
+  account, or anything else I have not named.
 - If my exact target account isn't found, or the location ref doesn't match,
   stop and tell me.
 - If a screen doesn't match what I've described, stop and describe what you see.
 
-================================ THE 7 ACCOUNTS ================================
-Format: account to move -> target location (Location Ref) · CS Energy account
-that should still be sitting there afterwards, untouched.
+===================================== THE 7 CARDS =====================================
+CARD 1 - RPQ Spray Seal, Location Ref 171230 - NMI 3051770385
+  MOVE  900018189_3051770385  ->  RPQ Spray Seal (171230)
+  CLOSE 1003072_3051770385    ->  Replaced On 30 June 2026
+  Leave alone at this location: LGCS_3051770385, LGCS_3120014382,
+    LGCS_3120136120, 1003072_3051770385_CERTS, 1003070_3120014382_CERTS
 
-900018189_3051770385 -> RPQ Spray Seal (171230)
-                        leave in place: 1003072_3051770385
-900018190_3120014382 -> RPQ Spray Seal (171230)
-                        leave in place: 1003070_3120014382
-900018191_3120070486 -> RPQ Swanbank (171505)
-                        leave in place: 1003071_3120070486
-900018195_3120129028 -> Gympie (142)
-                        leave in place: 1003085_3120129028
-                        (also here, closed, leave alone: 5000021_3120129028)
-900018196_3120103988 -> Asphalt Prod - Bli Bli (408) (408)
-                        leave in place: 1003079_3120103988
-                        (also here, closed, leave alone: 5000021_3120103988)
-900018197_QB05383854 -> Asphalt Prod - Archerfield (406) (406)
-                        leave in place: 1003081_QB05383854
-                        (also here, closed, leave alone: 5000021_QB05383854)
-900018203_3120143385 -> PPP - Sunshine Coast University Hospital (9078)
-                        leave in place: 1003075_3120143385
-==================================================================================
+CARD 2 - RPQ Spray Seal, Location Ref 171230 - NMI 3120014382
+  SAME LOCATION AS CARD 1, different NMI. Match the full account numbers.
+  MOVE  900018190_3120014382  ->  RPQ Spray Seal (171230)
+  CLOSE 1003070_3120014382    ->  Replaced On 30 June 2026
+  Leave alone: as card 1
+
+CARD 3 - RPQ Swanbank, Location Ref 171505 - NMI 3120070486
+  MOVE  900018191_3120070486  ->  RPQ Swanbank (171505)
+  CLOSE 1003071_3120070486    ->  Replaced On 30 June 2026
+  Leave alone: LGCS_3120070486, 1003071_3120070486_CERTS
+
+CARD 4 - Gympie, Location Ref 142 - NMI 3120129028
+  MOVE  900018195_3120129028  ->  Gympie (142)
+  CLOSE 1003085_3120129028    ->  Replaced On 30 June 2026
+  Leave alone: 5000021_3120129028 (already closed 31 Mar 2026),
+    LGCS_3120129028, 1003085_3120129028_CERTS
+  NOTE: this is the location whose account grid under-renders. Cross-check.
+
+CARD 5 - Asphalt Prod - Bli Bli (408), Location Ref 408 - NMI 3120103988
+  MOVE  900018196_3120103988  ->  Asphalt Prod - Bli Bli (408)  (408)
+  CLOSE 1003079_3120103988    ->  Replaced On 30 June 2026
+  Leave alone: 5000021_3120103988 (already closed 31 Mar 2026),
+    LGCS_3120103988, 1003079_3120103988_CERTS
+
+CARD 6 - Asphalt Prod - Archerfield (406), Location Ref 406 - NMI QB05383854
+  MOVE  900018197_QB05383854  ->  Asphalt Prod - Archerfield (406)  (406)
+  CLOSE 1003081_QB05383854    ->  Replaced On 30 June 2026
+  Leave alone: 5000021_QB05383854 (already closed 31 Mar 2026),
+    LGCS_QB05383854, 1003081_QB05383854_CERTS
+
+CARD 7 - PPP - Sunshine Coast University Hospital, Location Ref 9078 - NMI 3120143385
+  MOVE  900018203_3120143385  ->  PPP - Sunshine Coast University Hospital (9078)
+  CLOSE 1003075_3120143385    ->  Replaced On 30 June 2026
+  Leave alone: 1003075_3120143385_CERTS
+  (No LGCS_ account at this location - that is expected, not a problem.)
+========================================================================================
 ```
 
----
-
-## 2 · Close the superseded CS Energy accounts
-
-Only run this after prompt 1 has confirmed all 7 are allocated. The survey confirms 30 June 2026 for all
-seven main CS Energy accounts - it is the last month each shows an **actual** reading before Jul/Aug turn
-to accrued-only, the same handover pattern the LMC review used for the other Engie retailer-switch
-close-outs. **The two `5000021_` duplicates at Gympie and Archerfield are NOT in this list** - the survey
-found both already Closed (Replaced On 31 Mar 2026), and that date is correct. What is wrong at those two
-is a duplicated May record, which prompt 2b below deals with separately.
-
-```
-You're helping me close off electricity accounts that a new EngieAU account
-has superseded, in IBM Envizi (au001.envizi.com). I'm logged in on the
-Envizi tab. Work through the list below ONE AT A TIME, in order.
-
-WHAT "CLOSE" MEANS HERE
-Set Replaced On on the Edit Account form - the way the electricity close-offs
-are always done in this workbook. NOT the Actions -> Close Account(s) menu
-item, and NEVER Delete.
-
-=== STEP 1 · Find the account ===
-Top-right search, dropdown "Accounts". Paste the account number exactly.
-Open it. Confirm "Relates to" shows the location I give you. If it already
-has a Replaced On, stop and show me rather than overwrite it.
-
-=== STEP 2 · Close it ===
-Blue "Actions" (top right) -> "Edit Account". Not Capture Data. Set
-"Replaced On" to the date I give you for that account. Change nothing else
-on the form. Save. Back on the Summary the left panel should read "Replaced
-On : <the date>".
-
-=== STEP 3 · Check it ===
-Confirm the location's account list still shows the new EngieAU account
-(from prompt 1) as the live one on that NMI, and this account now reads
-Replaced On.
-
-Report, per account: the number, the date set, and confirmation the location
-still shows exactly one live account on the NMI (the EngieAU one).
-
-Do the first account, then stop and show me. Once I've confirmed it, run the
-rest without stopping.
-
-RULES
-- Only Replaced On changes, and only on the accounts named below.
-- Never edit, move, close or delete the EngieAU accounts, the LGCS_
-  accounts, or any account I have not named.
-- If an account already has a Replaced On, stop and tell me rather than
-  changing it.
-- If a screen doesn't match what I've described, stop and describe what you see.
-
-================================ THE ACCOUNTS TO CLOSE ================================
-1003072_3051770385   at RPQ Spray Seal (171230)                          -> Replaced On: 30 June 2026
-1003070_3120014382   at RPQ Spray Seal (171230)                          -> Replaced On: 30 June 2026
-1003071_3120070486   at RPQ Swanbank (171505)                            -> Replaced On: 30 June 2026
-1003085_3120129028   at Gympie (142)                                     -> Replaced On: 30 June 2026
-1003079_3120103988   at Asphalt Prod - Bli Bli (408) (408)               -> Replaced On: 30 June 2026
-1003081_QB05383854   at Asphalt Prod - Archerfield (406) (406)           -> Replaced On: 30 June 2026
-1003075_3120143385   at PPP - Sunshine Coast University Hospital (9078)  -> Replaced On: 30 June 2026
-=========================================================================================
-```
-
-Note: `5000021_3120103988` (Bli Bli) and the two `5000021_` accounts at Gympie and Archerfield are NOT in
-this list - all three are already Closed, and all three are dated 31 Mar 2026 correctly. Bli Bli's data
-stops there cleanly; Gympie's and Archerfield's each carry one duplicated May record past it, which is
-prompt 2b's job.
+Expected afterwards: each of the seven NMIs has exactly one live electricity account, the EngieAU one, at
+its real location, with the CS Energy account beside it reading Replaced On 30 Jun 2026 and the July and
+August accruals it was carrying no longer live. The `_CERTS` accounts are still there, still named after
+the CS Energy account, still holding nothing - prompt 3 deals with those.
 
 ---
 
@@ -522,8 +546,8 @@ rebuild against the Engie source - see "Survey results" above for the quote and 
 follows that, and the rebuild half deliberately mirrors the field-by-field form in prompt 2 of
 `../Large Market Certificates/Virtual Meter Guide/Claude_in_Chrome_prompts.md`, which is the proven one.
 
-Only run this after prompt 1 has confirmed all 7 EngieAU accounts are allocated, and after prompt 2 has
-closed the seven main CS Energy accounts. It does not depend on prompt 2b.
+Only run this after prompt 1 has confirmed all 7 EngieAU accounts are allocated and their CS Energy meters
+closed. It does not depend on prompt 2b.
 
 **Delete - decided.** The guide's route, and every one of the 7 holds zero records, so deletion loses no
 history and leaves the account list clean rather than carrying seven dead `1003xxx_<NMI>_CERTS` rows
@@ -550,7 +574,7 @@ TWO THINGS AT EVERY LOCATION THAT ARE NOT IN SCOPE
 - "LGCS_<NMI>" accounts: the pre-2026 historical record. Never touch one.
 - The CS Energy accounts ("1003xxx_..." and, at Gympie and Archerfield,
   a closed "5000021_..."). Never delete, close, move or edit any of them in
-  this pass - prompt 2 already dealt with them.
+  this pass - prompt 1 already dealt with them.
 
 === PER CARD ===
 STEP 1 · READ FIRST, read-only
@@ -724,7 +748,9 @@ naming outlier - a certificate account that exists but is invisible to whatever 
 
 ## What is deliberately not in these prompts
 
-- No deletions. Closing a superseded account keeps its history at the location it belongs to.
+- No deletion of anything holding history. A superseded electricity account is closed, never deleted, so
+  its record stays at the location it belongs to. The two passes that do delete (3, and 2b) only ever
+  touch something confirmed empty or confirmed duplicated first.
 - No touching the `LGCS_<NMI>` historical certificate accounts - they stay as the pre-2026 record.
 - No emission-factor changes. The LMC review already tracks the 24-25 / 25-26 / 26-27 factor vintages
   separately; these 7 accounts pick up whatever factor is live once they start recording.
