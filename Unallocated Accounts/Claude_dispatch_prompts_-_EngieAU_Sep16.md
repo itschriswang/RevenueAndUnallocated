@@ -11,8 +11,9 @@ it only sees the active tab.
 
 **Both remaining passes delete things, and the 18 Sep run showed this platform firing writes nobody
 clicked** - a frozen dialog replayed a postback and closed an account fourteen seconds after a click aimed
-somewhere else. Read "Operating notes" before running either. Neither should run until sessions stop
-expiring.
+somewhere else, and search has opened a different account than the one searched for. Read "Operating
+notes" before running either. The 1b pass afterwards ran clean with no session timeouts, so the platform
+looks settled; run 2b first as the smaller write, and let it stand as the check on that before 3.
 
 ## Where these came from
 
@@ -277,9 +278,17 @@ the location field on a move that had already succeeded. Never judge a move from
 the account's own Summary page.
 
 **The grids serve stale and partial data.** Gympie rendered 3 of 31 rows with Show All on; RPQ Spray Seal
-reported "29 Rows" and rendered 6; the org-wide grid did not list a just-moved account until re-queried.
-So the under-render is not a Gympie quirk, it is general. Verify through the org-wide Accounts grid, and
-treat search as more current than any grid. A short list is never evidence of absence.
+reported "29 Rows" and rendered 6; the org-wide grid did not list a just-moved account until re-queried;
+the Records grid claimed "10 Rows" and drew 8. So the under-render is not a Gympie quirk, it is general. A
+short list is never evidence of absence, and Monthly Data is more trustworthy than Records for figures.
+
+**Search can open the wrong account, so check the header every time.** On the 1b pass a search for
+`1003071_3120070486` served an un-refreshed type-ahead list and opened `1003075_3120143385` instead. It was
+caught from the breadcrumb. This one matters more than the grid problems: it means **the account on screen
+is not necessarily the account you searched for**, and the earlier advice to trust search over the grids
+was too generous. Before any action - and absolutely before anything destructive - read the account number
+off the page itself and match it character for character against the card. Check the type-ahead list
+before clicking, not just after.
 
 **`getselectedrowindexes` returns a self-referencing array** - it reports 2 selections when there is 1.
 Count checked checkboxes in the DOM instead. This matters most where a pass acts on a selection, which is
@@ -550,7 +559,43 @@ the CS Energy account, still holding nothing - prompt 3 deals with those.
 
 ---
 
-## 1b · Verify the seven closes (read-only)
+## 1b · Verify the seven closes (read-only) - RUN, 18 Sep 26 · ALL CLEAN
+
+**Every check passed.** All seven read Supplier `CSEnergy`, Replaced On 6/30/2026, and Actual 100% /
+Accrued 0% / Estimated 0%. Every June actual matches the 6 Sep export to within rounding:
+
+| Account | Expected Jun | On screen | Jul row | Aug row |
+| --- | ---: | ---: | --- | --- |
+| `1003072_3051770385` | 15,213 | 15,213.46 | none | none |
+| `1003070_3120014382` | 26,368 | 26,368.28 | none | none |
+| `1003071_3120070486` | 21,320 | 21,319.65 | none | none |
+| `1003085_3120129028` | 13,700 | 13,699.80 | none | none |
+| `1003079_3120103988` | 61,380 | 61,380.33 | none | none |
+| `1003081_QB05383854` | 73,121 | 73,121.42 | none | none |
+| `1003075_3120143385` | 17,758 | 17,758.47 | none | none |
+
+So the **491,106 kWh / 329.0 tCO2e** of July and August accrual is gone from all seven, with every actual
+month intact. On three accounts the Monthly Data month filter is a picklist offering only 2026-04, -05 and
+-06, which is positive proof the later months do not exist rather than merely being filtered out.
+
+The two specific doubts are both closed out:
+
+- **`1003072_3051770385`, closed by the replayed postback** - Supplier `CSEnergy`, Account Ref blank,
+  Opened On blank, and Mar/Apr/May/Jun all present and Actual (11,478.87 / 18,466.82 / 15,460.60 /
+  15,213.46). Replaced On is the only thing that changed. **Nothing to roll back or repair.**
+- **`1003070_3120014382`, whose form showed Supplier EngieAU** - reads `CSEnergy`. The stale value was
+  never saved; cancelling was the right call and it cost nothing.
+
+The Engie side is intact: all seven carry Supplier EngieAU, sit at their named location, and have a blank
+Replaced On. `900018189_3051770385` is showing July and August data, so the successor is receiving. The
+three `5000021_` accounts still read Replaced On 31 Mar 2026, Supplier `CSEnergy`.
+
+**Prompt 1 is confirmed sound**, and the platform behaved throughout - no sign-in, MFA or session-timeout
+dialog appeared during the pass. The canary passed.
+
+---
+
+## 1b · The prompt (read-only)
 
 Run this before 2b or 3. Two jobs:
 
@@ -722,10 +767,17 @@ If the two May figures are NOT identical, STOP - that would mean it is a
 real separate reading, not a duplicate, and I need to look at it myself.
 
 === PER ACCOUNT · STEP 2 · Delete the May record ===
+FIRST, re-read the account number off the page header and match it character
+for character against the card. Envizi's search has served a stale type-ahead
+list and opened a DIFFERENT account than the one searched for, so the page
+you are on is not guaranteed to be the page you asked for. Do not skip this
+because you opened the account a moment ago.
+
 On the closed account, Review -> Records (not Monthly Data - Records is the
-list of individual records). Find the record whose period is May 2026 - for
-Archerfield it is period 2-31 May 2026, ref BE8734997. Confirm before
-deleting that the row you have selected is:
+list of individual records; note Records under-renders its own row count, so
+work from what is drawn and cross-check against Monthly Data). Find the
+record whose period is May 2026 - for Archerfield it is period 2-31 May 2026,
+ref BE8734997. Confirm before deleting that the row you have selected is:
   - on the CLOSED account (the 5000021_ one), not the live one
   - the May 2026 period, not March
 Then delete that one record. Delete nothing else. If the screen offers to
@@ -835,6 +887,12 @@ STEP 2 · Delete the temporary account
         Reload the page first. This platform bleeds stale state between
         forms and has replayed a postback from a frozen dialog against the
         wrong account, so start this step on a freshly loaded page.
+        Then re-read the account number off the page header and match it
+        character for character against the card. Envizi's search has served
+        a stale type-ahead list and opened a DIFFERENT account than the one
+        searched for. You are about to delete an account: confirm the one on
+        screen is the one on the card, every time, however recently you
+        opened it.
         In the location's account list, tick the checkbox on the TEMPORARY
         account's row ONLY. Do NOT trust getselectedrowindexes - it returns
         a self-referencing array and reports 2 selections where there is 1.
