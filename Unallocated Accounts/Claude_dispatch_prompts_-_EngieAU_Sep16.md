@@ -3,8 +3,8 @@
 What I paste into Claude (browser dispatch) with Envizi (`au001.envizi.com`) open in the active tab, to
 work the 7 EngieAU electricity accounts sitting at `Unallocated Accounts` in
 `grid_data_2026Sep16_16h5m10s.csv`. Run in order: a **read-only survey** (done, 16 Sep 26 - see "Survey
-results" below), then **1** allocate, **2** close the superseded CS Energy meters, an optional **2b** to
-fix two mis-dated close-outs the survey turned up, and **3** retire the 7 Section 3 temporary certificate
+results" below), then **1** allocate, **2** close the superseded CS Energy meters, **2b** delete two
+duplicated May records the survey turned up, and **3** retire the 7 Section 3 temporary certificate
 accounts the survey found and rebuild them against the Engie source. Keep Envizi in front while it works -
 it only sees the active tab.
 
@@ -149,11 +149,30 @@ All 11 exist and all are Closed:
 | `5000021_3053253239` | Torbanlea | 31 Mar 2026 | 31 Mar 2026 |
 
 The convention across the other nine is Replaced On = end of the last month holding actual data (Richlands
-is the one existing exception, dated a month after its data). Cards 4 and 6's accounts don't fit it: both
-were dated 31 Mar 2026 but subsequently picked up a May-2026 actual (Archerfield's is period 2-31 May,
-ref `BE8734997`) with April missing entirely. On the sibling rule they should read 31 May 2026, not 31
-Mar. This is a **date correction on an already-closed account**, not a close action, so it is broken out
-as its own optional prompt (2b) rather than folded into prompt 2 - confirm before running it.
+is the one existing exception, dated a month after its data). Cards 4 and 6's accounts look like they
+don't fit it: both are dated 31 Mar 2026 but hold a May-2026 actual (Archerfield's is period 2-31 May,
+ref `BE8734997`) with April missing entirely.
+
+**Checked against the 6 Sep 26 electricity export, and the date is not the problem - the May record is.**
+The May figures on the closed accounts are identical, to the cent, to the May figures on the live
+successor account on the same NMI:
+
+| NMI | Closed `5000021_` May 2026 | Live `1003xxx_` May 2026 |
+| --- | --- | --- |
+| `QB05383854` (Archerfield) | 64,727.16 kWh / 43.37 t | 64,727.16 kWh / 43.37 t |
+| `3120129028` (Gympie) | 10,717.9 kWh / 7.18 t | 10,717.9 kWh / 7.18 t |
+
+Both actual, both the same month, both on the same NMI - a duplicated record, not a late true-up bill.
+March is genuinely each account's own last month (Gympie 15,268.8 kWh, Archerfield 65,241.67 kWh, neither
+matching the successor's April figure), and April hands over cleanly - no April row on the `5000021_`
+account, the `1003xxx_` account starting there. **So Replaced On 31 Mar 2026 is correct on both** and
+moving it to 31 May would have blessed the double count instead of removing it.
+
+This is already a known finding. `../Envizi Data Quality/findings.md` §5 ("Data recorded after Replaced
+On") lists both accounts, puts the pair at "a genuine May double count", and prescribes the fix: *delete
+the May records on the two `5000021_` accounts*. Row 3 and row 4 of
+`../Envizi Data Quality/csv/08_data_after_replaced_on.csv` are these two. Prompt 2b below is rewritten to
+do that - 75,445 kWh / 50.55 tCO2e of duplicated May electricity - and leaves Replaced On alone.
 
 ### Tooling note
 
@@ -321,8 +340,8 @@ Only run this after prompt 1 has confirmed all 7 are allocated. The survey confi
 seven main CS Energy accounts - it is the last month each shows an **actual** reading before Jul/Aug turn
 to accrued-only, the same handover pattern the LMC review used for the other Engie retailer-switch
 close-outs. **The two `5000021_` duplicates at Gympie and Archerfield are NOT in this list** - the survey
-found both already Closed (Replaced On 31 Mar 2026). Their date looks wrong against how the other nine
-`5000021_` siblings were dated, which prompt 2b below addresses separately.
+found both already Closed (Replaced On 31 Mar 2026), and that date is correct. What is wrong at those two
+is a duplicated May record, which prompt 2b below deals with separately.
 
 ```
 You're helping me close off electricity accounts that a new EngieAU account
@@ -376,59 +395,100 @@ RULES
 ```
 
 Note: `5000021_3120103988` (Bli Bli) and the two `5000021_` accounts at Gympie and Archerfield are NOT in
-this list - all three are already Closed. Bli Bli's date checks out (31 Mar 2026, matching its own last
-actual). Gympie's and Archerfield's dates don't - see prompt 2b.
+this list - all three are already Closed, and all three are dated 31 Mar 2026 correctly. Bli Bli's data
+stops there cleanly; Gympie's and Archerfield's each carry one duplicated May record past it, which is
+prompt 2b's job.
 
 ---
 
-## 2b · Fix the two mis-dated `5000021_` close-outs (optional - confirm first)
+## 2b · Delete the duplicated May records on the two `5000021_` accounts
 
-Not a close action - both accounts are already Closed. This only corrects the Replaced On date on two
-accounts that were dated 31 Mar 2026 but kept recording an actual reading in May 2026 with April missing,
-which breaks the "Replaced On = end of last month with actual data" convention every other `5000021_`
-sibling follows (Richlands is the one pre-existing exception). **Confirm you want this before running it**
-- changing a date on an already-closed account is a step above the plain close-outs elsewhere in this
-dispatch, and it's possible the May reading is itself the anomaly (e.g. a late-arriving true-up bill) in
-which case 31 Mar 2026 might be the one worth keeping. If in doubt, leave both as they are.
+**Rewritten.** The first draft moved Replaced On from 31 Mar to 31 May 2026 to match the sibling
+convention. Checking the 6 Sep 26 export showed that would have been the wrong fix: the May record on each
+of these closed accounts is a cent-for-cent duplicate of the same month on the live successor account on
+the same NMI, so the close date is right and the record is what's wrong. See "Sibling dating" above for
+the figures. This is `../Envizi Data Quality/findings.md` §5's own prescribed action, not a new idea:
+delete the May records, leave Replaced On at 31 Mar 2026.
+
+Worth **75,445 kWh / 50.55 tCO2e** of double-counted May electricity across the two. Independent of
+prompts 1, 2 and 3 - it can run before or after them, and nothing in this dispatch depends on it.
+
+This one deletes records rather than editing a field, so it wants a careful read step first.
 
 ```
-You're helping me correct the Replaced On date on two already-closed
-electricity accounts in IBM Envizi (au001.envizi.com). I'm logged in on the
-Envizi tab. Work ONE account at a time.
+You're helping me remove two duplicated monthly records in IBM Envizi
+(au001.envizi.com). I'm logged in on the Envizi tab. Two accounts, one at a
+time, read step first on each.
 
 WHY
-Both accounts were dated Replaced On 31 Mar 2026, but each has a real May
-2026 actual reading on record (April is missing) - one month after their
-own close date. Every other closed "5000021_" sibling in Envizi is dated to
-the end of its own last actual month; these two are the exception.
+Each of these two accounts is closed (Replaced On 31 Mar 2026) but holds a
+May 2026 actual record. That May record is an exact duplicate of the May
+record on the live account on the same NMI at the same location - same kWh,
+same CO2e - so the site's May electricity is counted twice. The close date
+is correct and stays as it is. Only the duplicate May record comes off.
 
-=== PER ACCOUNT ===
-STEP 1  Top-right search, dropdown "Accounts". Paste the account number.
-        Open it. Confirm "Relates to" matches the location I give you and
-        Replaced On currently reads 31 Mar 2026. Review -> Monthly Data:
-        re-confirm the last actual row is May 2026 and April is genuinely
-        missing (not just hidden). If either doesn't match, STOP and tell
-        me rather than proceeding.
+=== PER ACCOUNT · STEP 1 · READ, then stop ===
+Top-right search, dropdown "Accounts". Paste the closed account number.
+Open it. Confirm "Relates to" matches the location I give you and that
+Replaced On reads 31 Mar 2026. Then Review -> Monthly Data and record every
+month it holds from Jan 2026 on, with the kWh.
+Then open the LIVE account I name for the same NMI and read ITS May 2026
+kWh.
+Show me both before deleting anything. I expect:
+  - the closed account to hold March and May 2026 and NOT April
+  - its May kWh to equal the live account's May kWh exactly
+If the two May figures are NOT identical, STOP - that would mean it is a
+real separate reading, not a duplicate, and I need to look at it myself.
 
-STEP 2  Actions -> Edit Account. Change ONLY Replaced On, from 31 Mar 2026
-        to 31 May 2026. Nothing else on the form changes. Save.
+=== PER ACCOUNT · STEP 2 · Delete the May record ===
+On the closed account, Review -> Records (not Monthly Data - Records is the
+list of individual records). Find the record whose period is May 2026 - for
+Archerfield it is period 2-31 May 2026, ref BE8734997. Confirm before
+deleting that the row you have selected is:
+  - on the CLOSED account (the 5000021_ one), not the live one
+  - the May 2026 period, not March
+Then delete that one record. Delete nothing else. If the screen offers to
+delete more than the one record, or the confirmation names a different
+period or account, CANCEL and tell me.
 
-STEP 3  Re-open the account, confirm Replaced On now reads 31 May 2026 and
-        nothing else changed.
+=== PER ACCOUNT · STEP 3 · Check it ===
+Re-open the closed account, Review -> Monthly Data. Confirm May 2026 is now
+gone, March 2026 is still there with its original kWh, and Replaced On
+still reads 31 Mar 2026. Then re-open the LIVE account and confirm its May
+2026 record is untouched - that is the one that should survive.
 
-Report, per account: number, location, Replaced On before and after.
+Report, per account: the months held before and after, the May kWh deleted,
+the live account's May kWh (unchanged), and Replaced On before and after.
 
 RULES
-- Only Replaced On changes, only on the two accounts named below.
-- Do not touch any other account, including the EngieAU or CS Energy
-  accounts at these same locations.
+- Delete exactly one record per account: the May 2026 one on the closed
+  5000021_ account. Never delete a record on the live account.
+- Never change Replaced On on either account in this pass. 31 Mar 2026 is
+  correct and stays.
+- Never touch the March 2026 record - it is that account's own genuine last
+  reading.
+- If the closed and live May figures don't match exactly, stop before
+  deleting.
 - If a screen doesn't match what I've described, stop and describe what you see.
 
-================================ THE TWO ================================
-5000021_3120129028   at Gympie (142)                            -> Replaced On: 31 Mar 2026 -> 31 May 2026
-5000021_QB05383854   at Asphalt Prod - Archerfield (406) (406)   -> Replaced On: 31 Mar 2026 -> 31 May 2026
-===========================================================================
+==================================== THE TWO ====================================
+1. Location: Gympie (142)
+   Delete the May 2026 record on: 5000021_3120129028   (closed, Replaced On 31 Mar 2026)
+   Expect May 10,717.9 kWh / 7.18 t
+   Live account to leave alone, and to check the figure against: 1003085_3120129028
+   That account's own March figure, which stays: 15,268.8 kWh
+
+2. Location: Asphalt Prod - Archerfield (406)  (406)
+   Delete the May 2026 record on: 5000021_QB05383854   (closed, Replaced On 31 Mar 2026)
+   Expect May 64,727.16 kWh / 43.37 t · period 2-31 May 2026 · ref BE8734997
+   Live account to leave alone, and to check the figure against: 1003081_QB05383854
+   That account's own March figure, which stays: 65,241.67 kWh
+===================================================================================
 ```
+
+Once this runs, rows 3 and 4 of `../Envizi Data Quality/csv/08_data_after_replaced_on.csv` are cleared and
+findings §5's remaining item is the Mackay one (`A-11525536_3053135053`), which is a different fix - its
+Replaced On is wrong, not its data - and is not in scope here.
 
 ---
 
@@ -444,11 +504,11 @@ follows that, and the rebuild half deliberately mirrors the field-by-field form 
 Only run this after prompt 1 has confirmed all 7 EngieAU accounts are allocated, and after prompt 2 has
 closed the seven main CS Energy accounts. It does not depend on prompt 2b.
 
-**Delete or close?** The guide says delete, and every one of the 7 holds zero records, so deleting loses
-nothing and leaves the account list clean. If you would rather not delete in Envizi at all, the
-conservative substitute is to set Replaced On = 30 Jun 2026 on the temporary account instead of deleting
-it, and carry on to the rebuild - the new account is what does the work either way. STEP 2 below is
-written for the delete; swap it for a close if that's the call. **Decide before running.**
+**Delete - decided.** The guide's route, and every one of the 7 holds zero records, so deletion loses no
+history and leaves the account list clean rather than carrying seven dead `1003xxx_<NMI>_CERTS` rows
+alongside their replacements. STEP 2 below deletes. The zero-records check in STEP 1 is the guard: it is
+what makes the deletion safe, so it is not optional, and any account that turns out to hold records stops
+there instead.
 
 ```
 You're helping me retire 7 temporary renewable-certificate accounts in IBM
@@ -653,4 +713,10 @@ naming outlier - a certificate account that exists but is invisible to whatever 
   only after each is confirmed to hold zero records.
 - Teneriffe (`3117134943`) and Southbank TAFE (`3116382269`) are left alone - their Engie accounts have
   not appeared, so their temporary accounts still have a job to do.
-- Prompt 2b is optional and needs a decision before running, not an automatic follow-on to prompt 2.
+- No change to Replaced On on the two `5000021_` accounts. 31 Mar 2026 is correct on both; prompt 2b
+  removes the duplicated May record instead, which is what `../Envizi Data Quality/findings.md` §5 asks
+  for.
+- Prompt 2b is the only pass that deletes a record, and only the one May record per account, only after
+  its figure is confirmed identical to the live account's.
+- Not in scope: findings §5's other account, Mackay `A-11525536_3053135053`. Its Replaced On is the thing
+  that's wrong there, not its data, and it is nothing to do with these 7 sites.
