@@ -867,12 +867,17 @@ follows that, and the rebuild half deliberately mirrors the field-by-field form 
 
 Prompt 1 is done (18 Sep 26), so its precondition is met. It does not depend on prompt 2b.
 
-**Hold this pass until the platform is stable.** It is the heaviest in the dispatch - it deletes seven
-accounts and creates seven more - and the 18 Sep run showed frozen dialogs replaying writes against stale
-state, a selection API that miscounts, grids that under-render, and stale field values bleeding between
-Edit Account forms. A replayed close landed on the right value by luck; a replayed delete has no such luck
-available. Before starting: check the maintenance banner, and reload the page between every account. Read
-"Operating notes" first.
+**The hold is lifted, the precautions stay.** This is the heaviest pass in the dispatch - seven accounts
+deleted, seven built - and it was held while the platform was replaying writes from frozen dialogs,
+miscounting selections, under-rendering grids and bleeding stale field values between forms. Since then 1b
+read clean and 2b's two deletions landed exactly on target with no session trouble, so it is safe to run.
+None of the precautions relax: check the maintenance banner before starting, reload between accounts, and
+read "Operating notes" first. A replayed close once landed on the right value by luck; a replayed delete
+has no such luck available.
+
+**Consider running it in two sittings** - cards 1-3, then 4-7. Seven deletes and seven six-step builds is
+a long run for a platform that expired sessions four times in an hour on 18 Sep, and the risk is worst
+late in a batch when attention flags.
 
 **Delete - decided.** The guide's route, and every one of the 7 holds zero records, so deletion loses no
 history and leaves the account list clean rather than carrying seven dead `1003xxx_<NMI>_CERTS` rows
@@ -989,7 +994,16 @@ STEP 6 · Check it
           - Jul and Aug 2026 kWh EQUAL the EngieAU source account's own
             Jul/Aug actuals. The source already holds actual data for both
             months, so figures should appear immediately rather than waiting
-            on a future bill.
+            on a future bill. Open the source and read its figures, then
+            compare - that equality is the real test of whether the right
+            source was picked.
+          - The figures are also in the right ballpark. Each card carries a
+            "roughly" line: the July/August ACCRUALS that the old CS Energy
+            account was carrying for the same meter before it was closed.
+            Those were Envizi's estimate of the same consumption, so the
+            Engie actuals should land near them - not to the kWh, but the
+            same order. If a card reads 75,000 where I said roughly 14,000,
+            the source is wrong. Stop and tell me.
           - There is NO June 2026 row. If June has a value, Effective From
             didn't take - stop and tell me.
           - The location's LGCS_<NMI> account, where there is one, is
@@ -1014,23 +1028,27 @@ RULES
    Delete:  1003072_3051770385_CERTS
    Build:   900018189_3051770385_CERTS · ref 3051770385
    Source:  900018189_3051770385   (EngieAU)
+   Roughly: Jul ~15,700 · Aug ~17,400
    Leave alone here: LGCS_3051770385, LGCS_3120014382, LGCS_3120136120
 
 2. Location: RPQ Spray Seal - ref 171230   (same location as card 1)
    Delete:  1003070_3120014382_CERTS
    Build:   900018190_3120014382_CERTS · ref 3120014382
    Source:  900018190_3120014382   (EngieAU)
+   Roughly: Jul ~29,300 · Aug ~31,000
 
 3. Location: RPQ Swanbank - ref 171505
    Delete:  1003071_3120070486_CERTS
    Build:   900018191_3120070486_CERTS · ref 3120070486
    Source:  900018191_3120070486   (EngieAU)
+   Roughly: Jul ~22,000 · Aug ~31,500
    Leave alone here: LGCS_3120070486
 
 4. Location: Gympie - ref 142
    Delete:  1003085_3120129028_CERTS
    Build:   900018195_3120129028_CERTS · ref 3120129028
    Source:  900018195_3120129028   (EngieAU)
+   Roughly: Jul ~14,200 · Aug ~14,200
    Leave alone here: LGCS_3120129028
    DECOY, never pick as source: 5000021_3120129028 (closed, still listed)
    NOTE: this location's own account grid rendered only 3 of its 31 accounts
@@ -1041,12 +1059,14 @@ RULES
    Delete:  1003079_3120103988_CERTS
    Build:   900018196_3120103988_CERTS · ref 3120103988
    Source:  900018196_3120103988   (EngieAU)
+   Roughly: Jul ~63,400 · Aug ~63,400
    Leave alone here: LGCS_3120103988
 
 6. Location: Asphalt Prod - Archerfield (406) - ref 406
    Delete:  1003081_QB05383854_CERTS
    Build:   900018197_QB05383854_CERTS · ref QB05383854
    Source:  900018197_QB05383854   (EngieAU)
+   Roughly: Jul ~75,600 · Aug ~75,600
    Leave alone here: LGCS_QB05383854
    DECOY, never pick as source: 5000021_QB05383854 (closed, still listed)
 
@@ -1054,6 +1074,7 @@ RULES
    Delete:  1003075_3120143385_CERTS
    Build:   900018203_3120143385_CERTS · ref 3120143385
    Source:  900018203_3120143385   (EngieAU)
+   Roughly: Jul ~18,700 · Aug ~19,200
    No LGCS_ account at this location.
 
 NOT IN THIS PASS - the other two temporary accounts stay as they are, because
